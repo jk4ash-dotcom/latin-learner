@@ -48,8 +48,45 @@ class PackSanityTest {
     }
 
     @Test
+    fun gen11_deusIsGodNotMisuse() {
+        val v = repo.verse("Gen.1.1")!!
+        val deus = v.words.first { it.la == "Deus" }
+        val g = repo.gloss(deus.glossId)!!
+        assertTrue(g.primary.contains("God", ignoreCase = true))
+        assertFalse(g.primary.contains("misuse", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:") || g.source.contains("curated", ignoreCase = true))
+    }
+
+    @Test
+    fun gen27_dominusLordNotMistress_ejusNotAbjure() {
+        val v = repo.verse("Gen.2.7")!!
+        val dominus = v.words.first { it.la == "Dominus" }
+        val gDom = repo.gloss(dominus.glossId)!!
+        assertTrue(gDom.primary.contains("Lord", ignoreCase = true) || gDom.primary.contains("master", ignoreCase = true))
+        assertFalse(gDom.primary.contains("mistress", ignoreCase = true))
+
+        val ejus = v.words.first { it.la.equals("ejus", ignoreCase = true) }
+        val gEj = repo.gloss(ejus.glossId)!!
+        assertTrue(
+            gEj.primary.contains("his", ignoreCase = true) ||
+                gEj.primary.contains("her", ignoreCase = true)
+        )
+        assertFalse(gEj.primary.contains("abjure", ignoreCase = true))
+    }
+
+    @Test
+    fun gen49_sumToBeNotHighest() {
+        val v = repo.verse("Gen.4.9")!!
+        val sum = v.words.first { it.la.equals("sum", ignoreCase = true) }
+        val g = repo.gloss(sum.glossId)!!
+        assertTrue(g.primary.contains("be", ignoreCase = true) || g.primary.contains("am", ignoreCase = true))
+        assertFalse(g.primary.contains("highest", ignoreCase = true))
+        assertFalse(g.primary.contains("take up", ignoreCase = true))
+    }
+
+    @Test
     fun sampleChapters_present() {
-        listOf("Gen.1.1", "Gen.2.1", "Gen.3.1").forEach { id ->
+        listOf("Gen.1.1", "Gen.2.1", "Gen.3.1", "Gen.4.9").forEach { id ->
             val v = repo.verse(id)
             assertNotNull("missing $id", v)
             assertTrue(v!!.words.isNotEmpty())

@@ -12,12 +12,27 @@
 - **Pin:** `https://raw.githubusercontent.com/seven1m/open-bibles/master/eng-dra.zefania.xml`
 - **Local extract:** `vendor/open-bibles/eng-dra-genesis.zefania.xml`
 - **License:** Public Domain
-- **Alignment:** verse-level by `(chapter, verse)` against Vulgate USFX ids. A few versification mismatches are flagged in-pack as missing underlay (see `reports/pack_genesis_0.1.0.json`).
+- **Alignment:** verse-level by `(chapter, verse)` against Vulgate USFX ids.
+- **Versification:** known eng-dra drifts are remapped in-pack (`meta.gaps`, resolution `remap`). Where eng-dra is dummy/corrupt (e.g. Gen.39.19, Gen.49.29), curated Challoner PD is used — **never** show “dummy verses” as Challoner. Remaining true misses stay flagged missing.
+
+### Remap table (Vulgate → eng-dra)
+| Vulgate | eng-dra |
+|---------|---------|
+| 18.2 | 18.3 |
+| 20.17 | 20.18 |
+| 38.17 | 38.18 |
+| 38.28 | 38.30 |
+| 39.9 | curated Challoner (eng-dra 39.11 OCR-corrupt) |
+| 39.19 | curated Challoner |
+| 40.17 | 40.19 |
+| 41.7 | 41.9 |
+| 49.17 | 49.19 |
+| 49.29 | curated Challoner |
 
 ## Phonetics
 - **Scheme id:** `ecclesiastical-italianate-v1`
 - **Documented rules (POC):**
-  - `ae`/`æ`, `oe`/`œ` → `e`
+  - `ae`/`æ`, `oe`/`œ` → `e` **unless** the second vowel carries diaeresis (*Noë*, *Israël* → split vowels `noe` / `israel`, `phoneticPending=true`)
   - `c` before e/i/y → `ch`; else `k`
   - `g` before e/i/y → soft `j`; else `g`
   - `ti` + vowel → `tsi` (not after `s`)
@@ -30,7 +45,10 @@
 - **File:** `vendor/whitaker/DICTLINE.GEN`
 - **Attribution:** William A. Whitaker (1936–2010)
 - **License:** permissive (see `vendor/whitaker/LICENCE.txt`) — free use of program and data
-- **POC matching:** naive stem + ending strip against DICTLINE stems (no full WORDS morphology engine). Misses become `stub:*` glosses clearly labeled for **Scriba**.
+- **POC matching:** naive stem + ending strip against DICTLINE stems (no full WORDS morphology engine).
+- **Homograph / POS policy (v0.1.1):** prefer Biblical **noun/verb** senses over the first DICTLINE stem dump (e.g. masculine *Dominus* “Lord/master” over *domina* “mistress”; Christian *Deus* “God” over rare *deut* “misuse”). Frequency and ecclesiastical area flags break remaining ties.
+- **Curated overrides:** high-frequency Genesis forms and known false friends (`deus`, `dominus`, `sum`/`est`/`sunt`, `ejus`, *dixit*, *ait*, …) force curated primaries (`curated:<key>`). UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
+- Misses become `stub:*` glosses clearly labeled for **Scriba**.
 
 ## Rebuild pack
 ```bash

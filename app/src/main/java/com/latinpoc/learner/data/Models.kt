@@ -34,8 +34,10 @@ data class CatalogTotals(
     val verses: Int = 0,
     val glosses: Int = 0,
     val glossHits: Int = 0,
+    val glossCurated: Int = 0,
     val glossStubs: Int = 0,
-    val phoneticPending: Int = 0
+    val phoneticPending: Int = 0,
+    val englishGaps: Int = 0
 )
 
 @Serializable
@@ -44,6 +46,14 @@ data class Pack(
     val chapters: List<ChapterIndex>,
     val verses: List<Verse>,
     val glosses: Map<String, Gloss> = emptyMap()
+)
+
+@Serializable
+data class PackGap(
+    val vulgate: String,
+    val douay: String? = null,
+    val reason: String = "",
+    val resolution: String = ""
 )
 
 @Serializable
@@ -59,7 +69,7 @@ data class PackMeta(
     val english: Map<String, String> = emptyMap(),
     val phonetics: Map<String, String> = emptyMap(),
     val glosses: Map<String, String> = emptyMap(),
-    val gaps: List<String> = emptyList()
+    val gaps: List<PackGap> = emptyList()
 )
 
 @Serializable

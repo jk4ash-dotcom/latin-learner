@@ -1,19 +1,19 @@
-# Open questions for Scriba (Biblical Latin)
+# Open questions for Scriba (Biblical Latin) — post v0.1.1 blockers
 
 ## Phonetics
-1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names (e.g. *Cain*, *Noe*, *Abraham*).
-2. Should macron-aware or stress-marked output be required before promote?
-3. Classical toggle: defer, but document any verses where ecclesiastical vs classical differs pedagogically.
+1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
+2. Diaeresis handling (*Noë*, *Israël*, *Ismaël*, …): pack now skips ae/oe merge and sets `phoneticPending` — confirm or refine.
+3. Should macron-aware or stress-marked output be required before promote?
+4. Classical toggle: defer, but document any verses where ecclesiastical vs classical differs pedagogically.
 
-## Glosses
-1. ~8k token occurrences are `stub:*` (naive DICTLINE stem match, no WORDS morphology). Priority fill: high-frequency Genesis verbs (*creavit*, *dixit*, *ait*, *fecit*, …).
-2. Prefer running full Whitaker WORDS engine offline vs curated Genesis lemma list?
-3. Homograph policy (e.g. *est*, *in*, *cum*).
+## Glosses (blockers addressed in v0.1.1)
+1. ~~False Whitaker: deus/domin/sum/ejur~~ → curated Biblical primaries.
+2. ~~Must-list stubs (est, ait, dixit, …)~~ → curated filled; UI policy unchanged.
+3. Remaining `stub:*` (~6.5k token occurrences) — priority next wave after Scriba re-review.
+4. Homograph policy documented in `docs/SOURCES.md` (Biblical N/V preference). Prefer full WORDS morphology later?
 
 ## Versification
-Douay underlay missing for Vulgate ids (chapter.verse):  
-`Gen.18.2`, `Gen.20.17`, `Gen.38.17`, `Gen.38.28`, `Gen.39.9`, `Gen.39.19`, `Gen.40.17`, `Gen.41.7`, `Gen.49.17`, `Gen.49.29`.  
-Likely DR numbering drift — map or supply PD text.
+Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.
 
 ## Copy
 About string locked: “Latin text: Clementine Vulgate (PD; Clementine Vulgate Project / Michael Tweedale).”
