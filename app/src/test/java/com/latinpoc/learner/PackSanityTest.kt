@@ -1084,6 +1084,206 @@ class PackSanityTest {
     }
 
 
+
+    // --- v0.1.12 Wave 6: V-over-N mid pack prefer N ---
+
+    @Test
+    fun gen71_domusHouseNotSubdue() {
+        val v = repo.verse("Gen.7.1")!!
+        val tok = v.words.first { it.la.equals("domus", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue("domus should be house: ${g.primary}", g.primary.contains("house", ignoreCase = true) || g.primary.contains("household", ignoreCase = true))
+        assertFalse(g.primary.contains("subdue", ignoreCase = true))
+        assertFalse(g.primary.contains("tame", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:dom")
+    }
+
+    @Test
+    fun gen19_locumPlaceNotPlaceVerb() {
+        val v = repo.verse("Gen.1.9")!!
+        val tok = v.words.first { it.la.equals("locum", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("place", ignoreCase = true))
+        assertFalse(g.primary.contains("put", ignoreCase = true))
+        assertFalse(g.primary.contains("station", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:loc")
+    }
+
+    @Test
+    fun gen925_servusServantNotServe() {
+        val v = repo.verse("Gen.9.25")!!
+        val tok = v.words.first { it.la.equals("servus", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("servant", ignoreCase = true) || g.primary.contains("slave", ignoreCase = true))
+        assertFalse(g.primary.trim().equals("serve", ignoreCase = true))
+        assertFalse(g.primary.lowercase().startsWith("serve"))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:serv")
+    }
+
+    @Test
+    fun gen99_pactumCovenantNotCompose() {
+        val v = repo.verse("Gen.9.9")!!
+        val tok = v.words.first { it.la.equals("pactum", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("covenant", ignoreCase = true) || g.primary.contains("pact", ignoreCase = true))
+        assertFalse(g.primary.contains("compose", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:pact")
+    }
+
+    @Test
+    fun gen47_peccatumSinNounNotVerb() {
+        val v = repo.verse("Gen.4.7")!!
+        val tok = v.words.first { it.la.equals("peccatum", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("sin", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertTrue(
+            "expected noun framing: ${g.primary}",
+            g.primary.contains("noun", ignoreCase = true) ||
+                g.senses.any { it.contains("sin", ignoreCase = true) }
+        )
+    }
+
+    @Test
+    fun gen410_voxVoiceNotCall() {
+        val v = repo.verse("Gen.4.10")!!
+        val tok = v.words.first { it.la.equals("vox", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("voice", ignoreCase = true))
+        assertFalse(g.primary.contains("call", ignoreCase = true))
+        assertFalse(g.primary.contains("summon", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen38_vocemVoiceNotCall() {
+        val v = repo.verse("Gen.3.8")!!
+        val tok = v.words.first { it.la.equals("vocem", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("voice", ignoreCase = true))
+        assertFalse(g.primary.contains("call", ignoreCase = true))
+        assertFalse(g.primary.contains("summon", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:voc")
+    }
+
+    @Test
+    fun gen22_opusWorkNotCover() {
+        val v = repo.verse("Gen.2.2")!!
+        val tok = v.words.first { it.la.equals("opus", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("work", ignoreCase = true) || g.primary.contains("deed", ignoreCase = true))
+        assertFalse(g.primary.contains("cover", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen111_genusKindNotSonInLaw() {
+        val v = repo.verse("Gen.1.11")!!
+        val tok = v.words.first { it.la.equals("genus", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            g.primary.contains("kind", ignoreCase = true) ||
+                g.primary.contains("race", ignoreCase = true) ||
+                g.primary.contains("species", ignoreCase = true)
+        )
+        assertFalse(g.primary.contains("son-in-law", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen1216_bovesOxenNotBellow() {
+        val v = repo.verse("Gen.12.16")!!
+        val tok = v.words.first { it.la.equals("boves", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("oxen", ignoreCase = true) || g.primary.contains("cattle", ignoreCase = true))
+        assertFalse(g.primary.contains("bellow", ignoreCase = true))
+        assertFalse(g.primary.contains("roar", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:bov")
+    }
+
+    @Test
+    fun gen161_ancillamMaidservantNotVerb() {
+        val v = repo.verse("Gen.16.1")!!
+        val tok = v.words.first { it.la.equals("ancillam", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            g.primary.contains("maidservant", ignoreCase = true) ||
+                g.primary.contains("handmaid", ignoreCase = true) ||
+                g.primary.contains("maid", ignoreCase = true)
+        )
+        assertFalse(g.primary.contains("wait on", ignoreCase = true))
+        assertFalse(g.primary.contains("hand and foot", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen3913_vestemGarmentNotClothe() {
+        val v = repo.verse("Gen.39.13")!!
+        val tok = v.words.first { it.la.equals("vestem", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            g.primary.contains("garment", ignoreCase = true) ||
+                g.primary.contains("clothing", ignoreCase = true) ||
+                g.primary.contains("robe", ignoreCase = true)
+        )
+        assertFalse(g.primary.contains("clothe", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:vest")
+    }
+
+    @Test
+    fun gen4334_parsPartNotForbear() {
+        val v = repo.verse("Gen.43.34")!!
+        val tok = v.words.first { it.la.equals("pars", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("part", ignoreCase = true) || g.primary.contains("portion", ignoreCase = true))
+        assertFalse(g.primary.contains("forbear", ignoreCase = true))
+        assertFalse(g.primary.trim().equals("bear", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen220_nominibusNamesNotCallVerb() {
+        val v = repo.verse("Gen.2.20")!!
+        val tok = v.words.first { it.la.equals("nominibus", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("name", ignoreCase = true))
+        assertFalse(g.primary.contains("call", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:nomin")
+    }
+
+    @Test
+    fun gen2817_portaGateNotCarry() {
+        val v = repo.verse("Gen.28.17")!!
+        val tok = v.words.first { it.la.equals("porta", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("gate", ignoreCase = true) || g.primary.contains("door", ignoreCase = true))
+        assertFalse(g.primary.contains("carry", ignoreCase = true))
+        assertFalse(g.primary.contains("bring", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:port")
+    }
+
+    @Test
+    fun gen2414_potumDrinkNotBeAble() {
+        val v = repo.verse("Gen.24.14")!!
+        val tok = v.words.first { it.la.equals("potum", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("drink", ignoreCase = true))
+        assertFalse(g.primary.contains("be able", ignoreCase = true))
+        assertFalse(g.primary.trim().equals("can", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:pot")
+    }
+
+
     @Test
     fun sampleChapters_present() {
         listOf("Gen.1.1", "Gen.2.1", "Gen.3.1", "Gen.4.9").forEach { id ->

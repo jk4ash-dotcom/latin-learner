@@ -1,0 +1,3 @@
+TEST-com.latinpoc.learner.AssetPathResolutionTest.xml: tests=4 failures=0 errors=0
+TEST-com.latinpoc.learner.PackSanityTest.xml: tests=83 failures=0 errors=0
+0 failures

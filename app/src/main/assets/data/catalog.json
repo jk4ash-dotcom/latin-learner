@@ -1,7 +1,7 @@
 {
   "name": "latin-learner",
-  "version": "0.1.11-poc",
-  "generatedAt": "2026-09-18T20:07:12Z",
+  "version": "0.1.12-poc",
+  "generatedAt": "2026-09-18T20:17:05Z",
   "scope": "Genesis only (POC)",
   "navOrder": "Catholic canon (Genesis)",
   "latinPin": "Clementine Vulgate USFX (open-bibles)",
@@ -22,10 +22,10 @@
   "totals": {
     "books": 1,
     "verses": 1530,
-    "glosses": 4595,
-    "glossHits": 19686,
-    "glossCurated": 7832,
-    "glossStubs": 5769,
+    "glosses": 4628,
+    "glossHits": 19690,
+    "glossCurated": 8248,
+    "glossStubs": 5765,
     "phoneticPending": 85,
     "englishGaps": 22
   }

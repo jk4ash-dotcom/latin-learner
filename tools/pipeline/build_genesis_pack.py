@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.11-poc"
+PACK_VERSION = "0.1.12-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -857,6 +857,319 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Genesis Salem — place-name (Melchizedek / Sichem). NEVER sal-/leap. Unshippable if leap.",
     ),
 
+    # v0.1.12 Wave 6 SHIP_BLOCK — V-over-N mid pack prefer N (Mahomes/Scriba; Wave 5 CLEAR)
+    # 1) domus → house (block w:dom / domō subdue). Do NOT fold Dominus/Domine.
+    "domus": _cur(
+        "house / household",
+        ["house", "home", "household", "family"],
+        "Noun domus — NEVER domō subdue/tame/master. Unshippable if subdue. Dominus/Domine stay Lord.",
+    ),
+    "domum": _cur(
+        "house (acc.)",
+        ["house (acc.)", "home", "household"],
+        "domus acc. — NEVER domō subdue. Unshippable if subdue.",
+    ),
+    "domo": _cur(
+        "from/in the house (abl.)",
+        ["from the house", "in the house", "house (abl.)", "home"],
+        "domus abl. — NEVER domō subdue V. Unshippable if subdue.",
+    ),
+    "domui": _cur(
+        "to/for the house (dat.)",
+        ["to the house", "for the household", "house (dat.)"],
+        "domus dat. — NEVER domō subdue.",
+    ),
+    "domi": _cur(
+        "at home (loc.)",
+        ["at home", "in the house", "home (loc.)"],
+        "domus locative — NEVER domō subdue. Not Domine (voc. Dominus).",
+    ),
+    "domos": _cur(
+        "houses (acc. pl.)",
+        ["houses", "homes (acc. pl.)"],
+        "domus acc. pl. — NEVER domō subdue.",
+    ),
+    "domibus": _cur(
+        "houses (dat./abl. pl.)",
+        ["houses", "households", "in/from houses"],
+        "domus dat./abl. pl. — NEVER domō subdue.",
+    ),
+    # 2) locus → place N (block locō place-as-verb)
+    "locus": _cur(
+        "place",
+        ["place", "spot", "location", "site"],
+        "Noun locus — NEVER locō place/put/station V. Unshippable if put/station as sole primary.",
+    ),
+    "locum": _cur(
+        "place (acc.)",
+        ["place (acc.)", "place", "spot"],
+        "locus acc. Gen.1.9+ — NEVER locō place-V. Unshippable if put/station.",
+    ),
+    "loco": _cur(
+        "in/from the place (abl./dat.)",
+        ["in the place", "from the place", "place (abl./dat.)", "instead of (adv. sense)"],
+        "locus abl./dat. — prefer place N; NEVER locō place-V as primary.",
+    ),
+    "loci": _cur(
+        "of the place / places",
+        ["of the place", "places", "place (gen./nom.pl.)"],
+        "locus gen./nom.pl. — NEVER locō place-V.",
+    ),
+    "locis": _cur(
+        "places (dat./abl. pl.)",
+        ["places", "in/from places"],
+        "locus dat./abl. pl. — NEVER locō place-V.",
+    ),
+    # 3) servus → servant N (block serviō serve-V). Includes servam maidservant.
+    "servus": _cur(
+        "servant / slave",
+        ["servant", "slave", "bondman"],
+        "Noun servus — NEVER serviō serve V. Unshippable if serve as sole primary.",
+    ),
+    "servum": _cur(
+        "servant (acc.)",
+        ["servant (acc.)", "slave", "servant"],
+        "servus acc. — NEVER serviō serve V. Covers servumque.",
+    ),
+    "servi": _cur(
+        "of the servant / servants",
+        ["of the servant", "servants", "slaves"],
+        "servus gen./nom.pl. — NEVER serviō serve V.",
+    ),
+    "servo": _cur(
+        "to/for the servant (dat./abl.)",
+        ["to the servant", "for the servant", "servant (dat./abl.)"],
+        "servus dat./abl. — NEVER serviō/servō keep V as primary.",
+    ),
+    "servos": _cur(
+        "servants (acc. pl.)",
+        ["servants", "slaves (acc. pl.)"],
+        "servus acc. pl. — NEVER serve V.",
+    ),
+    "servorum": _cur(
+        "of servants (gen. pl.)",
+        ["of servants", "of slaves", "servants (gen. pl.)"],
+        "servus gen. pl. — NEVER serve V.",
+    ),
+    "servis": _cur(
+        "servants (dat./abl. pl.)",
+        ["servants", "to/for servants", "slaves (dat./abl. pl.)"],
+        "servus dat./abl. pl. — NEVER serve V.",
+    ),
+    "servam": _cur(
+        "maidservant (acc.)",
+        ["maidservant", "female servant", "handmaid (acc.)"],
+        "serva acc. — maidservant N; NEVER serviō serve V.",
+    ),
+    # 4) pactum → covenant (block compose)
+    "pactum": _cur(
+        "covenant / pact",
+        ["covenant", "pact", "agreement", "treaty"],
+        "Noun pactum — Biblical covenant. NEVER pangō/compōnō compose. Unshippable if compose.",
+    ),
+    # 5) peccatum → sin N (not sin-V peccō)
+    "peccatum": _cur(
+        "sin (noun)",
+        ["sin", "offense", "transgression", "fault"],
+        "Noun peccatum — sin N. NEVER peccō sin/err V as primary. Unshippable if verb-only.",
+    ),
+    "peccati": _cur(
+        "of sin (gen.)",
+        ["of sin", "sin (gen.)", "guilt"],
+        "peccatum gen. — sin N; NEVER peccō V.",
+    ),
+    # 6) vox → voice N (block vocō call on declined forms)
+    "vox": _cur(
+        "voice",
+        ["voice", "sound", "cry", "tone"],
+        "Noun vox — NEVER vocō call/summon V. Unshippable if call/summon as sole primary.",
+    ),
+    "vocem": _cur(
+        "voice (acc.)",
+        ["voice (acc.)", "voice", "sound"],
+        "vox acc. Gen.3.8+ — NEVER vocō call V. Unshippable if call/summon.",
+    ),
+    "voce": _cur(
+        "with/by voice (abl.)",
+        ["with voice", "by voice", "voice (abl.)"],
+        "vox abl. — NEVER vocō call V.",
+    ),
+    "voci": _cur(
+        "to/for the voice (dat.)",
+        ["to the voice", "voice (dat.)"],
+        "vox dat. — NEVER vocō call V.",
+    ),
+    # 7) opus → work/deed N (block operiō cover; not mere 'need' sole)
+    "opus": _cur(
+        "work / deed",
+        ["work", "deed", "task", "labor"],
+        "Noun opus — work/deed. NEVER operiō cover; prefer work over bare need. Unshippable if cover.",
+    ),
+    "opere": _cur(
+        "by/in work (abl.)",
+        ["by work", "in work", "work (abl.)", "deed"],
+        "opus abl. — NEVER operiō cover. Unshippable if cover.",
+    ),
+    "opera": _cur(
+        "works / deeds",
+        ["works", "deeds", "tasks", "labors"],
+        "opus nom/acc.pl. (or opera help) — prefer works/deeds N; NEVER cover V.",
+    ),
+    "operis": _cur(
+        "of work (gen.)",
+        ["of work", "of the deed", "work (gen.)"],
+        "opus gen. — NEVER cover V.",
+    ),
+    "operi": _cur(
+        "to/for work (dat.)",
+        ["to work", "for the task", "work (dat.)"],
+        "opus dat. — NEVER cover V.",
+    ),
+    "operibus": _cur(
+        "works (dat./abl. pl.)",
+        ["works", "deeds", "in/by works"],
+        "opus dat./abl. pl. — NEVER cover V.",
+    ),
+    # 8) genus → kind/race N (block gener son-in-law on declined)
+    "genus": _cur(
+        "kind / race",
+        ["kind", "race", "species", "stock", "offspring"],
+        "Noun genus — kind/race/stock. Biblical Gen.1+ each after its kind. Prefer over gener son-in-law.",
+    ),
+    "genere": _cur(
+        "of/in kind (abl.)",
+        ["in kind", "of its kind", "kind (abl.)", "race"],
+        "genus abl. — NEVER gener son-in-law as primary. Unshippable if son-in-law.",
+    ),
+    "generis": _cur(
+        "of kind / race (gen.)",
+        ["of kind", "of race", "of its kind", "kind (gen.)"],
+        "genus gen. — NEVER gener son-in-law. Unshippable if son-in-law.",
+    ),
+    "generum": _cur(
+        "of kinds (gen. pl.)",
+        ["of kinds", "of races", "kinds (gen. pl.)"],
+        "genus gen. pl. — NEVER gener son-in-law as primary.",
+    ),
+    # 9) boves → oxen/cattle (block bovō bellow)
+    "boves": _cur(
+        "oxen / cattle",
+        ["oxen", "cattle", "cows", "herd"],
+        "Noun bōs pl. — oxen/cattle. NEVER bovō cry/roar/bellow. Unshippable if bellow/roar.",
+    ),
+    # 10) ancilla → maidservant N (block ancillor V)
+    "ancilla": _cur(
+        "maidservant / handmaid",
+        ["maidservant", "handmaid", "female slave", "maid"],
+        "Noun ancilla — NEVER ancillor act-as-handmaid V. Unshippable if wait on / serve hand and foot.",
+    ),
+    "ancillam": _cur(
+        "maidservant (acc.)",
+        ["maidservant (acc.)", "handmaid", "maid"],
+        "ancilla acc. Gen.16+ — NEVER ancillor V.",
+    ),
+    "ancillae": _cur(
+        "of the maidservant / maidservants",
+        ["of the maidservant", "maidservants", "handmaid (gen./dat./nom.pl.)"],
+        "ancilla declined — NEVER ancillor V / adjectival-only.",
+    ),
+    "ancillas": _cur(
+        "maidservants (acc. pl.)",
+        ["maidservants", "handmaids (acc. pl.)"],
+        "ancilla acc. pl. — NEVER ancillor V. Covers ancillasque.",
+    ),
+    # 11) vestis → garment N (block vestiō clothe)
+    "vestem": _cur(
+        "garment (acc.)",
+        ["garment", "clothing", "robe (acc.)", "clothes"],
+        "vestis acc. — NEVER vestiō clothe V. Unshippable if clothe.",
+    ),
+    "veste": _cur(
+        "with/in a garment (abl.)",
+        ["with a garment", "in clothing", "garment (abl.)"],
+        "vestis abl. — NEVER vestiō clothe V.",
+    ),
+    "vestibus": _cur(
+        "garments (dat./abl. pl.)",
+        ["garments", "clothes", "in/with clothing"],
+        "vestis dat./abl. pl. — NEVER vestiō clothe V.",
+    ),
+    "vestium": _cur(
+        "of garments (gen. pl.)",
+        ["of garments", "of clothes", "garments (gen. pl.)"],
+        "vestis gen. pl. — NEVER vestiō clothe V.",
+    ),
+    # 12) pars → part N (block forbear/bear false stems)
+    "pars": _cur(
+        "part / portion",
+        ["part", "portion", "share", "piece"],
+        "Noun pars — NEVER parco forbear; NEVER pariō bear. Unshippable if forbear/bear.",
+    ),
+    "partem": _cur(
+        "part (acc.)",
+        ["part (acc.)", "portion", "share"],
+        "pars acc. — NEVER pariō bear. Unshippable if bear.",
+    ),
+    "parte": _cur(
+        "in/from a part (abl.)",
+        ["in part", "from a part", "part (abl.)", "portion"],
+        "pars abl. — NEVER bear/forbear.",
+    ),
+    "partes": _cur(
+        "parts (nom./acc. pl.)",
+        ["parts", "portions", "shares"],
+        "pars pl. — NEVER bear/forbear.",
+    ),
+    "partibus": _cur(
+        "parts (dat./abl. pl.)",
+        ["parts", "portions", "in/from parts"],
+        "pars dat./abl. pl. — NEVER bear/forbear.",
+    ),
+    # 13) nomen → name N (block nominō name-V on nomina)
+    "nomen": _cur(
+        "name",
+        ["name", "title", "reputation"],
+        "Noun nomen — name N. Prefer over nominō call/name V on declined. Covers nomenque.",
+    ),
+    "nomina": _cur(
+        "names (nom./acc. pl.)",
+        ["names", "name (pl.)"],
+        "nomen pl. — NEVER nominō name/call V. Unshippable if call/name-V as sole primary.",
+    ),
+    "nominibus": _cur(
+        "names (dat./abl. pl.)",
+        ["names", "by names", "with names"],
+        "nomen dat./abl. pl. Gen.2.20 — NEVER nominō call V.",
+    ),
+    # 14) porta → gate N (block portō carry)
+    "porta": _cur(
+        "gate",
+        ["gate", "door", "entrance"],
+        "Noun porta — gate. NEVER portō carry/bring. Unshippable if carry/bring.",
+    ),
+    "portam": _cur(
+        "gate (acc.)",
+        ["gate (acc.)", "gate", "door"],
+        "porta acc. — NEVER portō carry. Unshippable if carry/bring.",
+    ),
+    "portas": _cur(
+        "gates (acc. pl.)",
+        ["gates", "doors (acc. pl.)"],
+        "porta acc. pl. — NEVER portō carry.",
+    ),
+    # 15) potus → drink N (block possum be-able on potum)
+    "potum": _cur(
+        "drink (acc.)",
+        ["drink", "a drink", "draught"],
+        "Noun potus acc. — drink. NEVER possum be able/can. Unshippable if be able/can.",
+    ),
+    "potus": _cur(
+        "drink",
+        ["drink", "drinking", "draught"],
+        "Noun potus — drink N. NEVER possum be able.",
+    ),
+
+
 }
 
 
@@ -1105,6 +1418,98 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "her": "her",
     "sale": "sale",
     "salem": "salem",
+    # v0.1.12 Wave 6 V-over-N mid pack prefer N + enclitics
+    "domus": "domus",
+    "domum": "domum",
+    "domo": "domo",
+    "domui": "domui",
+    "domi": "domi",
+    "domos": "domos",
+    "domibus": "domibus",
+    "domusque": "domus",
+    "domumque": "domum",
+    "domoque": "domo",
+    "domuique": "domui",
+    "domique": "domi",
+    "domosque": "domos",
+    "domibusque": "domibus",
+    "locus": "locus",
+    "locum": "locum",
+    "loco": "loco",
+    "loci": "loci",
+    "locis": "locis",
+    "locumque": "locum",
+    "locoque": "loco",
+    "locisque": "locis",
+    "servus": "servus",
+    "servum": "servum",
+    "servi": "servi",
+    "servo": "servo",
+    "servos": "servos",
+    "servorum": "servorum",
+    "servis": "servis",
+    "servam": "servam",
+    "servumque": "servum",
+    "servosque": "servos",
+    "servisque": "servis",
+    "pactum": "pactum",
+    "pactumque": "pactum",
+    "peccatum": "peccatum",
+    "peccati": "peccati",
+    "peccatumque": "peccatum",
+    "vox": "vox",
+    "vocem": "vocem",
+    "voce": "voce",
+    "voci": "voci",
+    "vocemque": "vocem",
+    "voceque": "voce",
+    "opus": "opus",
+    "opere": "opere",
+    "opera": "opera",
+    "operis": "operis",
+    "operi": "operi",
+    "operibus": "operibus",
+    "opusque": "opus",
+    "opereque": "opere",
+    "operaque": "opera",
+    "genus": "genus",
+    "genere": "genere",
+    "generis": "generis",
+    "generum": "generum",
+    "genusque": "genus",
+    "genereque": "genere",
+    "boves": "boves",
+    "bovesque": "boves",
+    "ancilla": "ancilla",
+    "ancillam": "ancillam",
+    "ancillae": "ancillae",
+    "ancillas": "ancillas",
+    "ancillasque": "ancillas",
+    "ancillamque": "ancillam",
+    "vestem": "vestem",
+    "veste": "veste",
+    "vestibus": "vestibus",
+    "vestium": "vestium",
+    "vestibusque": "vestibus",
+    "pars": "pars",
+    "partem": "partem",
+    "parte": "parte",
+    "partes": "partes",
+    "partibus": "partibus",
+    "partemque": "partem",
+    "nomen": "nomen",
+    "nomina": "nomina",
+    "nominibus": "nominibus",
+    "nomenque": "nomen",
+    "nominaque": "nomina",
+    "porta": "porta",
+    "portam": "portam",
+    "portas": "portas",
+    "portamque": "portam",
+    "portasque": "portas",
+    "potum": "potum",
+    "potus": "potus",
+    "potumque": "potum",
 }
 
 
@@ -2452,6 +2857,345 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
             }
         return gid
 
+
+    # --- v0.1.12 Wave 6 SHIP_BLOCK guards (V-over-N mid pack prefer N) ---
+    DOMUS_FAMILY = frozenset({
+        "domus", "domum", "domo", "domui", "domi", "domos", "domibus",
+        "domusque", "domumque", "domoque", "domuique", "domique", "domosque", "domibusque",
+    })
+    # Do NOT fold Dominus/Domine/dominum (Lord) — those are curated separately
+    if key in DOMUS_FAMILY and (
+        "subdue" in prim
+        or "tame" in prim
+        or "master" in prim and "house" not in prim and "home" not in prim
+        or matched in ("dom", "domu")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked domō/subdue]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker domō/subdue ({entry.get('primary')}); domus house only.",
+            }
+        return gid
+    LOCUS_FAMILY = frozenset({
+        "locus", "locum", "loco", "loci", "locis",
+        "locumque", "locoque", "locisque", "locusque", "locique",
+    })
+    if key in LOCUS_FAMILY and (
+        "put" in prim
+        or "station" in prim
+        or ("place" in prim and ("put" in prim or "," in (entry.get("primary") or "")))
+        or matched == "loc"
+        or (matched == "loco" and "place of" not in prim and "instead" not in prim and "house" not in prim)
+    ):
+        # Prefer curated place N whenever Whitaker chose locō V (place, put, station)
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            # Always prefer curated for these surfaces (alias path normally hits first)
+            if "put" in prim or "station" in prim or matched == "loc":
+                return ensure_curated_gloss(ckey, gloss_ids)
+            if matched == "loco" and key in LOCUS_FAMILY:
+                return ensure_curated_gloss(ckey, gloss_ids)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked locō/place-V]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker locō place-V ({entry.get('primary')}); locus place N only.",
+            }
+        return gid
+    SERVUS_FAMILY = frozenset({
+        "servus", "servum", "servi", "servo", "servos", "servorum", "servis", "servam",
+        "servumque", "servosque", "servisque", "servusque", "servorumque",
+    })
+    if key in SERVUS_FAMILY and (
+        prim.strip() in ("serve", "serve;")
+        or prim.startswith("serve")
+        or matched in ("serv", "servi")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked serviō/serve]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker serviō/serve ({entry.get('primary')}); servus servant N only.",
+            }
+        return gid
+    if key in ("pactum", "pactumque") and (
+        "compose" in prim
+        or matched == "pact"
+    ):
+        if "pactum" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("pactum", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked pactum/compose]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker compose ({entry.get('primary')}); pactum covenant only.",
+            }
+        return gid
+    PECCATUM_FAMILY = frozenset({"peccatum", "peccati", "peccatumque", "peccatique"})
+    if key in PECCATUM_FAMILY and (
+        matched in ("pecc", "pecca")
+        or ("sin" in prim and entry.get("pos") == "V")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key if key in CURATED_GLOSS_DEFS else "peccatum")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+    # Always force curated peccatum family when present (prefer N)
+    if key in PECCATUM_FAMILY:
+        ckey = CURATED_SURFACE_ALIASES.get(key, "peccatum")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+    VOX_FAMILY = frozenset({
+        "vox", "vocem", "voce", "voci",
+        "vocemque", "voceque", "voxque", "vocique",
+    })
+    if key in VOX_FAMILY and (
+        "call" in prim
+        or "summon" in prim
+        or matched == "voc"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked vocō/call]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker vocō/call ({entry.get('primary')}); vox voice N only.",
+            }
+        return gid
+    OPUS_FAMILY = frozenset({
+        "opus", "opere", "opera", "operis", "operi", "operibus",
+        "opusque", "opereque", "operaque", "operibusque",
+    })
+    if key in OPUS_FAMILY and (
+        "cover" in prim
+        or matched in ("oper", "operi")
+        or (matched == "opus" and prim.strip() in ("need", "need;"))
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked operiō/cover]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker operiō/cover or bare need ({entry.get('primary')}); opus work N only.",
+            }
+        return gid
+    GENUS_FAMILY = frozenset({
+        "genus", "genere", "generis", "generum",
+        "genusque", "genereque", "generisque", "generumque",
+    })
+    if key in GENUS_FAMILY and (
+        "son-in-law" in prim
+        or "son in law" in prim
+        or matched == "gener"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked gener/son-in-law]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker gener/son-in-law ({entry.get('primary')}); genus kind/race only.",
+            }
+        return gid
+    if key in ("boves", "bovesque") and (
+        "bellow" in prim
+        or "roar" in prim
+        or "cry aloud" in prim
+        or matched == "bov"
+    ):
+        if "boves" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("boves", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked bovō/bellow]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker bovō/bellow ({entry.get('primary')}); boves oxen only.",
+            }
+        return gid
+    ANCILLA_FAMILY = frozenset({
+        "ancilla", "ancillam", "ancillae", "ancillas",
+        "ancillasque", "ancillamque", "ancillaque",
+    })
+    if key in ANCILLA_FAMILY and (
+        "wait on" in prim
+        or "hand and foot" in prim
+        or "act as handmaid" in prim
+        or matched in ("ancill", "ancillar")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked ancillor/V]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker ancillor V ({entry.get('primary')}); ancilla maidservant N only.",
+            }
+        return gid
+    VESTIS_FAMILY = frozenset({
+        "vestem", "veste", "vestibus", "vestium", "vestis",
+        "vestibusque", "vestemque", "vestique",
+    })
+    if key in VESTIS_FAMILY and (
+        "clothe" in prim
+        or matched in ("vest", "vesti")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked vestiō/clothe]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker vestiō/clothe ({entry.get('primary')}); vestis garment N only.",
+            }
+        return gid
+    PARS_FAMILY = frozenset({
+        "pars", "partem", "parte", "partes", "partibus",
+        "partemque", "parteque", "partesque", "partibusque",
+    })
+    if key in PARS_FAMILY and (
+        "forbear" in prim
+        or "refrain" in prim
+        or prim.strip() in ("bear", "bear;")
+        or matched in ("part", "pars") and ("forbear" in prim or "bear" in prim)
+        or matched == "part"
+        or (matched == "pars" and "part" not in prim and "portion" not in prim)
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked pars/forbear-bear]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker forbear/bear ({entry.get('primary')}); pars part N only.",
+            }
+        return gid
+    NOMEN_FAMILY = frozenset({
+        "nomen", "nomina", "nominibus",
+        "nomenque", "nominaque", "nominibusque",
+    })
+    if key in NOMEN_FAMILY and (
+        matched == "nomin"
+        or ("call" in prim and "name" in prim)
+        or prim.strip().startswith("name, call")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked nominō/name-V]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker nominō name-V ({entry.get('primary')}); nomen name N only.",
+            }
+        return gid
+    PORTA_FAMILY = frozenset({
+        "porta", "portam", "portas",
+        "portamque", "portasque", "portaque",
+    })
+    if key in PORTA_FAMILY and (
+        "carry" in prim
+        or "bring" in prim
+        or matched == "port"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked portō/carry]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker portō/carry ({entry.get('primary')}); porta gate N only.",
+            }
+        return gid
+    if key in ("potum", "potus", "potumque") and (
+        "be able" in prim
+        or "can" == prim.strip()
+        or prim.startswith("be able")
+        or matched == "pot"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, "potum")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked potum/possum]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker possum/be able ({entry.get('primary')}); potus drink N only.",
+            }
+        return gid
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -2591,7 +3335,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able.",
             },
             "gaps": meta_gaps,
         },
@@ -2657,6 +3401,10 @@ def build():
         "Gen.6.13", "Gen.10.19", "Gen.10.24", "Gen.11.3", "Gen.11.27",
         "Gen.14.2", "Gen.14.18", "Gen.16.16", "Gen.17.15", "Gen.17.17",
         "Gen.25.30", "Gen.30.7", "Gen.38.3",
+        # Wave 6 V-over-N mid-pack anchors
+        "Gen.4.7", "Gen.4.10", "Gen.7.1", "Gen.9.9", "Gen.9.25",
+        "Gen.12.16", "Gen.16.1", "Gen.24.14", "Gen.28.17", "Gen.39.13",
+        "Gen.43.34", "Gen.2.20",
     ):
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
@@ -2673,7 +3421,7 @@ def build():
     gloss_map = gloss_ids
     sample_pack = {
         "meta": pack["meta"],
-        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 10, 11, 14, 16, 17, 19, 25, 30, 35, 38)],
+        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 7, 9, 10, 11, 12, 14, 16, 17, 19, 24, 25, 28, 30, 35, 38, 39, 43)],
         "verses": sample_verses,
         "glosses": {gid: gloss_map[gid] for gid in sample_gloss_ids if gid in gloss_map},
     }
@@ -2703,6 +3451,12 @@ def build():
         "sara", "saram", "sarae", "sarai", "lot", "edom", "sex",
         "venit", "venite", "adamam", "adamae",
         "bala", "balam", "balae", "her", "sale", "salem",
+        "domus", "domum", "domo", "domi", "locus", "locum", "loco",
+        "servus", "servum", "servi", "pactum", "peccatum", "peccati",
+        "vox", "vocem", "opus", "opere", "opera", "genus", "genere", "generis",
+        "boves", "ancilla", "ancillam", "ancillas",
+        "vestem", "vestibus", "pars", "partem", "nomen", "nomina", "nominibus",
+        "porta", "portam", "potum",
     ]
     must_still_stub = []
     for m in must:
@@ -2729,7 +3483,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.11.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.12.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated
