@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.15-poc"
+PACK_VERSION = "0.1.16-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -2048,6 +2048,82 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
     ),
 
 
+
+    # v0.1.16 Wave 10 — Gen1–3 wrong primaries (promote blockers)
+    # (Mahomes/Scriba; Wave 9 surfaces PASS + FURTHER_AMENDS; Hold Critic→Argus)
+    "luminaria": _cur(
+        "lights",
+        ["lights", "luminaries", "heavenly lights"],
+        "Gen.1.14/1.16 luminaria — lights/luminaries. NEVER car-light. Unshippable if car-light.",
+    ),
+    "luminare": _cur(
+        "light / luminary",
+        ["light", "luminary", "lamp (heavenly)"],
+        "Gen.1.16 luminare — light/luminary. NEVER car-light. Unshippable if car-light.",
+    ),
+    "humo": _cur(
+        "ground / soil (abl.)",
+        ["from the ground", "from the soil", "ground/soil (abl.)"],
+        "Gen.2.9/2.19 humo — abl. of humus ground/soil. NEVER bury/inter V. Unshippable if bury.",
+    ),
+    "comedit": _cur(
+        "ate",
+        ["ate", "has eaten", "ate up"],
+        "Gen.3.6 comedit — perfect of comedō ate. NEVER meal N as sole primary. Unshippable if meal.",
+    ),
+    "comedi": _cur(
+        "I ate",
+        ["I ate", "I have eaten"],
+        "Gen.3.12/3.13 comedi — perfect 1sg of comedō. NEVER meal N. Unshippable if meal.",
+    ),
+    "me": _cur(
+        "me (acc.)",
+        ["me (accusative)", "me"],
+        "Gen.3.10/3.13 me — accusative of ego. NEVER my (possessive) as sole primary. Unshippable if my.",
+    ),
+    "quod": _cur(
+        "that / which",
+        ["that", "which", "what (rel./conj.)", "because (also)"],
+        "Gen1–3 quod — relative/conj that/which (vidit … quod esset bonum). NOT because-only. Unshippable if because-only.",
+    ),
+    "vero": _cur(
+        "but / indeed",
+        ["but", "indeed", "however", "in truth"],
+        "Gen.1.9+ vero — but/indeed. NEVER yes as sole primary. Unshippable if yes.",
+    ),
+    "scientiae": _cur(
+        "of knowledge",
+        ["of knowledge", "knowledge (gen.)"],
+        "Gen.2.9/2.17 scientiæ — gen. of scientia of knowledge. NEVER conscious-of as sole primary.",
+    ),
+    "quartus": _cur(
+        "fourth",
+        ["fourth", "the fourth"],
+        "Gen.1.19/2.14 quartus — fourth (ordinal). Prefer fourth over bare four.",
+    ),
+    "secundum": _cur(
+        "according to",
+        ["according to", "after", "along"],
+        "Gen.1.12+ secundum — according to (prep + acc.). Prefer according to over bare after.",
+    ),
+    "jumenta": _cur(
+        "cattle / beasts of burden",
+        ["cattle", "beasts of burden", "draft animals"],
+        "Gen.1.24/1.25 jumenta — cattle/beasts of burden. Prefer over bare mule as sole primary.",
+    ),
+    # Soft / optional cheap
+    "firmamentum": _cur(
+        "firmament",
+        ["firmament", "expanse", "vault of heaven"],
+        "Gen.1.6–8 firmamentum — firmament/expanse. Prefer over support/prop as sole primary.",
+    ),
+    "quam": _cur(
+        "than / which (rel./conj.)",
+        ["than", "which", "whom", "how"],
+        "Gen1–3 quam — relative/conj than/which (also how). Prefer than/which over how-only when contextual.",
+    ),
+
+
 }
 
 
@@ -2589,6 +2665,23 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "qua": "qua",
     "quae": "quae",
     "quare": "quare",
+
+    # v0.1.16 Wave 10 Gen1–3 wrong-primary blockers
+    "luminaria": "luminaria",
+    "luminare": "luminare",
+    "humo": "humo",
+    "comedit": "comedit",
+    "comedi": "comedi",
+    "me": "me",
+    "quod": "quod",
+    "vero": "vero",
+    "scientiae": "scientiae",
+    "quartus": "quartus",
+    "secundum": "secundum",
+    "jumenta": "jumenta",
+    "firmamentum": "firmamentum",
+    "quam": "quam",
+
 }
 
 
@@ -4398,6 +4491,204 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
             }
         return gid
 
+    
+    # --- v0.1.16 Wave 10 SHIP_BLOCK guards (wrong primaries) ---
+    if key in ("luminaria", "luminare") and (
+        "car-light" in prim or "car light" in prim or "projector" in prim
+    ):
+        ckey = key
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked luminare/car-light]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker car-light ({entry.get('primary')}); lights/luminary only.",
+            }
+        return gid
+    if key == "humo" and (
+        "bury" in prim or "inter" in prim or matched == "hum"
+    ):
+        if "humo" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("humo", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked humō/bury]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker bury ({entry.get('primary')}); humus abl. ground/soil only.",
+            }
+        return gid
+    if key in ("comedit", "comedi") and (
+        prim.strip() == "meal" or prim.startswith("meal") or matched == "comedi"
+    ):
+        ckey = key
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked comedi/meal]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker meal ({entry.get('primary')}); comedō ate only.",
+            }
+        return gid
+    if key == "me" and (
+        prim.startswith("my") or "personal possession" in prim
+    ):
+        if "me" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("me", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked me/my]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker my ({entry.get('primary')}); ego acc. me only.",
+            }
+        return gid
+    if key == "quod" and (
+        prim.startswith("because") and "that" not in prim and "which" not in prim
+    ):
+        if "quod" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quod", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked quod/because-only]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker because-only ({entry.get('primary')}); that/which required.",
+            }
+        return gid
+    if key == "vero" and (
+        prim.strip() == "yes" or prim.startswith("yes")
+    ):
+        if "vero" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("vero", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked vero/yes]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker yes ({entry.get('primary')}); but/indeed only.",
+            }
+        return gid
+    if key == "scientiae" and (
+        "conscious" in prim or matched == "scienti"
+    ):
+        if "scientiae" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("scientiae", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked scientia/conscious]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker conscious ({entry.get('primary')}); of knowledge only.",
+            }
+        return gid
+    if key == "quartus" and (
+        (prim.strip() == "four" or prim == "four") and "fourth" not in prim
+    ):
+        if "quartus" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quartus", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked quartus/four]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker four ({entry.get('primary')}); fourth ordinal only.",
+            }
+        return gid
+    if key == "secundum" and (
+        prim.strip() == "after" or (prim.startswith("after") and "according" not in prim)
+    ):
+        if "secundum" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("secundum", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked secundum/after]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker after-only ({entry.get('primary')}); according to preferred.",
+            }
+        return gid
+    if key == "jumenta" and (
+        prim.strip() == "mule" or (prim.startswith("mule") and "beast" not in prim and "cattle" not in prim)
+    ):
+        if "jumenta" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("jumenta", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked jumentum/mule]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker mule-only ({entry.get('primary')}); cattle/beasts of burden.",
+            }
+        return gid
+    if key == "firmamentum" and (
+        "support" in prim or "prop" in prim or "mainstay" in prim
+    ):
+        if "firmamentum" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("firmamentum", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked firmamentum/support]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker support/prop ({entry.get('primary')}); firmament only.",
+            }
+        return gid
+    if key == "quam" and (
+        (prim.startswith("how") and "than" not in prim and "which" not in prim)
+    ):
+        if "quam" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quam", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked quam/how-only]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker how-only ({entry.get('primary')}); than/which preferred.",
+            }
+        return gid
+
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -4694,6 +4985,9 @@ def build():
         "lia", "liae", "abel", "heber", "thare", "gessen",
         # Wave 9
         "similis", "ornatus", "qua", "quae", "quare",
+        # Wave 10
+        "luminaria", "luminare", "humo", "comedit", "comedi", "me", "quod", "vero",
+        "scientiae", "quartus", "secundum", "jumenta", "firmamentum", "quam",
     ]
     must_still_stub = []
     for m in must:
@@ -4720,7 +5014,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.15.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.16.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

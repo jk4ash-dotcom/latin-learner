@@ -1844,6 +1844,253 @@ class PackSanityTest {
     }
 
 
+
+
+    // --- v0.1.16 Wave 10: Gen1–3 wrong primaries (promote blockers) ---
+
+    @Test
+    fun gen114_luminariaAreLightsNotCarLight() {
+        val v = repo.verse("Gen.1.14")!!
+        val tokens = v.words.filter { it.la.equals("luminaria", ignoreCase = true) }
+        assertTrue("expected luminaria in Gen.1.14", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "luminaria should be lights: ${g.primary}",
+                g.primary.contains("light", ignoreCase = true),
+            )
+            assertFalse("must NOT be car-light: ${g.primary}", g.primary.contains("car-light", ignoreCase = true))
+            assertFalse(g.primary.contains("car light", ignoreCase = true))
+            assertEquals("curated:luminaria", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen116_luminareIsLightNotCarLight() {
+        val v = repo.verse("Gen.1.16")!!
+        val tokens = v.words.filter { it.la.equals("luminare", ignoreCase = true) }
+        assertTrue("expected luminare in Gen.1.16", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "luminare should be light/luminary: ${g.primary}",
+                g.primary.contains("light", ignoreCase = true) ||
+                    g.primary.contains("luminary", ignoreCase = true),
+            )
+            assertFalse("must NOT be car-light: ${g.primary}", g.primary.contains("car-light", ignoreCase = true))
+            assertEquals("curated:luminare", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen29_humoIsGroundSoilAblNotBury() {
+        val v = repo.verse("Gen.2.9")!!
+        val tokens = v.words.filter { it.la.equals("humo", ignoreCase = true) }
+        assertTrue("expected humo in Gen.2.9", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "humo should be ground/soil: ${g.primary}",
+                g.primary.contains("ground", ignoreCase = true) ||
+                    g.primary.contains("soil", ignoreCase = true),
+            )
+            assertFalse("must NOT be bury: ${g.primary}", g.primary.contains("bury", ignoreCase = true))
+            assertFalse(g.primary.contains("inter", ignoreCase = true))
+            assertEquals("curated:humo", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen36_comeditIsAteNotMeal() {
+        val v = repo.verse("Gen.3.6")!!
+        val tokens = v.words.filter { it.la.equals("comedit", ignoreCase = true) }
+        assertTrue("expected comedit in Gen.3.6", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "comedit should be ate: ${g.primary}",
+                g.primary.contains("ate", ignoreCase = true) ||
+                    g.primary.contains("eaten", ignoreCase = true),
+            )
+            assertFalse("must NOT be meal: ${g.primary}", g.primary.contains("meal", ignoreCase = true))
+            assertEquals("curated:comedit", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen312_comediIsIAteNotMeal() {
+        val v = repo.verse("Gen.3.12")!!
+        val tokens = v.words.filter { it.la.equals("comedi", ignoreCase = true) }
+        assertTrue("expected comedi in Gen.3.12", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "comedi should be I ate: ${g.primary}",
+                g.primary.contains("ate", ignoreCase = true) ||
+                    g.primary.contains("eaten", ignoreCase = true),
+            )
+            assertFalse("must NOT be meal: ${g.primary}", g.primary.contains("meal", ignoreCase = true))
+            assertEquals("curated:comedi", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen310_meIsMeAccNotMy() {
+        val v = repo.verse("Gen.3.10")!!
+        val tokens = v.words.filter { it.la.equals("me", ignoreCase = true) }
+        assertTrue("expected me in Gen.3.10", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "me should be me (acc.): ${g.primary}",
+                g.primary.contains("me", ignoreCase = true),
+            )
+            assertFalse(
+                "must NOT be my as sole primary: ${g.primary}",
+                g.primary.equals("my", ignoreCase = true) ||
+                    g.primary.lowercase().startsWith("my (") ||
+                    g.primary.lowercase().startsWith("my "),
+            )
+            assertEquals("curated:me", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen1to3_quodIsThatWhichNotBecauseOnly() {
+        val verseIds = listOf(
+            "Gen.1.4", "Gen.1.10", "Gen.1.12", "Gen.1.18", "Gen.1.21", "Gen.1.25",
+            "Gen.2.3", "Gen.3.6", "Gen.3.11",
+        )
+        var hit = 0
+        for (id in verseIds) {
+            val v = repo.verse(id)!!
+            val tokens = v.words.filter { it.la.equals("quod", ignoreCase = true) }
+            for (tok in tokens) {
+                val g = repo.gloss(tok.glossId)!!
+                assertTrue(
+                    "quod @$id should be that/which: ${g.primary}",
+                    g.primary.contains("that", ignoreCase = true) ||
+                        g.primary.contains("which", ignoreCase = true),
+                )
+                assertFalse(
+                    "must NOT be because-only @$id: ${g.primary}",
+                    g.primary.equals("because", ignoreCase = true) ||
+                        (g.primary.lowercase().startsWith("because") &&
+                            !g.primary.contains("that", ignoreCase = true) &&
+                            !g.primary.contains("which", ignoreCase = true)),
+                )
+                assertEquals("curated:quod", g.id)
+                assertFalse(tok.glossId!!.startsWith("stub:"))
+                hit++
+            }
+        }
+        assertTrue("expected multiple quod hits in Gen1–3, got $hit", hit >= 6)
+    }
+
+    @Test
+    fun gen19_veroIsButIndeedNotYes() {
+        val v = repo.verse("Gen.1.9")!!
+        val tokens = v.words.filter { it.la.equals("vero", ignoreCase = true) }
+        assertTrue("expected vero in Gen.1.9", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "vero should be but/indeed: ${g.primary}",
+                g.primary.contains("but", ignoreCase = true) ||
+                    g.primary.contains("indeed", ignoreCase = true),
+            )
+            assertFalse("must NOT be yes: ${g.primary}", g.primary.equals("yes", ignoreCase = true))
+            assertFalse(g.primary.lowercase().startsWith("yes"))
+            assertEquals("curated:vero", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen29_scientiaeIsOfKnowledge() {
+        val v = repo.verse("Gen.2.9")!!
+        val tokens = v.words.filter {
+            it.la.equals("scientiæ", ignoreCase = true) ||
+                it.la.equals("scientiae", ignoreCase = true)
+        }
+        assertTrue("expected scientiæ in Gen.2.9", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "scientiæ should be of knowledge: ${g.primary}",
+                g.primary.contains("knowledge", ignoreCase = true),
+            )
+            assertFalse("must NOT be conscious: ${g.primary}", g.primary.contains("conscious", ignoreCase = true))
+            assertEquals("curated:scientiae", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen119_quartusIsFourth() {
+        val v = repo.verse("Gen.1.19")!!
+        val tokens = v.words.filter { it.la.equals("quartus", ignoreCase = true) }
+        assertTrue("expected quartus in Gen.1.19", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("quartus should be fourth: ${g.primary}", g.primary.contains("fourth", ignoreCase = true))
+            assertFalse(
+                "must NOT be bare four: ${g.primary}",
+                g.primary.equals("four", ignoreCase = true),
+            )
+            assertEquals("curated:quartus", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen112_secundumIsAccordingTo() {
+        val v = repo.verse("Gen.1.12")!!
+        val tokens = v.words.filter { it.la.equals("secundum", ignoreCase = true) }
+        assertTrue("expected secundum in Gen.1.12", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "secundum should be according to: ${g.primary}",
+                g.primary.contains("according", ignoreCase = true),
+            )
+            assertFalse(
+                "must NOT be after-only: ${g.primary}",
+                g.primary.equals("after", ignoreCase = true),
+            )
+            assertEquals("curated:secundum", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen124_jumentaAreCattleBeastsOfBurden() {
+        val v = repo.verse("Gen.1.24")!!
+        val tokens = v.words.filter { it.la.equals("jumenta", ignoreCase = true) }
+        assertTrue("expected jumenta in Gen.1.24", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "jumenta should be cattle/beasts: ${g.primary}",
+                g.primary.contains("cattle", ignoreCase = true) ||
+                    g.primary.contains("beast", ignoreCase = true),
+            )
+            assertFalse(
+                "must NOT be mule-only: ${g.primary}",
+                g.primary.equals("mule", ignoreCase = true),
+            )
+            assertEquals("curated:jumenta", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+
     @Test
     fun sampleChapters_present() {
         listOf("Gen.1.1", "Gen.2.1", "Gen.3.1", "Gen.4.9").forEach { id ->
