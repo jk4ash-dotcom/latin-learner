@@ -153,7 +153,7 @@ class PackSanityTest {
 
     @Test
     fun closedClass_adDeSuperCuratedDefs() {
-        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis").forEach { key ->
+        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus").forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
@@ -195,6 +195,42 @@ class PackSanityTest {
             "expected curated quis, got ${g.id}",
             g.id == "curated:quis" || g.id.startsWith("curated:"),
         )
+    }
+
+    @Test
+    fun gen33_illudThatItNotMockSexual() {
+        val v = repo.verse("Gen.3.3")!!
+        val illud = v.words.first { it.la.equals("illud", ignoreCase = true) }
+        val g = repo.gloss(illud.glossId)!!
+        assertTrue(
+            "illud should be that/it: ${g.primary}",
+            g.primary.contains("that", ignoreCase = true) || g.primary.contains("it", ignoreCase = true),
+        )
+        assertFalse("illud must NEVER mean mock/ridicule", g.primary.contains("mock", ignoreCase = true))
+        assertFalse("illud must NEVER mean ridicule", g.primary.contains("ridicule", ignoreCase = true))
+        assertFalse("illud must NEVER mean sexual", g.primary.contains("sexual", ignoreCase = true))
+        assertTrue(
+            "expected curated illud, got ${g.id}",
+            g.id == "curated:illud" || g.id.startsWith("curated:"),
+        )
+        assertFalse("must not bind w:illud (illūdō)", illud.glossId == "w:illud")
+    }
+
+    @Test
+    fun gen322_manumHandNotManeoSexualOvernight() {
+        val v = repo.verse("Gen.3.22")!!
+        val manum = v.words.first { it.la.equals("manum", ignoreCase = true) }
+        val g = repo.gloss(manum.glossId)!!
+        assertTrue("manum should be hand: ${g.primary}", g.primary.contains("hand", ignoreCase = true))
+        assertFalse("manum must NEVER mean remain/abide", g.primary.contains("remain", ignoreCase = true))
+        assertFalse("manum must NEVER mean abide", g.primary.contains("abide", ignoreCase = true))
+        assertFalse("manum must NEVER mean spend the night", g.primary.contains("night", ignoreCase = true))
+        assertFalse("manum must NEVER mean sexual", g.primary.contains("sexual", ignoreCase = true))
+        assertTrue(
+            "expected curated manum/manus, got ${g.id}",
+            g.id.startsWith("curated:") || g.source.contains("curated", ignoreCase = true),
+        )
+        assertFalse("must not bind w:man (maneō)", manum.glossId == "w:man")
     }
 
     @Test

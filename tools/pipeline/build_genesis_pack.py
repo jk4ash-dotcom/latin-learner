@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.3-poc"
+PACK_VERSION = "0.1.4-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -219,6 +219,107 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["who?", "who", "anyone/someone (indef.)"],
         "Gen.3.11 Quis enim — interrogative quis, NOT qui ADV how?.",
     ),
+    # v0.1.4: illud/ille-family (block illūdō sexual) + manus-family (block maneō sexual overnight)
+    "illud": _cur(
+        "that / it",
+        ["that", "it", "that thing (n. nom./acc.)"],
+        "Gen.3.3 ne tangeremus illud — demonstrative ille/illud, NEVER illūdō mock/sexual. Unshippable if wrong.",
+    ),
+    "ille": _cur(
+        "that (m.)",
+        ["that", "he", "that one (m.)"],
+        "Demonstrative ille — NOT illūdō mock/sexual.",
+    ),
+    "illa": _cur(
+        "that (f./n.pl.)",
+        ["that", "she", "those (n. pl.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illum": _cur(
+        "that / him (m. acc.)",
+        ["that", "him", "that one (m. acc.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illam": _cur(
+        "that / her (f. acc.)",
+        ["that", "her", "that one (f. acc.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illius": _cur(
+        "of that / his / her / its",
+        ["of that", "his", "her", "its (gen.)"],
+        "Demonstrative ille gen. — NOT illūdō.",
+    ),
+    "illi": _cur(
+        "to that / those (m.)",
+        ["to that", "to him", "those (m. nom. pl.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illo": _cur(
+        "by/with that (abl.)",
+        ["by that", "with that", "from that (m./n. abl.)"],
+        "Demonstrative ille abl. — NOT ADV illo/thither alone; NOT illūdō.",
+    ),
+    "illis": _cur(
+        "to/for/by those",
+        ["to those", "for those", "by/with those (dat./abl. pl.)"],
+        "Demonstrative ille-family — NOT illidō strike; NOT illūdō.",
+    ),
+    "illos": _cur(
+        "those (m. acc. pl.)",
+        ["those", "them (m. acc.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illas": _cur(
+        "those (f. acc. pl.)",
+        ["those", "them (f. acc.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illae": _cur(
+        "those (f. nom. pl.)",
+        ["those", "they (f.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illorum": _cur(
+        "of those (m./n.)",
+        ["of those", "their (m./n. gen. pl.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "illarum": _cur(
+        "of those (f.)",
+        ["of those", "their (f. gen. pl.)"],
+        "Demonstrative ille-family — NOT illūdō.",
+    ),
+    "manus": _cur(
+        "hand",
+        ["hand", "fist", "band/troop"],
+        "Noun manus — NEVER maneō remain/spend the night (sexual). Unshippable if wrong.",
+    ),
+    "manum": _cur(
+        "hand (acc.)",
+        ["hand (acc.)", "hand"],
+        "Gen.3.22 mittat manum — manus acc. NEVER maneō remain/sexual overnight. Unshippable if wrong.",
+    ),
+    "manu": _cur(
+        "by/with the hand (abl.)",
+        ["by hand", "with the hand", "hand (abl.)"],
+        "manus abl. — NEVER maneō.",
+    ),
+    "manui": _cur(
+        "to/for the hand (dat.)",
+        ["to the hand", "for the hand", "hand (dat.)"],
+        "manus dat. — NEVER maneō.",
+    ),
+    "manibus": _cur(
+        "hands (dat./abl. pl.)",
+        ["hands", "by/with hands", "to hands"],
+        "manus dat./abl. pl. — NEVER maneō.",
+    ),
+    "manuum": _cur(
+        "of hands (gen. pl.)",
+        ["of hands", "hands (gen. pl.)"],
+        "manus gen. pl. — NEVER maneō.",
+    ),
 }
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
@@ -288,6 +389,27 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "mearum": "mearum",
     "meis": "meis",
     "quis": "quis",
+    # v0.1.4 illud/ille-family + manus-family (block illūdō sexual / maneō sexual overnight)
+    "illud": "illud",
+    "ille": "ille",
+    "illa": "illa",
+    "illum": "illum",
+    "illam": "illam",
+    "illius": "illius",
+    "illi": "illi",
+    "illo": "illo",
+    "illis": "illis",
+    "illos": "illos",
+    "illas": "illas",
+    "illae": "illae",
+    "illorum": "illorum",
+    "illarum": "illarum",
+    "manus": "manus",
+    "manum": "manum",
+    "manu": "manu",
+    "manui": "manui",
+    "manibus": "manibus",
+    "manuum": "manuum",
 }
 
 
@@ -828,6 +950,60 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
                 "note": f"Blocked Whitaker qui ADV how? for quis ({entry.get('primary')}).",
             }
         return gid
+    # illud/ille-family must never take illūdō mock/sexual
+    ILLE_FAMILY = frozenset({
+        "illud", "ille", "illa", "illum", "illam", "illius", "illi", "illo",
+        "illis", "illos", "illas", "illae", "illorum", "illarum",
+    })
+    if key in ILLE_FAMILY and (
+        matched == "illud"
+        or "sexual" in prim
+        or "mock" in prim
+        or "ridicule" in prim
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked illūdō/sexual]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker illūdō hit ({entry.get('primary')}); ille demonstrative only.",
+            }
+        return gid
+    # manus-family must never take maneō remain / sexual overnight
+    MANUS_FAMILY = frozenset({
+        "manus", "manum", "manu", "manui", "manibus", "manuum",
+    })
+    if key in MANUS_FAMILY and (
+        "remain" in prim
+        or "abide" in prim
+        or "spend the night" in prim
+        or "sexual" in prim
+        or ("hand" not in prim and matched == "man")
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked maneō/sexual overnight]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker maneō hit ({entry.get('primary')}); manus hand only.",
+            }
+        return gid
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -967,7 +1143,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight.",
             },
             "gaps": meta_gaps,
         },
@@ -1058,6 +1234,7 @@ def build():
         "et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num",
         "vita", "vitae", "lux",
         "meus", "mea", "meum", "meis", "quis",
+        "illud", "ille", "manum", "manus",
     ]
     must_still_stub = []
     for m in must:
@@ -1084,7 +1261,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.3.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.4.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

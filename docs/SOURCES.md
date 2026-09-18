@@ -51,6 +51,7 @@
   - Prior PASS: `deus`, `dominus`, `sum`/`est`/`sunt`, `ejus`, *dixit*, *ait*, …
   - **v0.1.2 closed-class:** `et`→and (not go/walk); `in`→in/into (not fiber); `ad`→to/toward (not Adam); `de`→of/from (not God); `super`→above/over (not gods on high); `qui`→who/which (not be able); `mei`/`mi`→my/me (**NOT** urinate — unshippable if wrong); `ubi`→where (not Ubii); `num`→whether/interrogative (not Numerius); `vita`/`vitae`→life (not rim); `lux` (Gen.1.3)→light (not luxury).
   - **v0.1.3 meus-family / quis:** declined `meus`/`mea`/`meum`/`meae`/`meo`/`meam`/`meos`/`meas`/`meorum`/`mearum`/`meis` → my/mine (**NEVER** `w:mei` urinate; Gen.2.23 *ossibus meis* + all 11× Genesis *meis*); `quis`/`Quis` → who? (**NOT** qui ADV how? — Gen.3.11). Guard blocks meiō/mingō and qui-how false stems.
+  - **v0.1.4 illud / manus:** `illud` (+ ille-family) → that/it (**NEVER** illūdō mock/sexual — Gen.3.3 *ne tangeremus illud*); `manum`/`manus` (+ manu/manui/manibus/manuum) → hand (**NEVER** maneō remain/sexual overnight — Gen.3.22 *mittat manum*). Guards block false stems.
   - Optional *-que*: `vocavitque`, `benedixitque`.
 - UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
