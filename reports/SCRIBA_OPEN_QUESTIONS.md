@@ -1,4 +1,4 @@
-# Open questions for Scriba (Biblical Latin) — post v0.1.14 Wave 8 phonetics + Gen1–3 stubs + facies faciō
+# Open questions for Scriba (Biblical Latin) — post v0.1.15 Wave 9 Gen1–3 ship-blocks
 
 ## Phonetics
 1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
@@ -24,8 +24,9 @@
 15. ~~v0.1.12 Wave 6 V-over-N mid pack~~ → *domus* house (not subdue); *locus* place (not place-V); *servus* servant (not serve-V); *pactum* covenant (not compose); *peccatum* sin N (not sin-V); *vox*/*vocem* voice; *opus* work; *genus* kind; *boves* oxen; *ancilla* maidservant; *vestis* garment; *pars* part; *nomina* names; *porta* gate; *potum* drink. **Scriba Wave 5 CLEAR**; Hold Critic→Argus.
 16. ~~v0.1.13 Wave 7 high-value stubs~~ → Gen1–3-first + frequency: suus/tuus leftovers; quem/quid/haec/cui/nos/nobis/se/sibi/vos/his/eorum; dicens/respondit/tulit/…; Joseph/Abraham/Isaac/Esau/Noe+; Gen.4.23 Ada; Sella never chair. **Scriba Wave 6 CLEAR**; Hold Critic→Argus.
 17. ~~v0.1.14 Wave 8~~ → phoneticPending cleared (Noë/Israël); Gen1–3 high-value stubs (subjicite/dominamini/dii/requievit/sanctificavit/formavit/inspiravit/morieris/moriemini/decepit/conteret/relinquet/adhaerebit/induit/ejecitque/collocavit); facies Gen.6.14–16/18.29(+18.25/20.13/21.23/47.29)→faciō verse-override; cheap high-freq burn-down. **Scriba Wave 7 CLEAR**; Hold Critic→Argus.
-18. Remaining `stub:*` after Wave 8 — further pass expected later (FULL_PROMOTE still NO); Hold Critic→Argus.
-19. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
+18. ~~v0.1.15 Wave 9~~ → `similis` like/similar ADJ (≠ imitate; Gen.2.20); `ornatus` adornment/array N (≠ equip; Gen.2.1); `quæ`/`qua` which/that relative (≠ where; Gen1–3); optional `Quare`→why. **Scriba Wave 8 CLEAR**; Hold Critic→Argus.
+19. Remaining `stub:*` after Wave 9 — further pass expected later (FULL_PROMOTE still NO); Hold Critic→Argus.
+20. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
 
 ## Versification
 Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.

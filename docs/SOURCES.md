@@ -65,6 +65,8 @@
 
   - **v0.1.14 Wave 8 (phonetics + Gen1–3 stubs + facies faciō):** `phoneticPending` cleared for diaeresis (*Noë*/*Israël*/*Ismaël* — split vowels confirmed); Gen1–3 high-value stubs `subjicite`/`dominamini`/`dii`/`requievit`/`sanctificavit`/`formavit`/`inspiravit`/`morieris`/`moriemini`/`decepit`/`conteret`/`relinquet`/`adhaerebit`/`induit`/`ejecitque`/`collocavit`; **Gen.6.14–16 / 18.29 (+18.25/20.13/21.23/47.29) `facies`→faciō “you will make”** verse-context (`curated:facies_make`; face N elsewhere); cheap high-freq names/verbs burn-down. Keep all prior curated.
 
+  - **v0.1.15 Wave 9 (Gen1–3 ship-blocks):** `similis` → like/similar ADJ (**NEVER** imitate — Gen.2.20); `ornatus` → adornment/array N (**NEVER** equip — Gen.2.1); `quæ`/`qua` → which/that relative (**NEVER** where — Gen1–3+); optional `Quare`/`quare` → why. Keep all prior curated.
+
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
 
 ## Rebuild pack

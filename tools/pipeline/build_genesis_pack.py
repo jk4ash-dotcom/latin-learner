@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.14-poc"
+PACK_VERSION = "0.1.15-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -2019,6 +2019,34 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Genesis Gessen — Goshen. Fill stub.",
     ),
 
+    # v0.1.15 Wave 9 — Gen1–3 ship-blocks (similis / ornatus / quæ|qua / Quare)
+    # (Mahomes/Scriba; Wave 8 CLEAR; Hold Critic→Argus)
+    "similis": _cur(
+        "like / similar",
+        ["like", "similar", "alike (adj.)"],
+        "Gen.2.20 similis — adjective like/similar. NEVER similō imitate/copy V. Unshippable if imitate.",
+    ),
+    "ornatus": _cur(
+        "adornment / array",
+        ["adornment", "array", "ornament", "host (N)"],
+        "Gen.2.1 ornatus — noun adornment/array (omnis ornatus eorum). NEVER ornō equip V. Unshippable if equip.",
+    ),
+    "qua": _cur(
+        "which / that (rel.)",
+        ["which", "that", "whom (abl./rel.)", "by which"],
+        "Relative quā (Gen.3.19/3.23 de qua…). NEVER ubi-style where ADV as sole primary. Unshippable if where.",
+    ),
+    "quae": _cur(
+        "which / that (rel.)",
+        ["which", "that", "who (f./n.pl. rel.)"],
+        "Relative quae/quæ (Gen1–3+). NEVER where ADV. Unshippable if where.",
+    ),
+    "quare": _cur(
+        "why",
+        ["why", "wherefore", "for what reason"],
+        "Quare/quare (Gen.3.13+) — why. Prefer why over bare how/in-what-way as sole primary.",
+    ),
+
 
 }
 
@@ -2554,6 +2582,13 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "heber": "heber",
     "thare": "thare",
     "gessen": "gessen",
+
+    # v0.1.15 Wave 9 Gen1–3 ship-blocks
+    "similis": "similis",
+    "ornatus": "ornatus",
+    "qua": "qua",
+    "quae": "quae",
+    "quare": "quare",
 }
 
 
@@ -4285,6 +4320,84 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
             }
         return gid
 
+
+    # --- v0.1.15 Wave 9 SHIP_BLOCK guards (similis / ornatus / qua|quae / quare) ---
+    if key == "similis" and (
+        "imitate" in prim
+        or "copy" in prim
+        or matched == "simil"
+        or (matched == "similis" and "like" not in prim and "similar" not in prim)
+    ):
+        if "similis" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("similis", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked similō/imitate]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker similō/imitate ({entry.get('primary')}); similis ADJ like/similar only.",
+            }
+        return gid
+    if key == "ornatus" and (
+        "equip" in prim
+        or "furnish" in prim
+        or matched == "ornat"
+        or (matched == "orno" and "adorn" not in prim and "ornament" not in prim and "array" not in prim)
+    ):
+        if "ornatus" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("ornatus", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked ornō/equip]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker ornō/equip ({entry.get('primary')}); ornatus N adornment/array only.",
+            }
+        return gid
+    if key in ("qua", "quae") and (
+        prim.strip() == "where"
+        or prim.startswith("where")
+        or (matched == "qua" and "which" not in prim and "that" not in prim and "who" not in prim)
+    ):
+        ckey = "quae" if key == "quae" else "qua"
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked qua/where]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker qua ADV where ({entry.get('primary')}); relative which/that only.",
+            }
+        return gid
+    if key == "quare" and (
+        ("how" in prim and "why" not in prim)
+        or "in what way" in prim
+        or matched == "quare" and "why" not in prim
+    ):
+        if "quare" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quare", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked quare/how]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker quare how-only ({entry.get('primary')}); prefer why.",
+            }
+        return gid
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -4429,7 +4542,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able. Wave7 stubs: suus/tuus leftovers; quem/quid/haec/cui/nos/nobis/se/sibi/vos/his/eorum; dicens/respondit/tulit/appellavit/viventem/unus/duo + Gen1–3 verbs; Joseph/Abraham/Isaac/Esau/Noe + high-freq names; Gen.4.23 Adæ→Ada (Lamech wife) verse-context (Adam gen. elsewhere); Sella/Sellæ never chair. Wave8: phoneticPending cleared (Noë/Israël diaeresis confirmed); Gen1–3 stubs subjicite/dominamini/dii/requievit/sanctificavit/formavit/inspiravit/morieris/moriemini/decepit/conteret/relinquet/adhaerebit/induit/ejecitque/collocavit; Gen.6.14–16/18.29(+18.25/20.13/21.23/47.29) facies→faciō you will make verse-context (face N elsewhere); cheap high-freq names/verbs burn-down.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able. Wave7 stubs: suus/tuus leftovers; quem/quid/haec/cui/nos/nobis/se/sibi/vos/his/eorum; dicens/respondit/tulit/appellavit/viventem/unus/duo + Gen1–3 verbs; Joseph/Abraham/Isaac/Esau/Noe + high-freq names; Gen.4.23 Adæ→Ada (Lamech wife) verse-context (Adam gen. elsewhere); Sella/Sellæ never chair. Wave8: phoneticPending cleared (Noë/Israël diaeresis confirmed); Gen1–3 stubs subjicite/dominamini/dii/requievit/sanctificavit/formavit/inspiravit/morieris/moriemini/decepit/conteret/relinquet/adhaerebit/induit/ejecitque/collocavit; Gen.6.14–16/18.29(+18.25/20.13/21.23/47.29) facies→faciō you will make verse-context (face N elsewhere); cheap high-freq names/verbs burn-down. Wave9 Gen1–3 ship-blocks: similis→like/similar ADJ never imitate; ornatus→adornment/array N never equip; qua/quae/quæ→which/that relative never where; quare/Quare→why.",
             },
             "gaps": meta_gaps,
         },
@@ -4508,6 +4621,8 @@ def build():
         "Gen.2.2", "Gen.2.3", "Gen.2.7", "Gen.2.17", "Gen.2.24",
         "Gen.3.4", "Gen.3.5", "Gen.3.13", "Gen.3.15", "Gen.3.21", "Gen.3.24",
         "Gen.1.28", "Gen.4.6", "Gen.35.10", "Gen.6.9",
+        # Wave 9 similis/ornatus/qua/Quare anchors (mostly in ch1–3 already)
+        "Gen.2.1", "Gen.44.15",
     ):
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
@@ -4577,6 +4692,8 @@ def build():
         "nolite", "flevit", "viditque", "praecepitque", "accepit", "suus",
         "mambre", "ephron", "simeon", "japheth", "seir", "agar", "abrahae",
         "lia", "liae", "abel", "heber", "thare", "gessen",
+        # Wave 9
+        "similis", "ornatus", "qua", "quae", "quare",
     ]
     must_still_stub = []
     for m in must:
@@ -4603,7 +4720,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.14.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.15.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

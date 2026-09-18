@@ -1747,6 +1747,103 @@ class PackSanityTest {
     }
 
 
+
+
+    // --- v0.1.15 Wave 9: Gen1–3 ship-blocks similis / ornatus / quæ|qua (+ Quare) ---
+
+    @Test
+    fun gen220_similisIsLikeSimilarNotImitate() {
+        val v = repo.verse("Gen.2.20")!!
+        val tokens = v.words.filter { it.la.equals("similis", ignoreCase = true) }
+        assertTrue("expected similis in Gen.2.20", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "similis should be like/similar: ${g.primary}",
+                g.primary.contains("like", ignoreCase = true) ||
+                    g.primary.contains("similar", ignoreCase = true),
+            )
+            assertFalse("must NOT be imitate: ${g.primary}", g.primary.contains("imitate", ignoreCase = true))
+            assertFalse("must NOT be copy as verb primary: ${g.primary}", g.primary.lowercase().startsWith("copy"))
+            assertEquals("curated:similis", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen21_ornatusIsAdornmentArrayNotEquip() {
+        val v = repo.verse("Gen.2.1")!!
+        val tokens = v.words.filter { it.la.equals("ornatus", ignoreCase = true) }
+        assertTrue("expected ornatus in Gen.2.1", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "ornatus should be adornment/array: ${g.primary}",
+                g.primary.contains("adorn", ignoreCase = true) ||
+                    g.primary.contains("array", ignoreCase = true) ||
+                    g.primary.contains("ornament", ignoreCase = true),
+            )
+            assertFalse("must NOT be equip: ${g.primary}", g.primary.contains("equip", ignoreCase = true))
+            assertEquals("curated:ornatus", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen1to3_quaeQuaAreRelativeWhichThatNotWhere() {
+        val verseIds = listOf(
+            "Gen.1.7", "Gen.1.9", "Gen.1.28", "Gen.1.29", "Gen.1.30", "Gen.1.31",
+            "Gen.3.1", "Gen.3.2", "Gen.3.13", "Gen.3.19", "Gen.3.23",
+        )
+        var hit = 0
+        for (id in verseIds) {
+            val v = repo.verse(id)!!
+            val tokens = v.words.filter {
+                val la = it.la
+                la.equals("quæ", ignoreCase = true) ||
+                    la.equals("qua", ignoreCase = true) ||
+                    la.equals("quae", ignoreCase = true) ||
+                    la.equals("Quæ", ignoreCase = true)
+            }
+            for (tok in tokens) {
+                val g = repo.gloss(tok.glossId)!!
+                assertTrue(
+                    "quæ/qua @$id should be which/that relative: ${g.primary}",
+                    g.primary.contains("which", ignoreCase = true) ||
+                        g.primary.contains("that", ignoreCase = true) ||
+                        g.primary.contains("who", ignoreCase = true),
+                )
+                assertFalse(
+                    "must NOT be where @$id: ${g.primary}",
+                    g.primary.equals("where", ignoreCase = true) ||
+                        g.primary.lowercase().startsWith("where "),
+                )
+                assertTrue("expected curated gloss @$id: ${g.id}", g.id.startsWith("curated:"))
+                assertTrue(
+                    "expected curated:qua or curated:quae @$id: ${g.id}",
+                    g.id == "curated:qua" || g.id == "curated:quae",
+                )
+                assertFalse(tok.glossId!!.startsWith("stub:"))
+                hit++
+            }
+        }
+        assertTrue("expected multiple quæ/qua hits in Gen1–3, got $hit", hit >= 8)
+    }
+
+    @Test
+    fun gen313_quareIsWhy() {
+        val v = repo.verse("Gen.3.13")!!
+        val tokens = v.words.filter { it.la.equals("Quare", ignoreCase = true) }
+        assertTrue("expected Quare in Gen.3.13", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("Quare should be why: ${g.primary}", g.primary.contains("why", ignoreCase = true))
+            assertEquals("curated:quare", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+
     @Test
     fun sampleChapters_present() {
         listOf("Gen.1.1", "Gen.2.1", "Gen.3.1", "Gen.4.9").forEach { id ->
