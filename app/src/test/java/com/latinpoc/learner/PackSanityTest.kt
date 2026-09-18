@@ -163,14 +163,18 @@ class PackSanityTest {
             "sim", "sis", "simus", "sitis", "essent",
             "ero", "eris", "erit", "erimus", "eritis",
             "fuerit", "fuerint", "fuisset",
+            "sara", "saram", "sarae", "sarai", "lot", "edom", "sex",
+            "venit", "venite", "adamam", "adamae",
+            "bala", "balam", "balae", "her", "sale", "salem",
         ).forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
             assertFalse(g.primary.contains("go, walk", ignoreCase = true))
             assertFalse(g.primary.contains("fiber", ignoreCase = true))
-            // curated:ad must not be Adam; curated:adam / curated:adae ARE Adam
-            if (key != "adam" && key != "adae") {
+            // curated:ad must not be Adam; curated:adam / curated:adae ARE Adam;
+            // curated:adamam / curated:adamae are Admah (substring "Adam" OK)
+            if (key != "adam" && key != "adae" && key != "adamam" && key != "adamae") {
                 assertFalse(g.primary.contains("Adam", ignoreCase = true))
             }
             assertFalse(g.primary.contains("plow", ignoreCase = true))
@@ -205,6 +209,18 @@ class PackSanityTest {
             assertFalse(g.primary.contains("flatnosed", ignoreCase = true))
             assertFalse(g.primary.contains("thirst", ignoreCase = true))
             assertFalse(g.primary.contains("hedgehog", ignoreCase = true))
+            assertFalse(g.primary.contains("hoe", ignoreCase = true))
+            assertFalse(g.primary.contains("wash", ignoreCase = true))
+            assertFalse(g.primary.contains("bathe", ignoreCase = true))
+            assertFalse(g.primary.contains("subdue", ignoreCase = true))
+            assertFalse(g.primary.contains("subjugate", ignoreCase = true))
+            // numeral six may appear; bare sexual "sex" as whole primary blocked via dedicated tests
+            assertFalse(g.primary.contains("go for sale", ignoreCase = true))
+            assertFalse(g.primary.contains("bleat", ignoreCase = true))
+            assertFalse(g.primary.contains("baa", ignoreCase = true))
+            assertFalse(g.primary.contains("adhere", ignoreCase = true))
+            assertFalse(g.primary.contains("leap", ignoreCase = true))
+            assertFalse(g.primary.contains("jump", ignoreCase = true))
             assertFalse(g.primary.contains("basket", ignoreCase = true))
             assertFalse(g.primary.contains("make real", ignoreCase = true))
         }
@@ -917,6 +933,154 @@ class PackSanityTest {
         assertFalse("eris must NEVER mean hedgehog", g.primary.contains("hedgehog", ignoreCase = true))
         assertTrue("expected curated eris, got ${g.id}", g.id.startsWith("curated:"))
         assertFalse("must not bind w:eris (hedgehog)", eris.glossId == "w:eris")
+    }
+
+
+
+    // --- v0.1.11 Wave 5: proper names / false friends ---
+
+    @Test
+    fun gen1715_saraNotHoe() {
+        val v = repo.verse("Gen.17.15")!!
+        // Sarai ... Saram in this verse
+        val saram = v.words.first { it.la.equals("Saram", ignoreCase = true) }
+        val g = repo.gloss(saram.glossId)!!
+        assertTrue("Saram should be Sarah: ${g.primary}", g.primary.contains("Sarah", ignoreCase = true) || g.primary.contains("Sara", ignoreCase = true))
+        assertFalse("Saram must NEVER mean hoe", g.primary.contains("hoe", ignoreCase = true))
+        assertTrue("expected curated, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:sar (hoe)", saram.glossId == "w:sar")
+    }
+
+    @Test
+    fun gen1717_saraNotHoe() {
+        val v = repo.verse("Gen.17.17")!!
+        val sara = v.words.first { it.la.equals("Sara", ignoreCase = true) }
+        val g = repo.gloss(sara.glossId)!!
+        assertTrue(g.primary.contains("Sarah", ignoreCase = true) || g.primary.contains("Sara", ignoreCase = true))
+        assertFalse(g.primary.contains("hoe", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen1127_lotNotWash() {
+        val v = repo.verse("Gen.11.27")!!
+        val lot = v.words.first { it.la.equals("Lot", ignoreCase = true) }
+        val g = repo.gloss(lot.glossId)!!
+        assertTrue("Lot should be proper name: ${g.primary}", g.primary.contains("Lot", ignoreCase = true))
+        assertFalse("Lot must NEVER mean wash", g.primary.contains("wash", ignoreCase = true))
+        assertFalse(g.primary.contains("bathe", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(lot.glossId == "w:lot")
+    }
+
+    @Test
+    fun gen2530_edomNotSubdue() {
+        val v = repo.verse("Gen.25.30")!!
+        val edom = v.words.first { it.la.equals("Edom", ignoreCase = true) }
+        val g = repo.gloss(edom.glossId)!!
+        assertTrue(g.primary.contains("Edom", ignoreCase = true))
+        assertFalse(g.primary.contains("subdue", ignoreCase = true))
+        assertFalse(g.primary.contains("subjugate", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(edom.glossId == "w:edom")
+    }
+
+    @Test
+    fun gen1616_sexIsSixNotSex() {
+        val v = repo.verse("Gen.16.16")!!
+        val sex = v.words.first { it.la.equals("sex", ignoreCase = true) }
+        val g = repo.gloss(sex.glossId)!!
+        assertTrue("sex should be six: ${g.primary}", g.primary.contains("six", ignoreCase = true))
+        assertFalse("primary must not be bare 'sex'", g.primary.trim().equals("sex", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen113_veniteComeNotSale() {
+        val v = repo.verse("Gen.11.3")!!
+        val venite = v.words.first { it.la.equals("Venite", ignoreCase = true) }
+        val g = repo.gloss(venite.glossId)!!
+        assertTrue("Venite should be come: ${g.primary}", g.primary.contains("come", ignoreCase = true))
+        assertFalse(g.primary.contains("sale", ignoreCase = true))
+        assertFalse(g.primary.contains("sold", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(venite.glossId == "w:venit")
+    }
+
+    @Test
+    fun gen613_venitComeNotSale() {
+        val v = repo.verse("Gen.6.13")!!
+        val venit = v.words.first { it.la.equals("venit", ignoreCase = true) }
+        val g = repo.gloss(venit.glossId)!!
+        assertTrue(g.primary.contains("come", ignoreCase = true))
+        assertFalse(g.primary.contains("sale", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen1019_adamamAdmahNotLust() {
+        val v = repo.verse("Gen.10.19")!!
+        val tok = v.words.first { it.la.equals("Adamam", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue("Adamam should be Admah place: ${g.primary}", g.primary.contains("Admah", ignoreCase = true) || g.primary.contains("Adama", ignoreCase = true))
+        assertFalse(g.primary.contains("lust", ignoreCase = true))
+        assertFalse(g.primary.contains("fall in love", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:adam")
+    }
+
+    @Test
+    fun gen142_adamaeAdmahNotLust() {
+        val v = repo.verse("Gen.14.2")!!
+        val tok = v.words.first { it.la.equals("Adamæ", ignoreCase = true) || it.la.equals("Adamae", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("Admah", ignoreCase = true) || g.primary.contains("Adama", ignoreCase = true))
+        assertFalse(g.primary.contains("lust", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId == "w:adam")
+    }
+
+    @Test
+    fun gen307_balaNotBleat() {
+        val v = repo.verse("Gen.30.7")!!
+        val bala = v.words.first { it.la.equals("Bala", ignoreCase = true) }
+        val g = repo.gloss(bala.glossId)!!
+        assertTrue(g.primary.contains("Bala", ignoreCase = true) || g.primary.contains("Bilhah", ignoreCase = true))
+        assertFalse(g.primary.contains("bleat", ignoreCase = true))
+        assertFalse(g.primary.contains("baa", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen383_herNotAdhere() {
+        val v = repo.verse("Gen.38.3")!!
+        val her = v.words.first { it.la.equals("Her", ignoreCase = true) }
+        val g = repo.gloss(her.glossId)!!
+        assertTrue(g.primary.contains("Her", ignoreCase = true) || g.primary.contains("Er", ignoreCase = true))
+        assertFalse(g.primary.contains("adhere", ignoreCase = true))
+        assertFalse(g.primary.contains("stick", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen1024_saleNotLeap() {
+        val v = repo.verse("Gen.10.24")!!
+        val sale = v.words.first { it.la.equals("Sale", ignoreCase = true) }
+        val g = repo.gloss(sale.glossId)!!
+        assertTrue(g.primary.contains("Sale", ignoreCase = true) || g.primary.contains("Salah", ignoreCase = true))
+        assertFalse(g.primary.contains("leap", ignoreCase = true))
+        assertFalse(g.primary.contains("jump", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen1418_salemNotLeap() {
+        val v = repo.verse("Gen.14.18")!!
+        val salem = v.words.first { it.la.equals("Salem", ignoreCase = true) }
+        val g = repo.gloss(salem.glossId)!!
+        assertTrue(g.primary.contains("Salem", ignoreCase = true))
+        assertFalse(g.primary.contains("leap", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
     }
 
 

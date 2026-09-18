@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.10-poc"
+PACK_VERSION = "0.1.11-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -769,6 +769,94 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["had been", "would have been", "might have been"],
         "esse pluperfect subjunctive 3sg — fill stub.",
     ),
+
+    # v0.1.11 Wave 5 SHIP_BLOCK — proper names / false friends (Mahomes/Scriba; Wave 4 CLEAR)
+    "sara": _cur(
+        "Sarah",
+        ["Sarah", "Sara (proper name)"],
+        "Genesis Sara/Saram/Saræ — proper name Sarah. NEVER sar-/hoe. Unshippable if hoe.",
+    ),
+    "saram": _cur(
+        "Sarah (acc.)",
+        ["Sarah (acc.)", "Sara (acc.)", "Sarah"],
+        "Acc. of Sara — NEVER sar-/hoe. Unshippable if hoe.",
+    ),
+    "sarae": _cur(
+        "Sarah (gen./dat.)",
+        ["Sarah (gen./dat.)", "of Sarah", "to/for Sarah", "Sarah"],
+        "Gen./dat. of Sara (Saræ) — NEVER sar-/hoe. Unshippable if hoe.",
+    ),
+    "sarai": _cur(
+        "Sarai",
+        ["Sarai", "Sarai (proper name)", "Sarah (earlier name)"],
+        "Genesis Sarai — proper name (later Sara/Sarah). Fill stub; never hoe.",
+    ),
+    "lot": _cur(
+        "Lot",
+        ["Lot", "Lot (proper name)"],
+        "Genesis Lot — proper name. NEVER lot-/wash/bathe. Unshippable if wash.",
+    ),
+    "edom": _cur(
+        "Edom",
+        ["Edom", "Edom (proper name / place)"],
+        "Genesis Edom — proper name/place (Esau). NEVER edom-/subdue. Unshippable if subdue.",
+    ),
+    "sex": _cur(
+        "six",
+        ["six", "6"],
+        "Cardinal numeral sex — NEVER English 'sex'. Unshippable if sex.",
+    ),
+    "venit": _cur(
+        "come / comes",
+        ["come", "comes", "he/she/it comes", "came (hist. present)"],
+        "veniō 3sg — NEVER vēnum īre / go for sale. Unshippable if go for sale / sold.",
+    ),
+    "venite": _cur(
+        "come! (pl.)",
+        ["come! (pl.)", "come ye", "come (2pl imp.)"],
+        "veniō 2pl imperative — NEVER go for sale. Unshippable if go for sale.",
+    ),
+    "adamam": _cur(
+        "Admah (place)",
+        ["Admah (place)", "Adama", "Admah"],
+        "Genesis Adamam — place-name Admah (Gen.10.19). NEVER adamō/lust. Kill lust primary. Unshippable if lust.",
+    ),
+    "adamae": _cur(
+        "Admah (place, gen./dat.)",
+        ["Admah (place)", "of Admah", "Adama (gen.)", "Admah"],
+        "Genesis Adamæ — place-name Admah (Gen.14.2/14.8). NEVER adamō/lust. Kill lust primary. Unshippable if lust.",
+    ),
+    "bala": _cur(
+        "Bala (proper name)",
+        ["Bala", "Bala (proper name)", "Bilhah", "Bela"],
+        "Genesis Bala/Balam/Balæ — proper name (Bilhah maid / place Bela). NEVER bal-/bleat. Unshippable if bleat.",
+    ),
+    "balam": _cur(
+        "Bala (acc.)",
+        ["Bala (acc.)", "Bilhah (acc.)", "Bala"],
+        "Acc. of Bala/Bilhah — NEVER bal-/bleat. Unshippable if bleat.",
+    ),
+    "balae": _cur(
+        "Bala (gen./dat.)",
+        ["Bala (gen./dat.)", "of Bala", "Bilhah (gen.)", "Bela (gen.)"],
+        "Gen./dat. Balæ — proper name (Bilhah / place Bela). NEVER bal-/bleat. Unshippable if bleat.",
+    ),
+    "her": _cur(
+        "Her (proper name)",
+        ["Her", "Her (proper name)", "Er"],
+        "Genesis Her — proper name (Judah's son Er). NEVER haereō stick/adhere. Unshippable if stick/adhere.",
+    ),
+    "sale": _cur(
+        "Sale (proper name)",
+        ["Sale", "Sale (proper name)", "Salah"],
+        "Genesis Sale — proper name (genealogy). NEVER sal-/leap/jump. Unshippable if leap.",
+    ),
+    "salem": _cur(
+        "Salem (place)",
+        ["Salem", "Salem (place)", "city of Salem"],
+        "Genesis Salem — place-name (Melchizedek / Sichem). NEVER sal-/leap. Unshippable if leap.",
+    ),
+
 }
 
 
@@ -997,6 +1085,26 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "fuerit": "fuerit",
     "fuerint": "fuerint",
     "fuisset": "fuisset",
+    # v0.1.11 Wave 5 proper names / false friends + enclitics
+    "sara": "sara",
+    "saram": "saram",
+    "sarae": "sarae",
+    "sarai": "sarai",
+    "lot": "lot",
+    "edom": "edom",
+    "sex": "sex",
+    "venit": "venit",
+    "venitque": "venit",
+    "venite": "venite",
+    "veniteque": "venite",
+    "adamam": "adamam",
+    "adamae": "adamae",
+    "bala": "bala",
+    "balam": "balam",
+    "balae": "balae",
+    "her": "her",
+    "sale": "sale",
+    "salem": "salem",
 }
 
 
@@ -2169,6 +2277,181 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
         if key == pkey and CURATED_SURFACE_ALIASES.get(pkey, pkey) in CURATED_GLOSS_DEFS:
             return ensure_curated_gloss(CURATED_SURFACE_ALIASES.get(pkey, pkey), gloss_ids)
 
+
+    # --- v0.1.11 Wave 5 SHIP_BLOCK guards (proper names / false friends) ---
+    if key in ("sara", "saram", "sarae", "sarai") and (
+        "hoe" in prim
+        or matched in ("sar", "sara")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sara/hoe]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sar-/hoe ({entry.get('primary')}); Sarah/Sarai proper name only.",
+            }
+        return gid
+    if key == "lot" and (
+        "wash" in prim
+        or "bathe" in prim
+        or matched == "lot"
+    ):
+        if "lot" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("lot", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked lot/wash]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker lot-/wash ({entry.get('primary')}); Lot proper name only.",
+            }
+        return gid
+    if key == "edom" and (
+        "subdue" in prim
+        or "tame" in prim
+        or "subjugate" in prim
+        or matched == "edom"
+    ):
+        if "edom" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("edom", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked edom/subdue]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker edom-/subdue ({entry.get('primary')}); Edom proper name only.",
+            }
+        return gid
+    if key == "sex" and (
+        prim.strip() in ("sex", "sex;")
+        or prim == "sex"
+        or matched == "sex"
+    ):
+        # Cardinal six — never leave bare English "sex" as primary
+        if "sex" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("sex", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sex≠six]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sex primary ({entry.get('primary')}); numeral six only.",
+            }
+        return gid
+    if key in ("venit", "venitque", "venite", "veniteque") and (
+        "sale" in prim
+        or "sold" in prim
+        or "venal" in prim
+        or "go for sale" in prim
+        or matched in ("venit", "vene")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, "venit")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked venit/sale]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker vēnum īre / go for sale ({entry.get('primary')}); veniō come only.",
+            }
+        return gid
+    if key in ("adamam", "adamae") and (
+        "lust" in prim
+        or "love" in prim
+        or "enamoured" in prim
+        or matched in ("adam", "adama")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked Admah/lust]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker adamō/lust ({entry.get('primary')}); Admah place-name only.",
+            }
+        return gid
+    if key in ("bala", "balam", "balae") and (
+        "bleat" in prim
+        or "baa" in prim
+        or matched in ("bal", "bala")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked bala/bleat]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker bal-/bleat ({entry.get('primary')}); Bala proper name only.",
+            }
+        return gid
+    if key == "her" and (
+        "stick" in prim
+        or "adhere" in prim
+        or "cling" in prim
+        or matched == "her"
+    ):
+        if "her" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("her", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked her/adhere]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker haereō/her- ({entry.get('primary')}); Her proper name only.",
+            }
+        return gid
+    if key in ("sale", "salem") and (
+        "leap" in prim
+        or "jump" in prim
+        or matched == "sal"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sale/leap]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sal-/leap ({entry.get('primary')}); Sale/Salem proper name only.",
+            }
+        return gid
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -2308,7 +2591,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap.",
             },
             "gaps": meta_gaps,
         },
@@ -2368,7 +2651,13 @@ def build():
 
     sample_verses = [v for v in verses_out if v["chapter"] <= 3]
     # Gen.4.9: sum / Dominus / mei / num / ubi / qui; Gen.1.3: lux / et
-    for extra_id in ("Gen.4.9", "Gen.4.14", "Gen.19.18", "Gen.10.20", "Gen.35.12"):  # enclitics + Wave4 ero
+    for extra_id in (
+        "Gen.4.9", "Gen.4.14", "Gen.19.18", "Gen.10.20", "Gen.35.12",  # enclitics + Wave4 ero
+        # Wave 5 proper-name / false-friend anchors
+        "Gen.6.13", "Gen.10.19", "Gen.10.24", "Gen.11.3", "Gen.11.27",
+        "Gen.14.2", "Gen.14.18", "Gen.16.16", "Gen.17.15", "Gen.17.17",
+        "Gen.25.30", "Gen.30.7", "Gen.38.3",
+    ):
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
             sample_verses.append(extra)
@@ -2384,7 +2673,7 @@ def build():
     gloss_map = gloss_ids
     sample_pack = {
         "meta": pack["meta"],
-        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (10, 19, 35)],
+        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 10, 11, 14, 16, 17, 19, 25, 30, 35, 38)],
         "verses": sample_verses,
         "glosses": {gid: gloss_map[gid] for gid in sample_gloss_ids if gid in gloss_map},
     }
@@ -2411,6 +2700,9 @@ def build():
         "sim", "sis", "simus", "sitis", "essent",
         "ero", "eris", "erit", "erimus", "eritis",
         "fuerit", "fuerint", "fuisset",
+        "sara", "saram", "sarae", "sarai", "lot", "edom", "sex",
+        "venit", "venite", "adamam", "adamae",
+        "bala", "balam", "balae", "her", "sale", "salem",
     ]
     must_still_stub = []
     for m in must:
@@ -2437,7 +2729,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.10.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.11.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

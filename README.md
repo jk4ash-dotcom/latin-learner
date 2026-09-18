@@ -2,7 +2,7 @@
 
 Offline-first Android learner for Biblical Latin (POC).
 
-**Package:** `com.latinpoc.learner` · **versionName:** `0.1.10-poc` · **scope:** Genesis only
+**Package:** `com.latinpoc.learner` · **versionName:** `0.1.11-poc` · **scope:** Genesis only
 
 ## What ships
 
