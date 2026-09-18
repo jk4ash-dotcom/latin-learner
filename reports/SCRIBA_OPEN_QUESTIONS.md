@@ -1,4 +1,4 @@
-# Open questions for Scriba (Biblical Latin) — post v0.1.16 Wave 10 Gen1–3 wrong primaries
+# Open questions for Scriba (Biblical Latin) — post v0.1.17 Wave 11 Gen1–3 remaining wrong primaries
 
 ## Phonetics
 1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
@@ -26,8 +26,9 @@
 17. ~~v0.1.14 Wave 8~~ → phoneticPending cleared (Noë/Israël); Gen1–3 high-value stubs (subjicite/dominamini/dii/requievit/sanctificavit/formavit/inspiravit/morieris/moriemini/decepit/conteret/relinquet/adhaerebit/induit/ejecitque/collocavit); facies Gen.6.14–16/18.29(+18.25/20.13/21.23/47.29)→faciō verse-override; cheap high-freq burn-down. **Scriba Wave 7 CLEAR**; Hold Critic→Argus.
 18. ~~v0.1.15 Wave 9~~ → `similis` like/similar ADJ (≠ imitate; Gen.2.20); `ornatus` adornment/array N (≠ equip; Gen.2.1); `quæ`/`qua` which/that relative (≠ where; Gen1–3); optional `Quare`→why. **Scriba Wave 8 CLEAR**; Hold Critic→Argus.
 19. ~~v0.1.16 Wave 10~~ → `luminaria`/`luminare` lights (≠ car-light); `humo` ground/soil abl. (≠ bury); `comedit`/`comedi` ate (≠ meal); `me` me (acc.) (≠ my); `quod` that/which (not because-only); `vero` but/indeed (≠ yes); `scientiæ` of knowledge; `quartus` fourth; `secundum` according to; `jumenta` cattle/beasts of burden; soft `firmamentum`/`quam`. **Scriba Wave 9 surfaces PASS + FURTHER_AMENDS**; Hold Critic→Argus.
-20. Remaining `stub:*` after Wave 10 — further pass expected later (FULL_PROMOTE still NO); Hold Critic→Argus.
-21. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
+20. ~~v0.1.17 Wave 11~~ → `maria` seas (≠ Marius); `habens`/`habent` having (≠ thong/strap); `tertius`/`tertii` third (≠ three); `signa` signs (≠ battle standard); `annos` years (≠ aged); `grandia` great (≠ increase); `quintus` fifth; `sextus` sixth; `e` from/out of (≠ -dem/idem); `rem` thing/matter (≠ oar); `uxori` to/for (his) wife; `scientes`/`sciens` knowing; `amborum` of both; `abscondit` hid (V); `dedit` gave; `conceptus` conception(s) N; `paries` you will bear (≠ wall); `vivat` may live; `flammeum` flaming (≠ bridal veil); soft `firmamento`/`quo`. **Scriba Wave 10 surfaces PASS + FURTHER_AMENDS**; Hold Critic→Argus.
+21. Remaining `stub:*` after Wave 11 — further pass expected later (FULL_PROMOTE still NO); Hold Critic→Argus.
+22. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
 
 ## Versification
 Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.

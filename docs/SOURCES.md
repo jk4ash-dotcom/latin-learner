@@ -67,6 +67,8 @@
 
   - **v0.1.15 Wave 9 (Gen1–3 ship-blocks):** `similis` → like/similar ADJ (**NEVER** imitate — Gen.2.20); `ornatus` → adornment/array N (**NEVER** equip — Gen.2.1); `quæ`/`qua` → which/that relative (**NEVER** where — Gen1–3+); optional `Quare`/`quare` → why. Keep all prior curated.
   - **v0.1.16 Wave 10 (Gen1–3 wrong primaries):** `luminaria`/`luminare` → lights (**NEVER** car-light); `humo` → ground/soil abl. (**NEVER** bury); `comedit`/`comedi` → ate (**NEVER** meal); `me` → me (acc.) (**NEVER** my); `quod` → that/which (not because-only); `vero` → but/indeed (**NEVER** yes); `scientiæ` → of knowledge; `quartus` → fourth; `secundum` → according to; `jumenta` → cattle/beasts of burden; soft `firmamentum`/`quam`. Keep all prior curated.
+  - **v0.1.17 Wave 11 (Gen1–3 remaining 22 hard wrong primaries):** `maria` → seas (**NEVER** Marius); `habens`/`habent` → having (**NEVER** thong/strap); `tertius`/`tertii` → third (**NEVER** three); `signa` → signs (**NEVER** battle standard); `annos` → years (**NEVER** aged); `grandia` → great (**NEVER** increase); `quintus` → fifth; `sextus` → sixth; `e` → from/out of (**NEVER** -dem/idem); `rem` → thing/matter (**NEVER** oar); `uxori` → to/for (his) wife; `scientes`/`sciens` → knowing; `amborum` → of both; `abscondit` → hid (V); `dedit` → gave; `conceptus` → conception(s) N; `paries` → you will bear (**NEVER** wall); `vivat` → may live; `flammeum` → flaming (**NEVER** bridal veil); soft `firmamento`/`quo`. Keep all prior curated.
+
 
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
 

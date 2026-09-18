@@ -1,3 +1,5 @@
+Vulgate verses: 1530; Douay verses: 1537
+Whitaker stems indexed: 48495
 {
   "version": "0.1.17-poc",
   "chapters": 50,
@@ -12,3 +14,4 @@
   "metaGaps": 22,
   "mustListStillStub": []
 }
+Assets written under /workspace/latin-learner/app/src/main/assets/data

@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.16-poc"
+PACK_VERSION = "0.1.17-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -2123,6 +2123,130 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Gen1–3 quam — relative/conj than/which (also how). Prefer than/which over how-only when contextual.",
     ),
 
+    # v0.1.17 Wave 11 — Gen1–3 remaining 22 hard wrong primaries
+    # (Mahomes/Scriba; Wave 10 surfaces PASS + FURTHER_AMENDS; Hold Critic→Argus)
+    "maria": _cur(
+        "seas",
+        ["seas", "seas (gathering of waters)", "maria (pl.)"],
+        "Gen.1.10 Maria — seas (congregationes aquarum). NEVER Marius proper name. Unshippable if Marius.",
+    ),
+    "habens": _cur(
+        "having",
+        ["having", "holding", "possessing (pres. ppl.)"],
+        "Gen.1.12 habens — present participle of habeō having. NEVER habēna thong/strap. Unshippable if thong/strap.",
+    ),
+    "habent": _cur(
+        "they have / having",
+        ["they have", "have (3pl)", "holding"],
+        "Gen.1.29 habent — habeō 3pl. NEVER habēna thong/strap. Unshippable if thong/strap.",
+    ),
+    "tertius": _cur(
+        "third",
+        ["third", "the third"],
+        "Gen.1.13 tertius — third (ordinal). Prefer third over bare three.",
+    ),
+    "tertii": _cur(
+        "of the third / third",
+        ["of the third", "third (gen.)", "the third"],
+        "Gen.2.14 tertii — third (ordinal gen.). Prefer third over bare three.",
+    ),
+    "signa": _cur(
+        "signs",
+        ["signs", "marks", "tokens"],
+        "Gen.1.14 signa — signs (sint in signa et tempora). NEVER battle standard as sole primary. Unshippable if battle standard.",
+    ),
+    "annos": _cur(
+        "years",
+        ["years", "years (acc.pl.)"],
+        "Gen.1.14 annos — years (acc.pl. of annus). NEVER aged/old as sole primary. Unshippable if aged.",
+    ),
+    "grandia": _cur(
+        "great",
+        ["great", "large", "grand (n.pl.)"],
+        "Gen.1.21 grandia — great (cete grandia). NEVER increase V. Unshippable if increase.",
+    ),
+    "quintus": _cur(
+        "fifth",
+        ["fifth", "the fifth"],
+        "Gen.1.23 quintus — fifth (ordinal). Prefer fifth over bare five.",
+    ),
+    "sextus": _cur(
+        "sixth",
+        ["sixth", "the sixth"],
+        "Gen.1.31 sextus — sixth (ordinal). Prefer sixth over bare six.",
+    ),
+    "e": _cur(
+        "from / out of",
+        ["from", "out of", "e / ex (prep.)"],
+        "Gen.2.6 e terra — prep. e/ex from/out of. NEVER -dem/idem same. Unshippable if same/-dem.",
+    ),
+    "rem": _cur(
+        "thing / matter",
+        ["thing", "matter", "affair", "res (acc.)"],
+        "Gen.2.24 Quam ob rem — res acc. thing/matter. NEVER oar. Unshippable if oar.",
+    ),
+    "uxori": _cur(
+        "to/for (his) wife",
+        ["to his wife", "for his wife", "wife (dat.)"],
+        "Gen.2.24/3.21 uxori — dative of uxor to/for (his) wife. Prefer dat. over bare belonging-to.",
+    ),
+    "scientes": _cur(
+        "knowing",
+        ["knowing", "aware", "who know (pres. ppl.)"],
+        "Gen.3.5 scientes — present participle of sciō knowing. Prefer knowing over conscious-of as sole primary.",
+    ),
+    "sciens": _cur(
+        "knowing",
+        ["knowing", "aware", "who knows (pres. ppl.)"],
+        "Gen.3.22 sciens — present participle of sciō knowing. Prefer knowing over conscious-of as sole primary.",
+    ),
+    "amborum": _cur(
+        "of both",
+        ["of both", "of the two", "both (gen.)"],
+        "Gen.3.7 amborum — gen. of ambō of both. NEVER ambō go-round V. Unshippable if go round/visit.",
+    ),
+    "abscondit": _cur(
+        "hid",
+        ["hid", "has hidden", "concealed (V)"],
+        "Gen.3.8 abscondit — perfect of abscondō hid (V). NEVER hidden-adj as sole primary. Unshippable if hidden-adj-only.",
+    ),
+    "dedit": _cur(
+        "gave",
+        ["gave", "has given", "granted"],
+        "Gen.3.12+ dedit — perfect of dō gave. Prefer gave over give-up/surrender as sole primary.",
+    ),
+    "conceptus": _cur(
+        "conception(s)",
+        ["conception", "conceptions", "pregnancy (N)"],
+        "Gen.3.16 conceptus — noun conception(s) (conceptus tuos). NEVER take-in/receive V. Unshippable if take in.",
+    ),
+    "paries": _cur(
+        "you will bear",
+        ["you will bear", "you shall bring forth", "you will give birth"],
+        "Gen.3.16 paries — pariō 2sg fut. you will bear. NEVER wall N. Unshippable if wall.",
+    ),
+    "vivat": _cur(
+        "may live",
+        ["may live", "let him/her live", "live (subj.)"],
+        "Gen.3.22 vivat — vivō subjunctive may live. NEVER animated as sole primary. Unshippable if animated.",
+    ),
+    "flammeum": _cur(
+        "flaming",
+        ["flaming", "fiery", "flame-colored (adj.)"],
+        "Gen.3.24 flammeum gladium — flaming (adj.). NEVER bridal veil as sole primary. Unshippable if bridal veil.",
+    ),
+    # Soft / optional cheap
+    "firmamento": _cur(
+        "firmament",
+        ["firmament", "in the firmament", "expanse (abl.)"],
+        "Gen.1.7+ firmamento — abl. of firmamentum firmament. Prefer over support/prop as sole primary.",
+    ),
+    "quo": _cur(
+        "in/from which",
+        ["in which", "from which", "by which", "where (also)"],
+        "Gen1–3+ quo — relative abl. in/from which (in die quo / de quo / ex quo). Prefer over where-only when contextual.",
+    ),
+
 
 }
 
@@ -2681,6 +2805,32 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "jumenta": "jumenta",
     "firmamentum": "firmamentum",
     "quam": "quam",
+
+    # v0.1.17 Wave 11 Gen1–3 remaining 22 hard wrong primaries + soft
+    "maria": "maria",
+    "habens": "habens",
+    "habent": "habent",
+    "tertius": "tertius",
+    "tertii": "tertii",
+    "signa": "signa",
+    "annos": "annos",
+    "grandia": "grandia",
+    "quintus": "quintus",
+    "sextus": "sextus",
+    "e": "e",
+    "rem": "rem",
+    "uxori": "uxori",
+    "scientes": "scientes",
+    "sciens": "sciens",
+    "amborum": "amborum",
+    "abscondit": "abscondit",
+    "dedit": "dedit",
+    "conceptus": "conceptus",
+    "paries": "paries",
+    "vivat": "vivat",
+    "flammeum": "flammeum",
+    "firmamento": "firmamento",
+    "quo": "quo",
 
 }
 
@@ -4688,6 +4838,348 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
             }
         return gid
 
+    # --- v0.1.17 Wave 11 SHIP_BLOCK guards (remaining Gen1–3 wrong primaries) ---
+    if key == "maria" and (
+        "marius" in prim
+    ):
+        if "maria" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("maria", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked maria/Marius]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker Marius ({entry.get('primary')}); seas only.",
+            }
+        return gid
+    if key in ("habens", "habent") and (
+        "thong" in prim or "strap" in prim or matched == "haben"
+    ):
+        ckey = key
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked haben/thong]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker thong/strap ({entry.get('primary')}); habeō having only.",
+            }
+        return gid
+    if key in ("tertius", "tertii") and (
+        (prim.strip() == "three" or prim == "three") and "third" not in prim
+    ):
+        ckey = key
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked tertius/three]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker three ({entry.get('primary')}); third ordinal only.",
+            }
+        return gid
+    if key == "signa" and (
+        "battle standard" in prim or "battle-standard" in prim
+    ):
+        if "signa" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("signa", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked signa/battle-standard]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker battle standard ({entry.get('primary')}); signs only.",
+            }
+        return gid
+    if key == "annos" and (
+        "aged" in prim or (prim.startswith("old") and "year" not in prim)
+    ):
+        if "annos" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("annos", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked annos/aged]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker aged ({entry.get('primary')}); years only.",
+            }
+        return gid
+    if key == "grandia" and (
+        "increase" in prim or matched == "grandi"
+    ):
+        if "grandia" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("grandia", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked grandia/increase]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker increase ({entry.get('primary')}); great only.",
+            }
+        return gid
+    if key == "quintus" and (
+        (prim.strip() == "five" or prim == "five") and "fifth" not in prim
+    ):
+        if "quintus" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quintus", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked quintus/five]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker five ({entry.get('primary')}); fifth ordinal only.",
+            }
+        return gid
+    if key == "sextus" and (
+        (prim.strip() == "six" or prim == "six") and "sixth" not in prim
+    ):
+        if "sextus" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("sextus", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sextus/six]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker six ({entry.get('primary')}); sixth ordinal only.",
+            }
+        return gid
+    if key == "e" and (
+        "same" in prim or "-dem" in prim or "idem" in prim or "eadem" in prim
+    ):
+        if "e" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("e", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked e/-dem]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker -dem/idem ({entry.get('primary')}); e/ex from only.",
+            }
+        return gid
+    if key == "rem" and (
+        prim.strip() == "oar" or prim.startswith("oar")
+    ):
+        if "rem" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("rem", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked rem/oar]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker oar ({entry.get('primary')}); res thing/matter only.",
+            }
+        return gid
+    if key == "uxori" and (
+        "belonging" in prim and "to/for" not in prim and "wife (dat" not in prim
+    ):
+        if "uxori" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("uxori", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked uxori/belonging]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker belonging-only ({entry.get('primary')}); dat. to/for wife.",
+            }
+        return gid
+    if key in ("scientes", "sciens") and (
+        "conscious" in prim
+    ):
+        ckey = key
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sciens/conscious]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker conscious ({entry.get('primary')}); knowing only.",
+            }
+        return gid
+    if key == "amborum" and (
+        "go round" in prim or "visit in rotation" in prim or "inspect" in prim or matched == "amb"
+    ):
+        if "amborum" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("amborum", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked amborum/go-round]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker go-round ({entry.get('primary')}); of both only.",
+            }
+        return gid
+    if key == "abscondit" and (
+        ("hidden" in prim or "secret" in prim or "concealed" in prim)
+        and not prim.strip().startswith("hid")
+    ):
+        if "abscondit" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("abscondit", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked abscondit/hidden-adj]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker hidden-adj ({entry.get('primary')}); hid V only.",
+            }
+        return gid
+    if key == "dedit" and (
+        "surrender" in prim or "give up" in prim or "give in" in prim or "give up/in" in prim
+    ):
+        if "dedit" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("dedit", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked dedit/surrender]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker surrender ({entry.get('primary')}); gave only.",
+            }
+        return gid
+    if key == "conceptus" and (
+        "take in" in prim or "receive" in prim or "catch" in prim or matched == "concept"
+    ):
+        if "conceptus" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("conceptus", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked conceptus/take-in]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker take-in V ({entry.get('primary')}); conception(s) N only.",
+            }
+        return gid
+    if key == "paries" and (
+        "wall" in prim
+    ):
+        if "paries" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("paries", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked paries/wall]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker wall ({entry.get('primary')}); pariō you-will-bear only.",
+            }
+        return gid
+    if key == "vivat" and (
+        "animated" in prim
+    ):
+        if "vivat" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("vivat", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked vivat/animated]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker animated ({entry.get('primary')}); may live only.",
+            }
+        return gid
+    if key == "flammeum" and (
+        "bridal" in prim or "veil" in prim
+    ):
+        if "flammeum" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("flammeum", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked flammeum/bridal-veil]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker bridal veil ({entry.get('primary')}); flaming adj only.",
+            }
+        return gid
+    if key == "firmamento" and (
+        "support" in prim or "prop" in prim or "mainstay" in prim
+    ):
+        if "firmamento" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("firmamento", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked firmamento/support]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker support/prop ({entry.get('primary')}); firmament only.",
+            }
+        return gid
+    if key == "quo" and (
+        (prim.startswith("where") and "which" not in prim)
+    ):
+        if "quo" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quo", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked quo/where-only]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker where-only ({entry.get('primary')}); in/from which preferred.",
+            }
+        return gid
+
 
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
@@ -4988,6 +5480,11 @@ def build():
         # Wave 10
         "luminaria", "luminare", "humo", "comedit", "comedi", "me", "quod", "vero",
         "scientiae", "quartus", "secundum", "jumenta", "firmamentum", "quam",
+        # Wave 11
+        "maria", "habens", "habent", "tertius", "tertii", "signa", "annos", "grandia",
+        "quintus", "sextus", "e", "rem", "uxori", "scientes", "sciens", "amborum",
+        "abscondit", "dedit", "conceptus", "paries", "vivat", "flammeum",
+        "firmamento", "quo",
     ]
     must_still_stub = []
     for m in must:
@@ -5014,7 +5511,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.16.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.17.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

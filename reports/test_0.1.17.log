@@ -1,0 +1,36 @@
+Unit tests: tests=157 failures=0 errors=0 skipped=0
+com.latinpoc.learner.AssetPathResolutionTest: tests=4 failures=0 errors=0
+com.latinpoc.learner.PackSanityTest: tests=153 failures=0 errors=0
+BUILD SUCCESSFUL
+
+--- gradle tail ---
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:mergeProjectDexDebug
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:dexBuilderRelease
+> Task :app:mergeReleaseGlobalSynthetics UP-TO-DATE
+> Task :app:processReleaseJavaRes UP-TO-DATE
+> Task :app:mergeReleaseJavaResource UP-TO-DATE
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:packageDebug
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:testDebugUnitTest
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:mergeDexRelease
+> Task :app:compileReleaseArtProfile
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:assembleRelease
+
+BUILD SUCCESSFUL in 9s
+93 actionable tasks: 40 executed, 53 up-to-date

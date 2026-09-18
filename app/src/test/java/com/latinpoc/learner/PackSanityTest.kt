@@ -2091,6 +2091,373 @@ class PackSanityTest {
     }
 
 
+
+    // --- v0.1.17 Wave 11: Gen1–3 remaining 22 hard wrong primaries ---
+
+    @Test
+    fun gen110_mariaAreSeasNotMarius() {
+        val v = repo.verse("Gen.1.10")!!
+        val tokens = v.words.filter { it.la.equals("Maria", ignoreCase = true) }
+        assertTrue("expected Maria in Gen.1.10", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("maria should be seas: ${g.primary}", g.primary.contains("sea", ignoreCase = true))
+            assertFalse("must NOT be Marius: ${g.primary}", g.primary.contains("Marius", ignoreCase = true))
+            assertEquals("curated:maria", g.id)
+            assertFalse(tok.glossId!!.startsWith("stub:"))
+        }
+    }
+
+    @Test
+    fun gen112_habensIsHavingNotThong() {
+        val v = repo.verse("Gen.1.12")!!
+        val tokens = v.words.filter { it.la.equals("habens", ignoreCase = true) }
+        assertTrue("expected habens in Gen.1.12", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("habens should be having: ${g.primary}", g.primary.contains("having", ignoreCase = true))
+            assertFalse("must NOT be thong: ${g.primary}", g.primary.contains("thong", ignoreCase = true))
+            assertFalse(g.primary.contains("strap", ignoreCase = true))
+            assertEquals("curated:habens", g.id)
+        }
+    }
+
+    @Test
+    fun gen129_habentIsHaveNotThong() {
+        val v = repo.verse("Gen.1.29")!!
+        val tokens = v.words.filter { it.la.equals("habent", ignoreCase = true) }
+        assertTrue("expected habent in Gen.1.29", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "habent should be have/having: ${g.primary}",
+                g.primary.contains("have", ignoreCase = true) || g.primary.contains("having", ignoreCase = true),
+            )
+            assertFalse(g.primary.contains("thong", ignoreCase = true))
+            assertEquals("curated:habent", g.id)
+        }
+    }
+
+    @Test
+    fun gen113_tertiusIsThirdNotThree() {
+        val v = repo.verse("Gen.1.13")!!
+        val tokens = v.words.filter { it.la.equals("tertius", ignoreCase = true) }
+        assertTrue("expected tertius in Gen.1.13", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("tertius should be third: ${g.primary}", g.primary.contains("third", ignoreCase = true))
+            assertFalse("must NOT be bare three: ${g.primary}", g.primary.equals("three", ignoreCase = true))
+            assertEquals("curated:tertius", g.id)
+        }
+    }
+
+    @Test
+    fun gen214_tertiiIsThirdNotThree() {
+        val v = repo.verse("Gen.2.14")!!
+        val tokens = v.words.filter { it.la.equals("tertii", ignoreCase = true) }
+        assertTrue("expected tertii in Gen.2.14", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("tertii should be third: ${g.primary}", g.primary.contains("third", ignoreCase = true))
+            assertFalse(g.primary.equals("three", ignoreCase = true))
+            assertEquals("curated:tertii", g.id)
+        }
+    }
+
+    @Test
+    fun gen114_signaAreSignsNotBattleStandard() {
+        val v = repo.verse("Gen.1.14")!!
+        val tokens = v.words.filter { it.la.equals("signa", ignoreCase = true) }
+        assertTrue("expected signa in Gen.1.14", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("signa should be signs: ${g.primary}", g.primary.contains("sign", ignoreCase = true))
+            assertFalse("must NOT be battle standard: ${g.primary}", g.primary.contains("battle", ignoreCase = true))
+            assertEquals("curated:signa", g.id)
+        }
+    }
+
+    @Test
+    fun gen114_annosAreYearsNotAged() {
+        val v = repo.verse("Gen.1.14")!!
+        val tokens = v.words.filter { it.la.equals("annos", ignoreCase = true) }
+        assertTrue("expected annos in Gen.1.14", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("annos should be years: ${g.primary}", g.primary.contains("year", ignoreCase = true))
+            assertFalse("must NOT be aged: ${g.primary}", g.primary.contains("aged", ignoreCase = true))
+            assertEquals("curated:annos", g.id)
+        }
+    }
+
+    @Test
+    fun gen121_grandiaIsGreatNotIncrease() {
+        val v = repo.verse("Gen.1.21")!!
+        val tokens = v.words.filter { it.la.equals("grandia", ignoreCase = true) }
+        assertTrue("expected grandia in Gen.1.21", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("grandia should be great: ${g.primary}", g.primary.contains("great", ignoreCase = true))
+            assertFalse("must NOT be increase: ${g.primary}", g.primary.contains("increase", ignoreCase = true))
+            assertEquals("curated:grandia", g.id)
+        }
+    }
+
+    @Test
+    fun gen123_quintusIsFifth() {
+        val v = repo.verse("Gen.1.23")!!
+        val tokens = v.words.filter { it.la.equals("quintus", ignoreCase = true) }
+        assertTrue("expected quintus in Gen.1.23", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("quintus should be fifth: ${g.primary}", g.primary.contains("fifth", ignoreCase = true))
+            assertFalse(g.primary.equals("five", ignoreCase = true))
+            assertEquals("curated:quintus", g.id)
+        }
+    }
+
+    @Test
+    fun gen131_sextusIsSixth() {
+        val v = repo.verse("Gen.1.31")!!
+        val tokens = v.words.filter { it.la.equals("sextus", ignoreCase = true) }
+        assertTrue("expected sextus in Gen.1.31", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("sextus should be sixth: ${g.primary}", g.primary.contains("sixth", ignoreCase = true))
+            assertFalse(g.primary.equals("six", ignoreCase = true))
+            assertEquals("curated:sextus", g.id)
+        }
+    }
+
+    @Test
+    fun gen26_eIsFromOutOfNotIdem() {
+        val v = repo.verse("Gen.2.6")!!
+        val tokens = v.words.filter { it.la.equals("e", ignoreCase = true) }
+        assertTrue("expected e in Gen.2.6", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "e should be from/out of: ${g.primary}",
+                g.primary.contains("from", ignoreCase = true) || g.primary.contains("out of", ignoreCase = true),
+            )
+            assertFalse("must NOT be same/-dem: ${g.primary}", g.primary.contains("same", ignoreCase = true))
+            assertFalse(g.primary.contains("-dem", ignoreCase = true))
+            assertEquals("curated:e", g.id)
+        }
+    }
+
+    @Test
+    fun gen224_remIsThingMatterNotOar() {
+        val v = repo.verse("Gen.2.24")!!
+        val tokens = v.words.filter { it.la.equals("rem", ignoreCase = true) }
+        assertTrue("expected rem in Gen.2.24", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "rem should be thing/matter: ${g.primary}",
+                g.primary.contains("thing", ignoreCase = true) || g.primary.contains("matter", ignoreCase = true),
+            )
+            assertFalse("must NOT be oar: ${g.primary}", g.primary.contains("oar", ignoreCase = true))
+            assertEquals("curated:rem", g.id)
+        }
+    }
+
+    @Test
+    fun gen224_uxoriIsToForWife() {
+        val v = repo.verse("Gen.2.24")!!
+        val tokens = v.words.filter { it.la.equals("uxori", ignoreCase = true) }
+        assertTrue("expected uxori in Gen.2.24", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "uxori should be to/for wife: ${g.primary}",
+                g.primary.contains("wife", ignoreCase = true) &&
+                    (g.primary.contains("to", ignoreCase = true) || g.primary.contains("for", ignoreCase = true)),
+            )
+            assertEquals("curated:uxori", g.id)
+        }
+    }
+
+    @Test
+    fun gen35_scientesIsKnowing() {
+        val v = repo.verse("Gen.3.5")!!
+        val tokens = v.words.filter { it.la.equals("scientes", ignoreCase = true) }
+        assertTrue("expected scientes in Gen.3.5", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("scientes should be knowing: ${g.primary}", g.primary.contains("knowing", ignoreCase = true))
+            assertFalse(g.primary.contains("conscious", ignoreCase = true))
+            assertEquals("curated:scientes", g.id)
+        }
+    }
+
+    @Test
+    fun gen322_sciensIsKnowing() {
+        val v = repo.verse("Gen.3.22")!!
+        val tokens = v.words.filter { it.la.equals("sciens", ignoreCase = true) }
+        assertTrue("expected sciens in Gen.3.22", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("sciens should be knowing: ${g.primary}", g.primary.contains("knowing", ignoreCase = true))
+            assertFalse(g.primary.contains("conscious", ignoreCase = true))
+            assertEquals("curated:sciens", g.id)
+        }
+    }
+
+    @Test
+    fun gen37_amborumIsOfBoth() {
+        val v = repo.verse("Gen.3.7")!!
+        val tokens = v.words.filter { it.la.equals("amborum", ignoreCase = true) }
+        assertTrue("expected amborum in Gen.3.7", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "amborum should be of both: ${g.primary}",
+                g.primary.contains("both", ignoreCase = true),
+            )
+            assertFalse(g.primary.contains("go round", ignoreCase = true))
+            assertFalse(g.primary.contains("visit", ignoreCase = true))
+            assertEquals("curated:amborum", g.id)
+        }
+    }
+
+    @Test
+    fun gen38_absconditIsHidVerb() {
+        val v = repo.verse("Gen.3.8")!!
+        val tokens = v.words.filter { it.la.equals("abscondit", ignoreCase = true) }
+        assertTrue("expected abscondit in Gen.3.8", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "abscondit should be hid: ${g.primary}",
+                g.primary.contains("hid", ignoreCase = true),
+            )
+            assertFalse(
+                "must NOT be hidden-adj-only: ${g.primary}",
+                g.primary.lowercase().startsWith("hidden") && !g.primary.contains("hid", ignoreCase = true),
+            )
+            assertEquals("curated:abscondit", g.id)
+        }
+    }
+
+    @Test
+    fun gen312_deditIsGave() {
+        val v = repo.verse("Gen.3.12")!!
+        val tokens = v.words.filter { it.la.equals("dedit", ignoreCase = true) }
+        assertTrue("expected dedit in Gen.3.12", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("dedit should be gave: ${g.primary}", g.primary.contains("gave", ignoreCase = true))
+            assertFalse(g.primary.contains("surrender", ignoreCase = true))
+            assertEquals("curated:dedit", g.id)
+        }
+    }
+
+    @Test
+    fun gen316_conceptusIsConceptionN() {
+        val v = repo.verse("Gen.3.16")!!
+        val tokens = v.words.filter { it.la.equals("conceptus", ignoreCase = true) }
+        assertTrue("expected conceptus in Gen.3.16", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "conceptus should be conception(s): ${g.primary}",
+                g.primary.contains("conception", ignoreCase = true),
+            )
+            assertFalse(g.primary.contains("take in", ignoreCase = true))
+            assertFalse(g.primary.contains("receive", ignoreCase = true))
+            assertEquals("curated:conceptus", g.id)
+        }
+    }
+
+    @Test
+    fun gen316_pariesIsYouWillBearNotWall() {
+        val v = repo.verse("Gen.3.16")!!
+        val tokens = v.words.filter { it.la.equals("paries", ignoreCase = true) }
+        assertTrue("expected paries in Gen.3.16", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "paries should be you will bear: ${g.primary}",
+                g.primary.contains("bear", ignoreCase = true) ||
+                    g.primary.contains("bring forth", ignoreCase = true) ||
+                    g.primary.contains("birth", ignoreCase = true),
+            )
+            assertFalse("must NOT be wall: ${g.primary}", g.primary.contains("wall", ignoreCase = true))
+            assertEquals("curated:paries", g.id)
+        }
+    }
+
+    @Test
+    fun gen322_vivatIsMayLive() {
+        val v = repo.verse("Gen.3.22")!!
+        val tokens = v.words.filter { it.la.equals("vivat", ignoreCase = true) }
+        assertTrue("expected vivat in Gen.3.22", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "vivat should be may live: ${g.primary}",
+                g.primary.contains("live", ignoreCase = true),
+            )
+            assertFalse("must NOT be animated: ${g.primary}", g.primary.contains("animated", ignoreCase = true))
+            assertEquals("curated:vivat", g.id)
+        }
+    }
+
+    @Test
+    fun gen324_flammeumIsFlamingNotBridalVeil() {
+        val v = repo.verse("Gen.3.24")!!
+        val tokens = v.words.filter { it.la.equals("flammeum", ignoreCase = true) }
+        assertTrue("expected flammeum in Gen.3.24", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "flammeum should be flaming: ${g.primary}",
+                g.primary.contains("flam", ignoreCase = true) || g.primary.contains("fiery", ignoreCase = true),
+            )
+            assertFalse("must NOT be bridal veil: ${g.primary}", g.primary.contains("bridal", ignoreCase = true))
+            assertFalse(g.primary.contains("veil", ignoreCase = true))
+            assertEquals("curated:flammeum", g.id)
+        }
+    }
+
+    @Test
+    fun gen17_firmamentoIsFirmament() {
+        val v = repo.verse("Gen.1.7")!!
+        val tokens = v.words.filter { it.la.equals("firmamento", ignoreCase = true) }
+        assertTrue("expected firmamento in Gen.1.7", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "firmamento should be firmament: ${g.primary}",
+                g.primary.contains("firmament", ignoreCase = true),
+            )
+            assertFalse(g.primary.contains("support", ignoreCase = true))
+            assertEquals("curated:firmamento", g.id)
+        }
+    }
+
+    @Test
+    fun gen24_quoIsInFromWhich() {
+        val v = repo.verse("Gen.2.4")!!
+        val tokens = v.words.filter { it.la.equals("quo", ignoreCase = true) }
+        assertTrue("expected quo in Gen.2.4", tokens.isNotEmpty())
+        for (tok in tokens) {
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "quo should be in/from which: ${g.primary}",
+                g.primary.contains("which", ignoreCase = true),
+            )
+            assertFalse(
+                "must NOT be where-only: ${g.primary}",
+                g.primary.equals("where", ignoreCase = true) ||
+                    (g.primary.lowercase().startsWith("where") && !g.primary.contains("which", ignoreCase = true)),
+            )
+            assertEquals("curated:quo", g.id)
+        }
+    }
+
+
     @Test
     fun sampleChapters_present() {
         listOf("Gen.1.1", "Gen.2.1", "Gen.3.1", "Gen.4.9").forEach { id ->

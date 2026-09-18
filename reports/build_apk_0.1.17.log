@@ -1,0 +1,6 @@
+> Task :app:assembleDebug
+> Task :app:assembleRelease
+BUILD SUCCESSFUL
+versionName=0.1.17-poc versionCode=18
+APK debug: dist/latin-learner-0.1.17-poc-debug.apk
+APK release: dist/latin-learner-0.1.17-poc-release.apk
