@@ -1,0 +1,4 @@
+assembleDebug + assembleRelease
+BUILD SUCCESSFUL
+APK: dist/latin-learner-0.1.13-poc-debug.apk
+APK: dist/latin-learner-0.1.13-poc-release.apk

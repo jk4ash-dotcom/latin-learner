@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.12-poc"
+PACK_VERSION = "0.1.13-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -331,7 +331,8 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Adam (gen.)",
         ["Adam (gen.)", "of Adam", "Adam"],
         "Genesis Adæ/Adae genitive of Adam (e.g. Gen.2.20, 3.17, 3.21). NEVER w:adar plow carefully. "
-        "Note later: Gen.4.23 Adæ=Ada (Lamech wife); Gen.10/14 Adama/Admah place-names. Unshippable if plow.",
+        "Gen.4.23 Adæ→Ada (Lamech wife) via verse-context override (Wave 7). "
+        "Gen.10/14 Adamam/Adamæ→Admah place (v0.1.11). Unshippable if plow.",
     ),
     # v0.1.7: terra NOUN family → earth/land (block w:terr / terreō frighten)
     # Do NOT fold: terror/terroris; terreō verb forms (terret…); terrestris.
@@ -1169,8 +1170,615 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Noun potus — drink N. NEVER possum be able.",
     ),
 
+    # v0.1.13 Wave 7 — high-value remaining stubs (Gen1–3 first, then by frequency)
+    # + Gen.4.23 Adæ→Ada verse-context; Sella never chair (Mahomes/Scriba; Wave 6 CLEAR)
+
+    # --- A) suus family leftovers (suum/suas already Wave 3) ---
+    "suo": _cur(
+        "his/her/its/their own (m./n. dat./abl.)",
+        ["his own", "her own", "its own", "their own", "own (dat./abl.)"],
+        "Possessive suus — Gen.1.24+ suo. Biblical pronoun/adj. Fill stub.",
+    ),
+    "suam": _cur(
+        "his/her/its/their own (f. acc.)",
+        ["his own", "her own", "its own", "their own", "own (f. acc.)"],
+        "Possessive suus f.acc. — Gen.1.12+ suam. Fill stub.",
+    ),
+    "suae": _cur(
+        "his/her/its/their own (f. gen./dat.)",
+        ["his own", "her own", "its own", "their own", "own (f. gen./dat.)"],
+        "Possessive suus f.gen./dat. — Gen.2.24+ suæ. Fill stub.",
+    ),
+    "suis": _cur(
+        "his/her/their own (dat./abl. pl.)",
+        ["his own", "her own", "their own", "own (dat./abl. pl.)", "to/for his own"],
+        "Possessive suus pl. — Gen.4.23 uxoribus suis. Fill stub.",
+    ),
+    "sui": _cur(
+        "his/her/its/their own / of himself",
+        ["his own", "her own", "their own", "of himself", "own (gen./nom.pl.)"],
+        "Possessive suus / reflexive gen. — Biblical. Fill stub.",
+    ),
+    "suos": _cur(
+        "his/her/their own (m. acc. pl.)",
+        ["his own", "her own", "their own", "own (m. acc. pl.)"],
+        "Possessive suus m.acc.pl. — Fill stub.",
+    ),
+    "sua": _cur(
+        "his/her/its/their own (f. nom. / n. pl.)",
+        ["his own", "her own", "its own", "their own", "own"],
+        "Possessive suus — Fill stub.",
+    ),
+    "suorum": _cur(
+        "of his/her/their own (gen. pl.)",
+        ["of his own", "of their own", "own (gen. pl.)"],
+        "Possessive suus gen.pl. — Fill stub.",
+    ),
+    "suarum": _cur(
+        "of his/her/their own (f. gen. pl.)",
+        ["of his own", "of their own", "own (f. gen. pl.)"],
+        "Possessive suus f.gen.pl. — Fill stub.",
+    ),
+
+    # --- B) tuus family ---
+    "tuus": _cur(
+        "your (sg.)",
+        ["your", "thy", "yours (sg. m.)"],
+        "Possessive tuus — Biblical. Fill stub.",
+    ),
+    "tua": _cur(
+        "your (f./n.pl.)",
+        ["your", "thy", "yours (f./n.pl.)"],
+        "Possessive tuus — Fill stub.",
+    ),
+    "tuum": _cur(
+        "your (m./n. acc./nom.n.)",
+        ["your", "thy", "yours"],
+        "Possessive tuus — Gen.3.14+ tuum. Fill stub.",
+    ),
+    "tui": _cur(
+        "of you / your (gen./nom.pl.)",
+        ["of you", "your", "thy", "yours"],
+        "Possessive tuus / tū gen. — Gen.3.16+ tui. Fill stub.",
+    ),
+    "tuo": _cur(
+        "your (m./n. dat./abl.)",
+        ["your", "thy", "to/for your", "by your"],
+        "Possessive tuus dat./abl. — Fill stub.",
+    ),
+    "tuam": _cur(
+        "your (f. acc.)",
+        ["your", "thy", "yours (f. acc.)"],
+        "Possessive tuus f.acc. — Fill stub.",
+    ),
+    "tuae": _cur(
+        "your (f. gen./dat.)",
+        ["your", "thy", "of your", "to/for your"],
+        "Possessive tuus f.gen./dat. — Gen.3.14+ tuæ. Fill stub.",
+    ),
+    "tuis": _cur(
+        "your (dat./abl. pl.)",
+        ["your", "thy", "to/for your (pl.)"],
+        "Possessive tuus dat./abl.pl. — Fill stub.",
+    ),
+    "tuos": _cur(
+        "your (m. acc. pl.)",
+        ["your", "thy", "yours (m. acc. pl.)"],
+        "Possessive tuus m.acc.pl. — Fill stub.",
+    ),
+    "tuas": _cur(
+        "your (f. acc. pl.)",
+        ["your", "thy", "yours (f. acc. pl.)"],
+        "Possessive tuus f.acc.pl. — Fill stub.",
+    ),
+    "tuorum": _cur(
+        "of your (gen. pl.)",
+        ["of your", "of thy", "yours (gen. pl.)"],
+        "Possessive tuus gen.pl. — Fill stub.",
+    ),
+    "tuarum": _cur(
+        "of your (f. gen. pl.)",
+        ["of your", "of thy", "yours (f. gen. pl.)"],
+        "Possessive tuus f.gen.pl. — Fill stub.",
+    ),
+
+    # --- C) high-freq pronoun stubs ---
+    "quem": _cur(
+        "whom / which (m. acc.)",
+        ["whom", "which", "that (m. acc.)"],
+        "Relative/interrogative quī — Biblical. Fill stub.",
+    ),
+    "quid": _cur(
+        "what? / anything",
+        ["what?", "what", "anything", "something"],
+        "Interrogative/indefinite quid — Biblical. Fill stub. Not quis how?.",
+    ),
+    "quibus": _cur(
+        "to/for/by whom/which (pl.)",
+        ["to whom", "by which", "whom/which (dat./abl. pl.)"],
+        "Relative quī dat./abl.pl. — Fill stub.",
+    ),
+    "haec": _cur(
+        "this / these",
+        ["this", "these", "this (f./n.pl.)"],
+        "Demonstrative hic/haec/hoc — Biblical. Fill stub.",
+    ),
+    "hae": _cur(
+        "these (f. nom.)",
+        ["these", "these (f.)"],
+        "Demonstrative hae — Fill stub.",
+    ),
+    "hanc": _cur(
+        "this (f. acc.)",
+        ["this", "this one (f. acc.)"],
+        "Demonstrative hic f.acc. — Fill stub.",
+    ),
+    "cui": _cur(
+        "to/for whom / to which",
+        ["to whom", "for whom", "to which", "whom (dat.)"],
+        "Relative/interrogative quī dat. — Gen.3.2+ Cui. Fill stub.",
+    ),
+    "nos": _cur(
+        "we / us",
+        ["we", "us"],
+        "Personal pronoun nōs — Fill stub.",
+    ),
+    "nobis": _cur(
+        "to/for us",
+        ["to us", "for us", "us (dat./abl.)", "by us"],
+        "Personal pronoun nōs dat./abl. — Gen.3.3+. Fill stub.",
+    ),
+    "se": _cur(
+        "himself / herself / itself / themselves",
+        ["himself", "herself", "itself", "themselves", "oneself"],
+        "Reflexive sē — Gen.3.7+. Fill stub.",
+    ),
+    "sibi": _cur(
+        "to/for himself / herself / themselves",
+        ["to himself", "for himself", "to herself", "to themselves"],
+        "Reflexive sibi — Gen.2.18+. Fill stub.",
+    ),
+    "vos": _cur(
+        "you (pl.)",
+        ["you (pl.)", "ye"],
+        "Personal pronoun vōs — Fill stub.",
+    ),
+    "his": _cur(
+        "to/for/by these",
+        ["to these", "by these", "these (dat./abl. pl.)", "with these"],
+        "Demonstrative hic dat./abl.pl. — Gen.1.7+. Fill stub. Not English his.",
+    ),
+    "eorum": _cur(
+        "of them / their",
+        ["of them", "their", "of those"],
+        "Gen. pl. of is/ea/id — Biblical. Fill stub.",
+    ),
+
+    # --- D) Gen1–3 / high-freq verb & noun stubs ---
+    "dicens": _cur(
+        "saying",
+        ["saying", "speaking", "while saying"],
+        "Present participle of dīcō — Gen.1.22+. Fill stub.",
+    ),
+    "dicentes": _cur(
+        "saying (pl.)",
+        ["saying", "speaking (pl.)"],
+        "Present participle pl. of dīcō — Fill stub.",
+    ),
+    "respondit": _cur(
+        "answered / replied",
+        ["answered", "replied", "he/she answered"],
+        "Perfect of respondeō — Gen.3.2+. Fill stub.",
+    ),
+    "responderunt": _cur(
+        "they answered",
+        ["they answered", "they replied"],
+        "Perfect pl. of respondeō — Fill stub.",
+    ),
+    "tulit": _cur(
+        "took / brought / bore",
+        ["took", "brought", "bore", "carried"],
+        "Perfect of ferō — Gen.2.15+. Fill stub.",
+    ),
+    "appellavit": _cur(
+        "called / named",
+        ["called", "named", "he/she called"],
+        "Perfect of appellō — Gen.1.10+. Fill stub.",
+    ),
+    "appellavitque": _cur(
+        "and (he) called / named",
+        ["and called", "and named", "and he called"],
+        "appellō perfect + -que — Gen.1.5+. Fill stub.",
+    ),
+    "viventem": _cur(
+        "living (acc.)",
+        ["living", "alive", "living creature (acc.)"],
+        "Present participle of vīvō — Gen.1.21+. Fill stub.",
+    ),
+    "viventis": _cur(
+        "of the living",
+        ["of the living", "living (gen.)"],
+        "Present participle gen. of vīvō — Fill stub.",
+    ),
+    "vescendum": _cur(
+        "for food / to eat",
+        ["for food", "to eat", "for eating"],
+        "Gerund(ive) of vēscor — Gen.1.30+. Fill stub.",
+    ),
+    "fecerat": _cur(
+        "had made / had done",
+        ["had made", "had done", "he/she had made"],
+        "Pluperfect of faciō — Gen.1.31+. Fill stub.",
+    ),
+    "operaretur": _cur(
+        "might work / till",
+        ["might work", "should till", "to work (subj.)"],
+        "Imperfect subjunctive of operor — Gen.2.5+. Fill stub.",
+    ),
+    "fructu": _cur(
+        "fruit (abl.)",
+        ["fruit", "produce", "from the fruit"],
+        "Noun fructus abl. — Gen.3.2+. Fill stub.",
+    ),
+    "unus": _cur(
+        "one / a single",
+        ["one", "a single", "alone"],
+        "Numeral ūnus — Gen.1.5+. Fill stub.",
+    ),
+    "unum": _cur(
+        "one (n./m. acc.)",
+        ["one", "a single one", "one thing"],
+        "Numeral ūnus — Gen.1.9+. Fill stub.",
+    ),
+    "duo": _cur(
+        "two",
+        ["two", "both"],
+        "Numeral duo — Gen.1.16+. Fill stub.",
+    ),
+    "faciamus": _cur(
+        "let us make",
+        ["let us make", "let us do", "we may make"],
+        "faciō 1pl present subjunctive — Gen.1.26+. Fill stub. Not face N.",
+    ),
+    "multiplicamini": _cur(
+        "be multiplied / multiply",
+        ["multiply", "be fruitful", "increase (pl. pass./mid.)"],
+        "multiplicō imperative/passive — Gen.1.22+. Fill stub.",
+    ),
+    "crescite": _cur(
+        "grow / increase",
+        ["grow", "increase", "be fruitful"],
+        "crēscō imperative pl. — Gen.1.22+. Fill stub.",
+    ),
+    "fecisti": _cur(
+        "you made / you did",
+        ["you made", "you did", "you have done"],
+        "Perfect 2sg of faciō — Gen.3.13+. Fill stub.",
+    ),
+    "praecepit": _cur(
+        "commanded / ordered",
+        ["commanded", "ordered", "charged"],
+        "Perfect of praecipiō — Gen.3.1+. Fill stub.",
+    ),
+    "praeceperam": _cur(
+        "I had commanded",
+        ["I had commanded", "I had ordered"],
+        "Pluperfect of praecipiō — Gen.3.11+. Fill stub.",
+    ),
+    "comederes": _cur(
+        "you should eat / eat (subj.)",
+        ["you should eat", "you might eat", "eat (subj.)"],
+        "Imperfect subjunctive of comedō — Gen.3.11+. Fill stub.",
+    ),
+    "comedisti": _cur(
+        "you ate / have eaten",
+        ["you ate", "you have eaten"],
+        "Perfect 2sg of comedō — Gen.3.11+. Fill stub.",
+    ),
+    "adduxit": _cur(
+        "brought / led to",
+        ["brought", "led to", "he/she brought"],
+        "Perfect of addūcō — Gen.2.19+. Fill stub.",
+    ),
+    "moventur": _cur(
+        "move / are moved",
+        ["move", "are moved", "creep"],
+        "Passive/middle of moveō — Gen.1.28+. Fill stub.",
+    ),
+    "facientem": _cur(
+        "making / bearing (acc.)",
+        ["making", "bearing", "producing (acc.)"],
+        "Present participle of faciō — Gen.1.11+. Fill stub.",
+    ),
+    "faciens": _cur(
+        "making / bearing",
+        ["making", "bearing", "producing"],
+        "Present participle of faciō — Gen.1.11+. Fill stub.",
+    ),
+    "dixerunt": _cur(
+        "they said",
+        ["they said", "they spoke"],
+        "Perfect pl. of dīcō — Fill stub.",
+    ),
+    "dabo": _cur(
+        "I will give",
+        ["I will give", "I shall give"],
+        "Future 1sg of dō — Fill stub.",
+    ),
+    "viam": _cur(
+        "way / road (acc.)",
+        ["way", "road", "path", "journey"],
+        "Noun via acc. — Fill stub.",
+    ),
+    "sumptus": _cur(
+        "taken / assumed",
+        ["taken", "assumed", "having been taken"],
+        "Perfect participle of sūmō — Gen.3.19+. Fill stub.",
+    ),
+    "ferebatur": _cur(
+        "was being carried / moved",
+        ["was being carried", "was moving", "was borne"],
+        "Imperfect passive of ferō — Gen.1.2+. Fill stub.",
+    ),
+    "dividat": _cur(
+        "let it divide / may divide",
+        ["let it divide", "may divide", "should divide"],
+        "Present subjunctive of dīvidō — Gen.1.6. Fill stub.",
+    ),
+    "divisitque": _cur(
+        "and (he) divided",
+        ["and divided", "and he divided"],
+        "dīvidō perfect + -que — Gen.1.7+. Fill stub.",
+    ),
+    "germinet": _cur(
+        "let it bring forth / sprout",
+        ["let it sprout", "let it bring forth", "may germinate"],
+        "Present subjunctive of germinō — Gen.1.11. Fill stub.",
+    ),
+    "protulit": _cur(
+        "brought forth / produced",
+        ["brought forth", "produced", "put forth"],
+        "Perfect of prōferō — Gen.1.12+. Fill stub.",
+    ),
+    "praeesset": _cur(
+        "should be over / preside",
+        ["should be over", "might preside", "to rule over (subj.)"],
+        "Imperfect subjunctive of praesum — Gen.1.16. Fill stub.",
+    ),
+    "omnique": _cur(
+        "and every / and all",
+        ["and every", "and all", "and to every"],
+        "omnis + -que — Gen.1.26+. Fill stub.",
+    ),
+    "factumque": _cur(
+        "and it was done / made",
+        ["and it was done", "and it was made", "and it came to pass"],
+        "factum + -que — Gen.1.5+. Fill stub.",
+    ),
+    "lignumque": _cur(
+        "and the tree / wood",
+        ["and the tree", "and wood", "and timber"],
+        "lignum + -que — Gen.1.12+. Fill stub.",
+    ),
+    "tecum": _cur(
+        "with you (sg.)",
+        ["with you", "with thee"],
+        "tēcum = cum + tē — Fill stub.",
+    ),
+    "mecum": _cur(
+        "with me",
+        ["with me"],
+        "mēcum = cum + mē — Fill stub.",
+    ),
+    "vobiscum": _cur(
+        "with you (pl.)",
+        ["with you (pl.)"],
+        "vōbīscum = cum + vōbīs — Fill stub.",
+    ),
+    "peperit": _cur(
+        "bore / gave birth",
+        ["bore", "gave birth", "she bore"],
+        "Perfect of pariō — Fill stub.",
+    ),
+    "vixit": _cur(
+        "lived",
+        ["lived", "he/she lived"],
+        "Perfect of vīvō — Fill stub.",
+    ),
+    "vixitque": _cur(
+        "and (he) lived",
+        ["and lived", "and he lived"],
+        "vīvō perfect + -que — Fill stub.",
+    ),
+    "abiit": _cur(
+        "went away / departed",
+        ["went away", "departed", "he/she went"],
+        "Perfect of abeō — Fill stub.",
+    ),
+    "habitavit": _cur(
+        "dwelt / lived",
+        ["dwelt", "lived", "inhabited"],
+        "Perfect of habitō — Fill stub.",
+    ),
+    "apparuit": _cur(
+        "appeared",
+        ["appeared", "he/she/it appeared"],
+        "Perfect of appāreō — Fill stub.",
+    ),
+    "misit": _cur(
+        "sent",
+        ["sent", "he/she sent"],
+        "Perfect of mittō — Fill stub.",
+    ),
+    "venerunt": _cur(
+        "they came",
+        ["they came", "they arrived"],
+        "Perfect pl. of veniō — Fill stub.",
+    ),
+    "habebat": _cur(
+        "had / was having",
+        ["had", "was having", "possessed"],
+        "Imperfect of habeō — Fill stub.",
+    ),
+    "vidisset": _cur(
+        "had seen / would have seen",
+        ["had seen", "would have seen", "saw (subj.)"],
+        "Pluperfect subjunctive of videō — Fill stub.",
+    ),
+    "quidquam": _cur(
+        "anything / something",
+        ["anything", "something", "at all"],
+        "Indefinite quidquam — Fill stub.",
+    ),
+    "conspectu": _cur(
+        "sight / presence (abl.)",
+        ["sight", "presence", "in the sight"],
+        "Noun cōnspectus abl. — Fill stub.",
+    ),
+    "rursumque": _cur(
+        "and again",
+        ["and again", "again"],
+        "rursum + -que — Fill stub.",
+    ),
+    "tres": _cur(
+        "three",
+        ["three"],
+        "Numeral trēs — Fill stub.",
+    ),
+    "oves": _cur(
+        "sheep",
+        ["sheep", "ewes", "flock"],
+        "Noun ovis pl. — Fill stub. Prefer sheep N.",
+    ),
+    "ovium": _cur(
+        "of sheep",
+        ["of sheep", "sheep (gen. pl.)"],
+        "Noun ovis gen.pl. — Fill stub.",
+    ),
+
+    # --- E) high-freq proper-name stubs ---
+    "joseph": _cur(
+        "Joseph",
+        ["Joseph", "Joseph (son of Jacob)", "proper name"],
+        "Genesis Joseph — proper name. Fill stub.",
+    ),
+    "abraham": _cur(
+        "Abraham",
+        ["Abraham", "Abram/Abraham", "proper name"],
+        "Genesis Abraham — proper name. Fill stub.",
+    ),
+    "isaac": _cur(
+        "Isaac",
+        ["Isaac", "Isaac (son of Abraham)", "proper name"],
+        "Genesis Isaac — proper name. Fill stub.",
+    ),
+    "esau": _cur(
+        "Esau",
+        ["Esau", "Esau (son of Isaac)", "proper name"],
+        "Genesis Esau — proper name. Fill stub.",
+    ),
+    "noe": _cur(
+        "Noah",
+        ["Noah", "Noe", "proper name"],
+        "Genesis Noë — proper name Noah. Fill stub.",
+    ),
+    "laban": _cur(
+        "Laban",
+        ["Laban", "Laban (of Haran)", "proper name"],
+        "Genesis Laban — proper name. Fill stub.",
+    ),
+    "rachel": _cur(
+        "Rachel",
+        ["Rachel", "Rachel (wife of Jacob)", "proper name"],
+        "Genesis Rachel — proper name. Fill stub.",
+    ),
+    "cain": _cur(
+        "Cain",
+        ["Cain", "Cain (son of Adam)", "proper name"],
+        "Genesis Cain — proper name. Fill stub.",
+    ),
+    "lamech": _cur(
+        "Lamech",
+        ["Lamech", "Lamech (proper name)"],
+        "Genesis Lamech — proper name. Fill stub.",
+    ),
+    "benjamin": _cur(
+        "Benjamin",
+        ["Benjamin", "Benjamin (son of Jacob)", "proper name"],
+        "Genesis Benjamin — proper name. Fill stub.",
+    ),
+    "nachor": _cur(
+        "Nahor",
+        ["Nahor", "Nachor", "proper name"],
+        "Genesis Nachor — proper name Nahor. Fill stub.",
+    ),
+    "abimelech": _cur(
+        "Abimelech",
+        ["Abimelech", "Abimelech (king)", "proper name"],
+        "Genesis Abimelech — proper name. Fill stub.",
+    ),
+    "sem": _cur(
+        "Shem",
+        ["Shem", "Sem", "proper name"],
+        "Genesis Sem — proper name Shem. Fill stub.",
+    ),
+    "rebecca": _cur(
+        "Rebekah",
+        ["Rebekah", "Rebecca", "proper name"],
+        "Genesis Rebecca — proper name Rebekah. Fill stub.",
+    ),
+    "ruben": _cur(
+        "Reuben",
+        ["Reuben", "Ruben", "proper name"],
+        "Genesis Ruben — proper name Reuben. Fill stub.",
+    ),
+    "ismael": _cur(
+        "Ishmael",
+        ["Ishmael", "Ismael", "proper name"],
+        "Genesis Ismaël — proper name Ishmael. Fill stub.",
+    ),
+    "henoch": _cur(
+        "Enoch",
+        ["Enoch", "Henoch", "proper name"],
+        "Genesis Henoch — proper name Enoch. Fill stub.",
+    ),
+    "ephraim": _cur(
+        "Ephraim",
+        ["Ephraim", "Ephraim (son of Joseph)", "proper name"],
+        "Genesis Ephraim — proper name. Fill stub.",
+    ),
+    "sichem": _cur(
+        "Shechem",
+        ["Shechem", "Sichem", "place / proper name"],
+        "Genesis Sichem — place/person Shechem. Fill stub.",
+    ),
+    "bethel": _cur(
+        "Bethel",
+        ["Bethel", "Bethel (place)", "house of God"],
+        "Genesis Bethel — place-name. Fill stub.",
+    ),
+
+    # --- F) Gen.4.23 Ada + Sella (Lamech wives); Ada verse-override target ---
+    "ada": _cur(
+        "Ada (Lamech's wife)",
+        ["Ada", "Ada (wife of Lamech)", "Adah", "proper name"],
+        "Gen.4.23 Adæ = Ada (Lamech's wife), NOT Adam genitive. Verse-context override. "
+        "Elsewhere Adæ/Adae → Adam (gen.) curated:adae. Unshippable if Adam on Gen.4.23.",
+    ),
+    "sella": _cur(
+        "Sella (Lamech's wife)",
+        ["Sella", "Sella (wife of Lamech)", "Zillah", "proper name"],
+        "Genesis Sella/Sellæ — Lamech's wife (Gen.4.19–23). NEVER sell-/chair/seat. Unshippable if chair.",
+    ),
+    "sellae": _cur(
+        "Sella (gen./dat.)",
+        ["Sella", "of Sella", "to Sella", "Zillah"],
+        "Genesis Sellæ — Lamech's wife (Gen.4.23). NEVER sellar/chair. Unshippable if chair.",
+    ),
+
 
 }
+
 
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
@@ -1510,8 +2118,161 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "potum": "potum",
     "potus": "potus",
     "potumque": "potum",
+
+    # v0.1.13 Wave 7 high-value stubs + Ada/Sella + enclitics
+    "suo": "suo",
+    "suam": "suam",
+    "suae": "suae",
+    "suis": "suis",
+    "sui": "sui",
+    "suos": "suos",
+    "sua": "sua",
+    "suorum": "suorum",
+    "suarum": "suarum",
+    "suoque": "suo",
+    "suamque": "suam",
+    "suaeque": "suae",
+    "suisque": "suis",
+    "suique": "sui",
+    "suosque": "suos",
+    "suaque": "sua",
+    "tuus": "tuus",
+    "tua": "tua",
+    "tuum": "tuum",
+    "tui": "tui",
+    "tuo": "tuo",
+    "tuam": "tuam",
+    "tuae": "tuae",
+    "tuis": "tuis",
+    "tuos": "tuos",
+    "tuas": "tuas",
+    "tuorum": "tuorum",
+    "tuarum": "tuarum",
+    "tuusque": "tuus",
+    "tuaque": "tua",
+    "tuumque": "tuum",
+    "tuique": "tui",
+    "tuoque": "tuo",
+    "tuamque": "tuam",
+    "tuaeque": "tuae",
+    "tuisque": "tuis",
+    "quem": "quem",
+    "quemque": "quem",
+    "quid": "quid",
+    "quibus": "quibus",
+    "quibusque": "quibus",
+    "haec": "haec",
+    "hae": "hae",
+    "hanc": "hanc",
+    "hancque": "hanc",
+    "cui": "cui",
+    "nos": "nos",
+    "nobis": "nobis",
+    "nobisque": "nobis",
+    "se": "se",
+    "sese": "se",
+    "sibi": "sibi",
+    "vos": "vos",
+    "his": "his",
+    "eorum": "eorum",
+    "eorumque": "eorum",
+    "dicens": "dicens",
+    "dicentes": "dicentes",
+    "respondit": "respondit",
+    "responderunt": "responderunt",
+    "tulit": "tulit",
+    "appellavit": "appellavit",
+    "appellavitque": "appellavitque",
+    "viventem": "viventem",
+    "viventis": "viventis",
+    "vescendum": "vescendum",
+    "fecerat": "fecerat",
+    "operaretur": "operaretur",
+    "fructu": "fructu",
+    "fructuque": "fructu",
+    "unus": "unus",
+    "unum": "unum",
+    "duo": "duo",
+    "faciamus": "faciamus",
+    "multiplicamini": "multiplicamini",
+    "crescite": "crescite",
+    "fecisti": "fecisti",
+    "praecepit": "praecepit",
+    "praeceperam": "praeceperam",
+    "comederes": "comederes",
+    "comedisti": "comedisti",
+    "adduxit": "adduxit",
+    "moventur": "moventur",
+    "facientem": "facientem",
+    "faciens": "faciens",
+    "dixerunt": "dixerunt",
+    "dabo": "dabo",
+    "viam": "viam",
+    "viamque": "viam",
+    "sumptus": "sumptus",
+    "ferebatur": "ferebatur",
+    "dividat": "dividat",
+    "divisitque": "divisitque",
+    "germinet": "germinet",
+    "protulit": "protulit",
+    "praeesset": "praeesset",
+    "omnique": "omnique",
+    "factumque": "factumque",
+    "lignumque": "lignumque",
+    "tecum": "tecum",
+    "mecum": "mecum",
+    "vobiscum": "vobiscum",
+    "peperit": "peperit",
+    "vixit": "vixit",
+    "vixitque": "vixitque",
+    "abiit": "abiit",
+    "habitavit": "habitavit",
+    "apparuit": "apparuit",
+    "misit": "misit",
+    "venerunt": "venerunt",
+    "habebat": "habebat",
+    "vidisset": "vidisset",
+    "quidquam": "quidquam",
+    "conspectu": "conspectu",
+    "rursumque": "rursumque",
+    "tres": "tres",
+    "oves": "oves",
+    "ovium": "ovium",
+    "joseph": "joseph",
+    "abraham": "abraham",
+    "isaac": "isaac",
+    "esau": "esau",
+    "noe": "noe",
+    "laban": "laban",
+    "rachel": "rachel",
+    "cain": "cain",
+    "lamech": "lamech",
+    "benjamin": "benjamin",
+    "nachor": "nachor",
+    "abimelech": "abimelech",
+    "sem": "sem",
+    "rebecca": "rebecca",
+    "ruben": "ruben",
+    "ismael": "ismael",
+    "henoch": "henoch",
+    "ephraim": "ephraim",
+    "sichem": "sichem",
+    "bethel": "bethel",
+    "ada": "ada",
+    "sella": "sella",
+    "sellae": "sellae",
 }
 
+
+
+
+
+# Verse-context curated overrides: (verse_id, lemma_key) → curated gloss key.
+# Applied in build() before generic resolve_gloss (Wave 7+).
+VERSE_GLOSS_OVERRIDES: dict[tuple[str, str], str] = {
+    # Gen.4.23 Adæ = Ada (Lamech's wife), NOT Adam (gen.)
+    ("Gen.4.23", "adae"): "ada",
+}
 
 
 def normalize_latin_surface(s: str) -> str:
@@ -2144,6 +2905,32 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
                 "note": f"Blocked Whitaker adar/plow hit ({entry.get('primary')}); Adam genitive only.",
             }
         return gid
+
+    # Sella/Sellæ (Lamech wife) must never take sell-/chair
+    if key in ("sella", "sellae") and (
+        "chair" in prim
+        or "seat" in prim
+        or "stool" in prim
+        or "saddle" in prim
+        or matched in ("sell", "sellar")
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sell/chair]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sell/chair hit ({entry.get('primary')}); Sella proper name only.",
+            }
+        return gid
+
     # terra NOUN family must never take terreō / w:terr frighten (do NOT fold terror/terrestris/terret)
     TERRA_FAMILY = frozenset({
         "terra", "terram", "terrae", "terras", "terris", "terrarum",
@@ -3267,7 +4054,12 @@ def build():
                 if not phonetic:
                     phonetic = "[pending Scriba]"
                     pending = True
-            gid = resolve_gloss(key, whitaker, gloss_ids)
+            # Wave 7+: verse-context curated override (e.g. Gen.4.23 Adæ→Ada)
+            vkey = VERSE_GLOSS_OVERRIDES.get((vid, key))
+            if vkey:
+                gid = ensure_curated_gloss(vkey, gloss_ids)
+            else:
+                gid = resolve_gloss(key, whitaker, gloss_ids)
             if gid and gid.startswith("stub:"):
                 gloss_stubs += 1
             elif gid and gid.startswith("curated:"):
@@ -3335,7 +4127,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able. Wave7 stubs: suus/tuus leftovers; quem/quid/haec/cui/nos/nobis/se/sibi/vos/his/eorum; dicens/respondit/tulit/appellavit/viventem/unus/duo + Gen1–3 verbs; Joseph/Abraham/Isaac/Esau/Noe + high-freq names; Gen.4.23 Adæ→Ada (Lamech wife) verse-context (Adam gen. elsewhere); Sella/Sellæ never chair.",
             },
             "gaps": meta_gaps,
         },
@@ -3405,6 +4197,9 @@ def build():
         "Gen.4.7", "Gen.4.10", "Gen.7.1", "Gen.9.9", "Gen.9.25",
         "Gen.12.16", "Gen.16.1", "Gen.24.14", "Gen.28.17", "Gen.39.13",
         "Gen.43.34", "Gen.2.20",
+        # Wave 7 stub fills + Gen.4.23 Ada verse-context
+        "Gen.4.19", "Gen.4.23", "Gen.12.5", "Gen.17.5", "Gen.25.25", "Gen.37.2",
+        "Gen.41.45", "Gen.29.16",
     ):
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
@@ -3421,7 +4216,7 @@ def build():
     gloss_map = gloss_ids
     sample_pack = {
         "meta": pack["meta"],
-        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 7, 9, 10, 11, 12, 14, 16, 17, 19, 24, 25, 28, 30, 35, 38, 39, 43)],
+        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 7, 9, 10, 11, 12, 14, 16, 17, 19, 24, 25, 28, 29, 30, 35, 37, 38, 39, 41, 43)],
         "verses": sample_verses,
         "glosses": {gid: gloss_map[gid] for gid in sample_gloss_ids if gid in gloss_map},
     }
@@ -3457,6 +4252,13 @@ def build():
         "boves", "ancilla", "ancillam", "ancillas",
         "vestem", "vestibus", "pars", "partem", "nomen", "nomina", "nominibus",
         "porta", "portam", "potum",
+        # Wave 7
+        "suo", "suam", "suae", "suis", "sui", "suos", "sua",
+        "tuus", "tua", "tuum", "tui", "tuo", "tuam", "tuae", "tuis",
+        "quem", "quid", "quibus", "haec", "cui", "nos", "nobis", "se", "sibi", "vos", "his", "eorum",
+        "dicens", "respondit", "tulit", "appellavit", "viventem", "unus", "duo",
+        "joseph", "abraham", "isaac", "esau", "noe",
+        "ada", "sella", "sellae",
     ]
     must_still_stub = []
     for m in must:
@@ -3483,7 +4285,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.12.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.13.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated
