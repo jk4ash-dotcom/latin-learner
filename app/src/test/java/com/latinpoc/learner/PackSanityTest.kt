@@ -153,16 +153,17 @@ class PackSanityTest {
 
     @Test
     fun closedClass_adDeSuperCuratedDefs() {
-        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus", "adam").forEach { key ->
+        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus", "adam", "adae").forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
             assertFalse(g.primary.contains("go, walk", ignoreCase = true))
             assertFalse(g.primary.contains("fiber", ignoreCase = true))
-            // curated:ad must not be Adam; curated:adam IS Adam
-            if (key != "adam") {
+            // curated:ad must not be Adam; curated:adam / curated:adae ARE Adam
+            if (key != "adam" && key != "adae") {
                 assertFalse(g.primary.contains("Adam", ignoreCase = true))
             }
+            assertFalse(g.primary.contains("plow", ignoreCase = true))
             assertFalse(g.primary.contains("gods (pl.) on high", ignoreCase = true))
             assertFalse(g.primary.contains("luxury", ignoreCase = true))
             assertFalse(g.primary.contains("lust", ignoreCase = true))
@@ -271,6 +272,37 @@ class PackSanityTest {
             }
         }
         assertTrue("expected Gen.2–3 Adam tokens, got $adamCount", adamCount >= 14)
+    }
+
+    @Test
+    fun gen220_317_321_adaeAdamGenitiveNeverPlow() {
+        val verses = listOf("Gen.2.20", "Gen.3.17", "Gen.3.21")
+        var adaeCount = 0
+        for (id in verses) {
+            val v = repo.verse(id)!!
+            val tokens = v.words.filter {
+                it.la.equals("Adæ", ignoreCase = true) ||
+                    it.la.equals("Adae", ignoreCase = true) ||
+                    it.lemmaId == "adae"
+            }
+            assertTrue("expected Adæ/Adae in $id", tokens.isNotEmpty())
+            for (w in tokens) {
+                adaeCount++
+                val g = repo.gloss(w.glossId)!!
+                assertTrue(
+                    "Adæ should be Adam (gen.): ${g.primary} @ $id",
+                    g.primary.contains("Adam", ignoreCase = true),
+                )
+                assertFalse("Adæ must NEVER mean plow @ $id", g.primary.contains("plow", ignoreCase = true))
+                assertFalse("Adæ must NEVER mean plough @ $id", g.primary.contains("plough", ignoreCase = true))
+                assertTrue(
+                    "expected curated adae, got ${g.id} @ $id",
+                    g.id == "curated:adae" || g.id.startsWith("curated:"),
+                )
+                assertFalse("must not bind w:adar (plow) @ $id", w.glossId == "w:adar")
+            }
+        }
+        assertTrue("expected >=3 Adæ tokens in Gen.2.20/3.17/3.21, got $adaeCount", adaeCount >= 3)
     }
 
     @Test

@@ -13,8 +13,8 @@ android {
         applicationId = "com.latinpoc.learner"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "0.1.5-poc"
+        versionCode = 7
+        versionName = "0.1.6-poc"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         val gitShaProvider = providers.exec {
             commandLine("git", "rev-parse", "--short=12", "HEAD")

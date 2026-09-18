@@ -1,4 +1,4 @@
-# Open questions for Scriba (Biblical Latin) — post v0.1.5 Adam
+# Open questions for Scriba (Biblical Latin) — post v0.1.6 Adam genitive
 
 ## Phonetics
 1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
@@ -13,8 +13,10 @@
 4. ~~v0.1.3 meis/quis~~ → declined meus-family (incl. all 11× Genesis *meis*, Gen.2.23) curated my/mine with w:mei urinate guard; *Quis/quis* → who? (not how?).
 5. ~~v0.1.4 illud/manus~~ → *illud* (+ ille-family) that/it (block illūdō sexual; Gen.3.3); *manum*/*manus* hand (block maneō sexual overnight; Gen.3.22).
 6. ~~v0.1.5 Adam~~ → all Genesis *Adam* → proper name Adam (block `w:adam`/adamō lust; Gen.2–3 14×).
-7. Remaining `stub:*` — priority next wave after Scriba re-review.
-8. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + `tools/pipeline/build_genesis_pack.py`. Prefer full WORDS morphology later?
+7. ~~v0.1.6 Adam genitive~~ → *Adæ*/*Adae* → Adam (gen.) (block `w:adar` plow carefully; Gen.2.20, 3.17, 3.21). Nominative-only key insufficient.
+8. Later (non-block): Gen.4.23 *Adæ* = Ada (Lamech’s wife); Gen.10/14 Adama/Admah place-names — need verse-context disambiguation.
+9. Remaining `stub:*` — priority next wave after Scriba re-review.
+10. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + `tools/pipeline/build_genesis_pack.py`. Prefer full WORDS morphology later?
 
 ## Versification
 Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.
