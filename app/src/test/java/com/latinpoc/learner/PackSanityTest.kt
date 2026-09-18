@@ -153,15 +153,20 @@ class PackSanityTest {
 
     @Test
     fun closedClass_adDeSuperCuratedDefs() {
-        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus").forEach { key ->
+        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus", "adam").forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
             assertFalse(g.primary.contains("go, walk", ignoreCase = true))
             assertFalse(g.primary.contains("fiber", ignoreCase = true))
-            assertFalse(g.primary.contains("Adam", ignoreCase = true))
+            // curated:ad must not be Adam; curated:adam IS Adam
+            if (key != "adam") {
+                assertFalse(g.primary.contains("Adam", ignoreCase = true))
+            }
             assertFalse(g.primary.contains("gods (pl.) on high", ignoreCase = true))
             assertFalse(g.primary.contains("luxury", ignoreCase = true))
+            assertFalse(g.primary.contains("lust", ignoreCase = true))
+            assertFalse(g.primary.contains("fall in love", ignoreCase = true))
         }
     }
 
@@ -231,6 +236,41 @@ class PackSanityTest {
             g.id.startsWith("curated:") || g.source.contains("curated", ignoreCase = true),
         )
         assertFalse("must not bind w:man (maneō)", manum.glossId == "w:man")
+    }
+
+    @Test
+    fun gen23_adamProperNameNeverLust() {
+        val verses = listOf(
+            "Gen.2.19", "Gen.2.20", "Gen.2.21", "Gen.2.22", "Gen.2.23", "Gen.2.25",
+            "Gen.3.8", "Gen.3.9", "Gen.3.12", "Gen.3.20", "Gen.3.22", "Gen.3.24",
+        )
+        var adamCount = 0
+        for (id in verses) {
+            val v = repo.verse(id)!!
+            for (w in v.words.filter { it.la.equals("Adam", ignoreCase = true) }) {
+                adamCount++
+                val g = repo.gloss(w.glossId)!!
+                assertTrue(
+                    "Adam should be proper name: ${g.primary} @ $id",
+                    g.primary.contains("Adam", ignoreCase = true),
+                )
+                assertFalse("Adam must NEVER mean lust @ $id", g.primary.contains("lust", ignoreCase = true))
+                assertFalse(
+                    "Adam must NEVER mean fall in love @ $id",
+                    g.primary.contains("fall in love", ignoreCase = true),
+                )
+                assertFalse(
+                    "Adam must NEVER mean love passionately @ $id",
+                    g.primary.contains("love passionately", ignoreCase = true),
+                )
+                assertTrue(
+                    "expected curated adam, got ${g.id} @ $id",
+                    g.id == "curated:adam" || g.id.startsWith("curated:"),
+                )
+                assertFalse("must not bind w:adam (adamō) @ $id", w.glossId == "w:adam")
+            }
+        }
+        assertTrue("expected Gen.2–3 Adam tokens, got $adamCount", adamCount >= 14)
     }
 
     @Test

@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.4-poc"
+PACK_VERSION = "0.1.5-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -320,6 +320,12 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["of hands", "hands (gen. pl.)"],
         "manus gen. pl. — NEVER maneō.",
     ),
+    # v0.1.5: Adam proper name (block w:adam / adamō lust)
+    "adam": _cur(
+        "Adam",
+        ["Adam", "Adam (first man)", "proper name"],
+        "All Genesis Adam — proper name Adam. NEVER adamō/w:adam fall in love/lust with. Unshippable if wrong.",
+    ),
 }
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
@@ -410,6 +416,8 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "manui": "manui",
     "manibus": "manibus",
     "manuum": "manuum",
+    # v0.1.5 Adam proper name (block w:adam / adamō lust)
+    "adam": "adam",
 }
 
 
@@ -1004,6 +1012,26 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
                 "note": f"Blocked Whitaker maneō hit ({entry.get('primary')}); manus hand only.",
             }
         return gid
+    # Adam proper name must never take adamō / w:adam lust
+    if key == "adam" and (
+        matched == "adam"
+        or "lust" in prim
+        or "fall in love" in prim
+        or "love passionately" in prim
+    ):
+        if "adam" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("adam", gloss_ids)
+        gid = f"stub:adam"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked adamō/lust]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker adamō/lust hit ({entry.get('primary')}); proper name Adam only.",
+            }
+        return gid
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -1143,7 +1171,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust.",
             },
             "gaps": meta_gaps,
         },
@@ -1235,6 +1263,7 @@ def build():
         "vita", "vitae", "lux",
         "meus", "mea", "meum", "meis", "quis",
         "illud", "ille", "manum", "manus",
+        "adam",
     ]
     must_still_stub = []
     for m in must:
@@ -1261,7 +1290,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.4.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.5.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated
