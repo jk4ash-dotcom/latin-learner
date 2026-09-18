@@ -153,7 +153,7 @@ class PackSanityTest {
 
     @Test
     fun closedClass_adDeSuperCuratedDefs() {
-        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux").forEach { key ->
+        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis").forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
@@ -163,6 +163,38 @@ class PackSanityTest {
             assertFalse(g.primary.contains("gods (pl.) on high", ignoreCase = true))
             assertFalse(g.primary.contains("luxury", ignoreCase = true))
         }
+    }
+
+    @Test
+    fun gen223_meisMyMineNotUrinate() {
+        val v = repo.verse("Gen.2.23")!!
+        val meis = v.words.first { it.la.equals("meis", ignoreCase = true) }
+        val g = repo.gloss(meis.glossId)!!
+        assertTrue(
+            "meis should be my/mine: ${g.primary}",
+            g.primary.contains("my", ignoreCase = true) || g.primary.contains("mine", ignoreCase = true),
+        )
+        assertFalse("meis must NEVER mean urinate", g.primary.contains("urinate", ignoreCase = true))
+        assertFalse(g.primary.contains("make water", ignoreCase = true))
+        assertTrue(
+            "expected curated meus-family gloss, got ${g.id}",
+            g.id.startsWith("curated:") || g.source.contains("curated", ignoreCase = true),
+        )
+        assertFalse("must not bind w:mei", meis.glossId == "w:mei")
+    }
+
+    @Test
+    fun gen311_quisWhoNotHow() {
+        val v = repo.verse("Gen.3.11")!!
+        val quis = v.words.first { it.la.equals("Quis", ignoreCase = true) }
+        val g = repo.gloss(quis.glossId)!!
+        assertTrue("quis should be who?: ${g.primary}", g.primary.contains("who", ignoreCase = true))
+        assertFalse("quis must NOT mean how?", g.primary.contains("how?", ignoreCase = true))
+        assertFalse("quis must NOT be how-so ADV", g.primary.lowercase().startsWith("how"))
+        assertTrue(
+            "expected curated quis, got ${g.id}",
+            g.id == "curated:quis" || g.id.startsWith("curated:"),
+        )
     }
 
     @Test

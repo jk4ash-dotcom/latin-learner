@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.2-poc"
+PACK_VERSION = "0.1.3-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -158,6 +158,67 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["light", "daylight", "day"],
         "Gen.1.3 Fiat lux — noun lux/lucis, not luxury/sprain.",
     ),
+    # v0.1.3: declined meus-family (block w:mei urinate) + interrogative quis
+    "meus": _cur(
+        "my / mine",
+        ["my", "mine", "my own"],
+        "Possessive adjective meus — NOT meiō/mingō urinate. Unshippable if wrong.",
+    ),
+    "mea": _cur(
+        "my / mine (f.)",
+        ["my", "mine", "my (f.)"],
+        "meus-family (f.) — NOT urinate.",
+    ),
+    "meum": _cur(
+        "my / mine (n./acc.)",
+        ["my", "mine", "my (n./acc.)"],
+        "meus-family — NOT urinate.",
+    ),
+    "meae": _cur(
+        "my / of my (f.)",
+        ["my", "of my", "mine (f. gen./dat./nom.pl.)"],
+        "meus-family — NOT urinate.",
+    ),
+    "meo": _cur(
+        "to/for/by my",
+        ["to my", "for my", "by/with my (m./n.)"],
+        "meus-family — NOT urinate.",
+    ),
+    "meam": _cur(
+        "my (f. acc.)",
+        ["my (f. acc.)", "mine"],
+        "meus-family — NOT urinate.",
+    ),
+    "meos": _cur(
+        "my (m. pl. acc.)",
+        ["my (m. pl.)", "mine"],
+        "meus-family — NOT urinate.",
+    ),
+    "meas": _cur(
+        "my (f. pl. acc.)",
+        ["my (f. pl.)", "mine"],
+        "meus-family — NOT urinate.",
+    ),
+    "meorum": _cur(
+        "of my (m./n. pl.)",
+        ["of my", "of mine", "my (gen. pl.)"],
+        "meus-family — NOT urinate.",
+    ),
+    "mearum": _cur(
+        "of my (f. pl.)",
+        ["of my", "of mine", "my (f. gen. pl.)"],
+        "meus-family — NOT urinate.",
+    ),
+    "meis": _cur(
+        "my / mine",
+        ["my", "mine", "with/from/to my (dat./abl. pl.)"],
+        "Gen.2.23 ossibus meis + all Genesis meis — meus-family dat./abl. pl. NEVER meiō/urinate.",
+    ),
+    "quis": _cur(
+        "who?",
+        ["who?", "who", "anyone/someone (indef.)"],
+        "Gen.3.11 Quis enim — interrogative quis, NOT qui ADV how?.",
+    ),
 }
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
@@ -214,6 +275,19 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "lux": "lux",
     "vocavitque": "vocavitque",
     "benedixitque": "benedixitque",
+    # v0.1.3 meus-family declined forms + quis (block w:mei urinate / w:qui how?)
+    "meus": "meus",
+    "mea": "mea",
+    "meum": "meum",
+    "meae": "meae",
+    "meo": "meo",
+    "meam": "meam",
+    "meos": "meos",
+    "meas": "meas",
+    "meorum": "meorum",
+    "mearum": "mearum",
+    "meis": "meis",
+    "quis": "quis",
 }
 
 
@@ -709,10 +783,55 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
         "ejus": ("abjure",),
         "ejur": ("abjure",),
     }
+    # meus-family surfaces must never resolve via w:mei (mingō) "urinate"
+    MEUS_FAMILY = frozenset({
+        "meus", "mea", "meum", "mei", "meae", "meo", "meam",
+        "meorum", "mearum", "meis", "meos", "meas", "mi",
+    })
+    prim = (entry.get("primary") or "").lower()
+    if key in MEUS_FAMILY and (
+        matched == "mei"
+        or "urinate" in prim
+        or "make water" in prim
+    ):
+        # Prefer curated if available; else stub rather than ship mingō
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked meiō/urinate]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker mei/mingō hit ({entry.get('primary')}); meus-family only.",
+            }
+        return gid
+    # quis must never take qui ADV "how?"
+    if key == "quis" and (
+        "how?" in prim or prim.startswith("how") or matched == "qui"
+    ):
+        if "quis" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("quis", gloss_ids)
+        gid = f"stub:quis"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked qui how?]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker qui ADV how? for quis ({entry.get('primary')}).",
+            }
+        return gid
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
-            prim = (entry.get("primary") or "").lower()
-            if any(b in prim for b in bad_bits):
+            prim_ff = (entry.get("primary") or "").lower()
+            if any(b in prim_ff for b in bad_bits):
                 gid = f"stub:{key}"
                 if gid not in gloss_ids:
                     gloss_ids[gid] = {
@@ -848,7 +967,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?.",
             },
             "gaps": meta_gaps,
         },
@@ -938,6 +1057,7 @@ def build():
         "benedixit", "posuit", "vocavitque", "benedixitque",
         "et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num",
         "vita", "vitae", "lux",
+        "meus", "mea", "meum", "meis", "quis",
     ]
     must_still_stub = []
     for m in must:
@@ -964,7 +1084,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.2.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.3.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated
