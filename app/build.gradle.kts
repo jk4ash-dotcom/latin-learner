@@ -21,7 +21,7 @@ android {
             isIgnoreExitValue = true
         }.standardOutput.asText
         val gitSha = gitShaProvider.get().trim().ifBlank { "uncommitted" }
-        buildConfigField("String", "GIT_SHA", ""$gitSha"")
+        buildConfigField("String", "GIT_SHA", "\"$gitSha\"")
     }
 
     buildTypes {
