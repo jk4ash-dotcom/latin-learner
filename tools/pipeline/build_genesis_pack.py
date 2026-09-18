@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.6-poc"
+PACK_VERSION = "0.1.7-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -333,6 +333,38 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Genesis Adæ/Adae genitive of Adam (e.g. Gen.2.20, 3.17, 3.21). NEVER w:adar plow carefully. "
         "Note later: Gen.4.23 Adæ=Ada (Lamech wife); Gen.10/14 Adama/Admah place-names. Unshippable if plow.",
     ),
+    # v0.1.7: terra NOUN family → earth/land (block w:terr / terreō frighten)
+    # Do NOT fold: terror/terroris; terreō verb forms (terret…); terrestris.
+    "terra": _cur(
+        "earth / land",
+        ["earth", "land", "ground", "country"],
+        "Noun terra — NEVER terreō/w:terr frighten/terrify/terror. Unshippable if wrong.",
+    ),
+    "terram": _cur(
+        "earth / land (acc.)",
+        ["earth (acc.)", "land (acc.)", "ground"],
+        "Gen.1.1 cælum et terram — terra acc. NEVER terreō/w:terr frighten. Unshippable if wrong.",
+    ),
+    "terrae": _cur(
+        "of/to the earth / lands",
+        ["of the earth", "to the earth", "lands (nom. pl.)", "earth (gen./dat.)"],
+        "terra gen./dat./nom.pl. (incl. terræ) — NEVER terreō. Unshippable if frighten.",
+    ),
+    "terras": _cur(
+        "lands (acc. pl.)",
+        ["lands", "earths (acc. pl.)"],
+        "terra acc. pl. — NEVER terreō/w:terr.",
+    ),
+    "terris": _cur(
+        "lands (dat./abl. pl.)",
+        ["lands", "by/with/from lands", "to lands"],
+        "terra dat./abl. pl. — NEVER terreō. Covers terrisque (Gen.10.20).",
+    ),
+    "terrarum": _cur(
+        "of lands (gen. pl.)",
+        ["of lands", "of the earth (gen. pl.)"],
+        "terra gen. pl. — NEVER terreō. Family completeness (no bare form in Genesis).",
+    ),
 }
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
@@ -427,6 +459,19 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "adam": "adam",
     # v0.1.6 Adam genitive Adæ/Adae (block w:adar plow carefully)
     "adae": "adae",
+    # v0.1.7 terra NOUN family + enclitics (block w:terr / terreō frighten)
+    "terra": "terra",
+    "terram": "terram",
+    "terrae": "terrae",
+    "terras": "terras",
+    "terris": "terris",
+    "terrarum": "terrarum",
+    "terraque": "terra",
+    "terramque": "terram",
+    "terraeque": "terrae",
+    "terrasque": "terras",
+    "terrisque": "terris",
+    "terrarumque": "terrarum",
 }
 
 
@@ -1060,6 +1105,34 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
                 "note": f"Blocked Whitaker adar/plow hit ({entry.get('primary')}); Adam genitive only.",
             }
         return gid
+    # terra NOUN family must never take terreō / w:terr frighten (do NOT fold terror/terrestris/terret)
+    TERRA_FAMILY = frozenset({
+        "terra", "terram", "terrae", "terras", "terris", "terrarum",
+        "terraque", "terramque", "terraeque", "terrasque", "terrisque", "terrarumque",
+    })
+    if key in TERRA_FAMILY and (
+        "frighten" in prim
+        or "terrify" in prim
+        or "scare" in prim
+        or "deter" in prim
+        or (matched == "terr" and "earth" not in prim and "land" not in prim and "ground" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked terreō/frighten]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker terreō/w:terr hit ({entry.get('primary')}); terra earth/land only.",
+            }
+        return gid
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -1199,7 +1272,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only).",
             },
             "gaps": meta_gaps,
         },
@@ -1259,7 +1332,7 @@ def build():
 
     sample_verses = [v for v in verses_out if v["chapter"] <= 3]
     # Gen.4.9: sum / Dominus / mei / num / ubi / qui; Gen.1.3: lux / et
-    for extra_id in ("Gen.4.9", "Gen.19.18"):  # Gen.19.18 has "domine mi"
+    for extra_id in ("Gen.4.9", "Gen.19.18", "Gen.10.20", "Gen.35.12"):  # enclitics terrisque/terramque
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
             sample_verses.append(extra)
@@ -1275,7 +1348,7 @@ def build():
     gloss_map = gloss_ids
     sample_pack = {
         "meta": pack["meta"],
-        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] == 19],
+        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (10, 19, 35)],
         "verses": sample_verses,
         "glosses": {gid: gloss_map[gid] for gid in sample_gloss_ids if gid in gloss_map},
     }
@@ -1292,6 +1365,7 @@ def build():
         "meus", "mea", "meum", "meis", "quis",
         "illud", "ille", "manum", "manus",
         "adam", "adae",
+        "terra", "terram", "terrae", "terras", "terris",
     ]
     must_still_stub = []
     for m in must:
@@ -1318,7 +1392,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.6.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.7.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

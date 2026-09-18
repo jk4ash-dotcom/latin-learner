@@ -54,6 +54,7 @@
   - **v0.1.4 illud / manus:** `illud` (+ ille-family) → that/it (**NEVER** illūdō mock/sexual — Gen.3.3 *ne tangeremus illud*); `manum`/`manus` (+ manu/manui/manibus/manuum) → hand (**NEVER** maneō remain/sexual overnight — Gen.3.22 *mittat manum*). Guards block false stems.
   - **v0.1.5 Adam:** all Genesis `Adam` → proper name Adam (**NEVER** `w:adam` / adamō “fall in love/lust with” — Gen.2–3 had 14 unshippable lust primaries). Guard blocks lust false stem.
   - **v0.1.6 Adam genitive:** `Adæ`/`Adae` → Adam (gen.) (**NEVER** `w:adar` “plow carefully” — Gen.2.20, 3.17, 3.21). Nominative-only `adam` key insufficient. Later (non-block): Gen.4.23 Adæ=Ada (Lamech’s wife); Gen.10/14 Adama/Admah place-names.
+  - **v0.1.7 terra family:** `terra`/`terram`/`terrae`/`terras`/`terris`/`terrarum` (+ *-que* enclitics) → earth/land (**NEVER** `w:terr` / terreō frighten/terrify — Gen.1.1 *terram* + all Genesis noun surfaces). Do **not** fold `terror`/`terroris`, terreō verb forms (*terret*…), or `terrestris`.
   - Optional *-que*: `vocavitque`, `benedixitque`.
 - UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.

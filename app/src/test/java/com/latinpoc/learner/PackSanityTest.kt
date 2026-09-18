@@ -153,7 +153,7 @@ class PackSanityTest {
 
     @Test
     fun closedClass_adDeSuperCuratedDefs() {
-        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus", "adam", "adae").forEach { key ->
+        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus", "adam", "adae", "terra", "terram", "terrae", "terras", "terris").forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
@@ -168,6 +168,9 @@ class PackSanityTest {
             assertFalse(g.primary.contains("luxury", ignoreCase = true))
             assertFalse(g.primary.contains("lust", ignoreCase = true))
             assertFalse(g.primary.contains("fall in love", ignoreCase = true))
+            assertFalse(g.primary.contains("frighten", ignoreCase = true))
+            assertFalse(g.primary.contains("terrify", ignoreCase = true))
+            assertFalse(g.primary.contains("scare", ignoreCase = true))
         }
     }
 
@@ -303,6 +306,96 @@ class PackSanityTest {
             }
         }
         assertTrue("expected >=3 Adæ tokens in Gen.2.20/3.17/3.21, got $adaeCount", adaeCount >= 3)
+    }
+
+    @Test
+    fun gen11_terramEarthLandNotTerror() {
+        val v = repo.verse("Gen.1.1")!!
+        val terram = v.words.first { it.la.equals("terram", ignoreCase = true) }
+        val g = repo.gloss(terram.glossId)!!
+        assertTrue(
+            "terram should be earth/land: ${g.primary}",
+            g.primary.contains("earth", ignoreCase = true) || g.primary.contains("land", ignoreCase = true),
+        )
+        assertFalse("terram must NEVER mean frighten", g.primary.contains("frighten", ignoreCase = true))
+        assertFalse("terram must NEVER mean terrify", g.primary.contains("terrify", ignoreCase = true))
+        assertFalse("terram must NEVER mean scare", g.primary.contains("scare", ignoreCase = true))
+        assertFalse("terram must NEVER mean terror", g.primary.contains("terror", ignoreCase = true))
+        assertTrue(
+            "expected curated terram, got ${g.id}",
+            g.id == "curated:terram" || g.id.startsWith("curated:"),
+        )
+        assertFalse("must not bind w:terr (terreō)", terram.glossId == "w:terr")
+    }
+
+    @Test
+    fun gen1to3_terraFamilyEarthLandNeverTerreo() {
+        val nounSurfaces = setOf(
+            "terra", "terram", "terrae", "terræ", "terras", "terris", "terrarum",
+            "terraque", "terramque", "terraeque", "terrasque", "terrisque", "terrarumque",
+        )
+        var count = 0
+        for (ch in 1..3) {
+            // sample pack has all Gen.1–3 verses
+            val verses = (1..50).mapNotNull { n -> repo.verse("Gen.$ch.$n") }
+            for (v in verses) {
+                for (w in v.words) {
+                    val la = w.la.lowercase()
+                    val lid = (w.lemmaId ?: "").lowercase()
+                    val isNoun = la in nounSurfaces || lid in nounSurfaces ||
+                        nounSurfaces.any { la.replace("æ", "ae") == it || lid.replace("æ", "ae") == it }
+                    if (!isNoun) continue
+                    // exclude terror / terrestris / terret-family if ever present
+                    if (la.startsWith("terror") || lid.startsWith("terror")) continue
+                    if (la.startsWith("terrestr") || lid.startsWith("terrestr")) continue
+                    if (la.startsWith("terrib") || lid.startsWith("terrib")) continue
+                    count++
+                    val g = repo.gloss(w.glossId)!!
+                    assertTrue(
+                        "terra-noun should be earth/land: ${g.primary} @ ${v.id} ${w.la}",
+                        g.primary.contains("earth", ignoreCase = true) ||
+                            g.primary.contains("land", ignoreCase = true) ||
+                            g.primary.contains("ground", ignoreCase = true),
+                    )
+                    assertFalse("must NEVER frighten @ ${v.id} ${w.la}", g.primary.contains("frighten", ignoreCase = true))
+                    assertFalse("must NEVER terrify @ ${v.id} ${w.la}", g.primary.contains("terrify", ignoreCase = true))
+                    assertFalse("must NEVER scare @ ${v.id} ${w.la}", g.primary.contains("scare", ignoreCase = true))
+                    assertFalse("must NEVER terror @ ${v.id} ${w.la}", g.primary.contains("terror", ignoreCase = true))
+                    assertFalse("must not bind w:terr @ ${v.id}", w.glossId == "w:terr")
+                    assertTrue(
+                        "expected curated terra-family, got ${g.id} @ ${v.id}",
+                        g.id.startsWith("curated:") || g.source.contains("curated", ignoreCase = true),
+                    )
+                }
+            }
+        }
+        assertTrue("expected Gen.1–3 terra-noun tokens, got $count", count >= 20)
+    }
+
+    @Test
+    fun gen1020_3512_terraEncliticsEarthLand() {
+        val cases = listOf(
+            "Gen.10.20" to "terrisque",
+            "Gen.35.12" to "terramque",
+        )
+        for ((id, surface) in cases) {
+            val v = repo.verse(id)!!
+            val tok = v.words.first {
+                it.la.equals(surface, ignoreCase = true) ||
+                    (it.lemmaId ?: "").equals(surface, ignoreCase = true)
+            }
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "$surface should be earth/land: ${g.primary} @ $id",
+                g.primary.contains("earth", ignoreCase = true) || g.primary.contains("land", ignoreCase = true),
+            )
+            assertFalse("$surface must NEVER frighten @ $id", g.primary.contains("frighten", ignoreCase = true))
+            assertFalse("must not bind w:terr @ $id", tok.glossId == "w:terr")
+            assertTrue(
+                "expected curated for $surface, got ${g.id}",
+                g.id.startsWith("curated:"),
+            )
+        }
     }
 
     @Test
