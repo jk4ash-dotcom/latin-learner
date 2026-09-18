@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.7-poc"
+PACK_VERSION = "0.1.8-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -365,7 +365,253 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["of lands", "of the earth (gen. pl.)"],
         "terra gen. pl. — NEVER terreō. Family completeness (no bare form in Genesis).",
     ),
+
+    # v0.1.8 Wave 2 SHIP_BLOCK — surface families prefer N sense (Mahomes/Scriba)
+    # 1) caelum family → heaven(s) (block w:caeli beer)
+    "caelum": _cur(
+        "heaven / sky",
+        ["heaven", "sky", "heavens"],
+        "Noun caelum — NEVER caeli beer. Unshippable if beer.",
+    ),
+    "caeli": _cur(
+        "of heaven / heavens",
+        ["of heaven", "heavens", "heaven (gen./nom.pl.)"],
+        "Gen.1.14+ cæli/caeli — caelum gen./nom.pl. NEVER w:caeli beer. Unshippable if beer.",
+    ),
+    "caelo": _cur(
+        "in/from heaven (abl./dat.)",
+        ["in heaven", "from heaven", "to heaven", "heaven (abl./dat.)"],
+        "caelum abl./dat. — NEVER beer.",
+    ),
+    "caelos": _cur(
+        "heavens (acc. pl.)",
+        ["heavens", "skies (acc. pl.)"],
+        "caelum acc. pl. — NEVER beer.",
+    ),
+    "caelis": _cur(
+        "heavens (dat./abl. pl.)",
+        ["heavens", "in/from heavens"],
+        "caelum dat./abl. pl. — NEVER beer.",
+    ),
+    "caelorum": _cur(
+        "of the heavens (gen. pl.)",
+        ["of the heavens", "of heaven (gen. pl.)"],
+        "caelum gen. pl. — NEVER beer.",
+    ),
+    # 2) dies family → day (block w:dies diesis/quarter tone)
+    "dies": _cur(
+        "day",
+        ["day", "daylight", "daytime"],
+        "Noun dies — NEVER diesis/quarter tone (w:dies). Unshippable if quarter/diesis.",
+    ),
+    "die": _cur(
+        "on/in the day (abl.)",
+        ["on the day", "in the day", "day (abl.)"],
+        "dies abl. — NEVER diesis. Unshippable if quarter/diesis.",
+    ),
+    "diem": _cur(
+        "day (acc.)",
+        ["day (acc.)", "day"],
+        "dies acc. — NEVER diesis.",
+    ),
+    "diei": _cur(
+        "of the day (gen.)",
+        ["of the day", "day (gen./dat.)"],
+        "dies gen./dat. — NEVER diesis.",
+    ),
+    "diebus": _cur(
+        "days (dat./abl. pl.)",
+        ["days", "in/on the days", "to the days"],
+        "dies dat./abl. pl. — NEVER diesis.",
+    ),
+    "dierum": _cur(
+        "of days (gen. pl.)",
+        ["of days", "days (gen. pl.)"],
+        "dies gen. pl. — NEVER diesis. Covers dierumque.",
+    ),
+    # 3) lux declined → light (lux already curated v0.1.2; block grove/luxury)
+    "lucem": _cur(
+        "light (acc.)",
+        ["light (acc.)", "light", "daylight"],
+        "lux acc. Gen.1.4–5 — NEVER w:luc grove; NOT luxury. Unshippable if grove.",
+    ),
+    "lucis": _cur(
+        "of light (gen.)",
+        ["of light", "light (gen.)"],
+        "lux gen. — NEVER grove/luxury.",
+    ),
+    "luce": _cur(
+        "by/with light (abl.)",
+        ["by light", "with light", "light (abl.)"],
+        "lux abl. — NEVER grove/luxury. Do NOT fold luceant/lucerent (shine V).",
+    ),
+    "luci": _cur(
+        "to/for light (dat.)",
+        ["to light", "for light", "light (dat.)"],
+        "lux dat. — NEVER grove/luxury.",
+    ),
+    # 4) aqua family → water(s) (block w:aqu fetch-water V); NOT aquilo north
+    "aqua": _cur(
+        "water",
+        ["water", "waters", "a water"],
+        "Noun aqua — NEVER aquor fetch/bring water. Unshippable if fetch.",
+    ),
+    "aquae": _cur(
+        "of water / waters",
+        ["of water", "waters", "water (gen./dat./nom.pl.)"],
+        "aqua declined — NEVER fetch-water V.",
+    ),
+    "aquam": _cur(
+        "water (acc.)",
+        ["water (acc.)", "water"],
+        "aqua acc. — NEVER fetch-water V.",
+    ),
+    "aquas": _cur(
+        "waters (acc. pl.)",
+        ["waters", "water (acc. pl.)"],
+        "aqua acc. pl. Gen.1.2+ — NEVER fetch-water V.",
+    ),
+    "aquarum": _cur(
+        "of waters (gen. pl.)",
+        ["of waters", "of water (gen. pl.)"],
+        "aqua gen. pl. — NEVER fetch-water V.",
+    ),
+    "aquis": _cur(
+        "waters (dat./abl. pl.)",
+        ["waters", "in/by/from waters", "to waters"],
+        "aqua dat./abl. pl. — NEVER fetch-water V.",
+    ),
+    # 5) tenebrae family → darkness N (block darken V; not teneō hold)
+    "tenebrae": _cur(
+        "darkness",
+        ["darkness", "gloom", "shadows"],
+        "Noun tenebrae — NEVER tenebrō darken V; NOT teneō hold. Unshippable if darken/hold.",
+    ),
+    "tenebras": _cur(
+        "darkness (acc. pl.)",
+        ["darkness", "darkness (acc.)", "gloom"],
+        "tenebrae acc. — NEVER darken V; NOT teneō.",
+    ),
+    "tenebris": _cur(
+        "in/from darkness (dat./abl. pl.)",
+        ["in darkness", "from darkness", "darkness (dat./abl.)"],
+        "tenebrae dat./abl. — NEVER darken V; NOT teneō.",
+    ),
+    "tenebrarum": _cur(
+        "of darkness (gen. pl.)",
+        ["of darkness", "darkness (gen. pl.)"],
+        "tenebrae gen. pl. — NEVER darken V.",
+    ),
+    # 6) facies N → face (faciam/faciat/faciens stay make V). Prefer N on these surfaces.
+    "faciem": _cur(
+        "face",
+        ["face", "countenance", "surface/face (of)"],
+        "Noun facies acc. Gen.1.2+ — NEVER faciō make/build. faciam etc. stay make. Unshippable if make.",
+    ),
+    "facie": _cur(
+        "face (abl.)",
+        ["face (abl.)", "from the face", "countenance"],
+        "facies abl. — NEVER faciō make. Prefer N.",
+    ),
+    "facies": _cur(
+        "face",
+        ["face", "countenance", "appearance"],
+        "Noun facies — prefer N face (Gen.4.6). Some surfaces are faciō 2sg fut. (Gen.6.14–16) — later verse-context. Unshippable if make as sole primary here.",
+    ),
+    # 7) anima family → soul/living being (NOT animus mind); do not fold animant/animal/animadvert*
+    "anima": _cur(
+        "soul / living being",
+        ["soul", "living being", "life", "breath"],
+        "Noun anima — NEVER animus mind as primary. Biblical living soul. Unshippable if mind-only.",
+    ),
+    "animam": _cur(
+        "soul / living being (acc.)",
+        ["soul (acc.)", "living being", "life"],
+        "anima acc. Gen.1.21+ — NEVER mind-only animus.",
+    ),
+    "animae": _cur(
+        "of the soul / living beings",
+        ["of the soul", "living beings", "soul (gen./dat./nom.pl.)"],
+        "anima declined — NEVER mind-only.",
+    ),
+    "animas": _cur(
+        "souls / living beings (acc. pl.)",
+        ["souls", "living beings", "lives (acc. pl.)"],
+        "anima acc. pl. — NEVER mind-only.",
+    ),
+    "animarum": _cur(
+        "of souls / living beings (gen. pl.)",
+        ["of souls", "of living beings", "souls (gen. pl.)"],
+        "anima gen. pl. — NEVER mind-only.",
+    ),
+    "animo": _cur(
+        "soul / spirit (dat./abl.)",
+        ["soul", "spirit", "living being (dat./abl.)"],
+        "Prefer anima/spirit sense — NOT mind-only animus. Do not fold animadvert*.",
+    ),
+    "animis": _cur(
+        "souls / spirits (dat./abl. pl.)",
+        ["souls", "spirits", "living beings (dat./abl. pl.)"],
+        "Prefer soul/living being — NOT mind-only.",
+    ),
+    "animum": _cur(
+        "soul / spirit (acc.)",
+        ["soul", "spirit", "heart (acc.)"],
+        "Prefer soul/spirit over Whitaker animus mind-only (Gen.26.35). Unshippable if mind-only.",
+    ),
+    # 8) imago / species / stella
+    "imaginem": _cur(
+        "image",
+        ["image", "likeness", "copy"],
+        "Noun imago acc. Gen.1.26–27 — NEVER imaginor imagine V. Unshippable if imagine.",
+    ),
+    "imago": _cur(
+        "image",
+        ["image", "likeness", "copy"],
+        "Noun imago — NEVER imagine V.",
+    ),
+    "imagine": _cur(
+        "image (abl.)",
+        ["image (abl.)", "likeness"],
+        "imago abl. — NEVER imagine V.",
+    ),
+    "species": _cur(
+        "kind / species",
+        ["kind", "species", "sort", "appearance"],
+        "Noun species Gen.1.21+ — NEVER speciō look-at V. Unshippable if look.",
+    ),
+    "speciem": _cur(
+        "kind / appearance (acc.)",
+        ["kind (acc.)", "species", "appearance"],
+        "species acc. Gen.1.12 — NEVER look-at V.",
+    ),
+    "stella": _cur(
+        "star",
+        ["star", "planet", "constellation"],
+        "Noun stella — NEVER stellō set-with-stars V.",
+    ),
+    "stellas": _cur(
+        "stars (acc. pl.)",
+        ["stars", "stars (acc. pl.)"],
+        "stella acc. pl. Gen.1.16+ — NEVER stellō set/furnish with stars. Unshippable if set/furnish.",
+    ),
+    "stellae": _cur(
+        "of the star / stars",
+        ["of the star", "stars", "star (gen./dat./nom.pl.)"],
+        "stella declined — NEVER stellō V.",
+    ),
+    "stellis": _cur(
+        "stars (dat./abl. pl.)",
+        ["stars", "with/from stars"],
+        "stella dat./abl. pl. — NEVER stellō V.",
+    ),
+    "stellarum": _cur(
+        "of stars (gen. pl.)",
+        ["of stars", "stars (gen. pl.)"],
+        "stella gen. pl. — NEVER stellō V.",
+    ),
 }
+
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
 # Also catch declined Dominus/Deus forms that naive stemming mis-assigns.
@@ -472,7 +718,90 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "terrasque": "terras",
     "terrisque": "terris",
     "terrarumque": "terrarum",
+    # v0.1.8 Wave 2 families + enclitics
+    "caelum": "caelum",
+    "caeli": "caeli",
+    "caelo": "caelo",
+    "caelos": "caelos",
+    "caelis": "caelis",
+    "caelorum": "caelorum",
+    "caelumque": "caelum",
+    "caelique": "caeli",
+    "caeloque": "caelo",
+    "caelosque": "caelos",
+    "caelisque": "caelis",
+    "caelorumque": "caelorum",
+    "dies": "dies",
+    "die": "die",
+    "diem": "diem",
+    "diei": "diei",
+    "diebus": "diebus",
+    "dierum": "dierum",
+    "diesque": "dies",
+    "dieque": "die",
+    "diemque": "diem",
+    "dieique": "diei",
+    "diebusque": "diebus",
+    "dierumque": "dierum",
+    "lucem": "lucem",
+    "lucis": "lucis",
+    "luce": "luce",
+    "luci": "luci",
+    "lucemque": "lucem",
+    "aqua": "aqua",
+    "aquae": "aquae",
+    "aquam": "aquam",
+    "aquas": "aquas",
+    "aquarum": "aquarum",
+    "aquis": "aquis",
+    "aquaque": "aqua",
+    "aquaeque": "aquae",
+    "aquamque": "aquam",
+    "aquasque": "aquas",
+    "aquarumque": "aquarum",
+    "aquisque": "aquis",
+    "tenebrae": "tenebrae",
+    "tenebras": "tenebras",
+    "tenebris": "tenebris",
+    "tenebrarum": "tenebrarum",
+    "tenebraeque": "tenebrae",
+    "tenebrasque": "tenebras",
+    "tenebrisque": "tenebris",
+    "faciem": "faciem",
+    "facie": "facie",
+    "facies": "facies",
+    "faciemque": "faciem",
+    "facieque": "facie",
+    "faciesque": "facies",
+    "anima": "anima",
+    "animam": "animam",
+    "animae": "animae",
+    "animas": "animas",
+    "animarum": "animarum",
+    "animo": "animo",
+    "animis": "animis",
+    "animum": "animum",
+    "animaque": "anima",
+    "animamque": "animam",
+    "animaeque": "animae",
+    "animasque": "animas",
+    "imaginem": "imaginem",
+    "imago": "imago",
+    "imagine": "imagine",
+    "imaginemque": "imaginem",
+    "species": "species",
+    "speciem": "speciem",
+    "speciesque": "species",
+    "speciemque": "speciem",
+    "stella": "stella",
+    "stellas": "stellas",
+    "stellae": "stellae",
+    "stellis": "stellis",
+    "stellarum": "stellarum",
+    "stellasque": "stellas",
+    "stellaque": "stella",
 }
+
 
 
 def normalize_latin_surface(s: str) -> str:
@@ -1133,6 +1462,272 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
                 "note": f"Blocked Whitaker terreō/w:terr hit ({entry.get('primary')}); terra earth/land only.",
             }
         return gid
+
+    # --- v0.1.8 Wave 2 SHIP_BLOCK guards (prefer N) ---
+    CAELUM_FAMILY = frozenset({
+        "caelum", "caeli", "caelo", "caelos", "caelis", "caelorum",
+        "caelumque", "caelique", "caeloque", "caelosque", "caelisque", "caelorumque",
+    })
+    if key in CAELUM_FAMILY and (
+        "beer" in prim
+        or matched == "caeli"
+        or (matched == "cael" and "heaven" not in prim and "sky" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked caeli/beer]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker caeli/beer hit ({entry.get('primary')}); caelum heaven only.",
+            }
+        return gid
+    DIES_FAMILY = frozenset({
+        "dies", "die", "diem", "diei", "diebus", "dierum",
+        "diesque", "dieque", "diemque", "dieique", "diebusque", "dierumque",
+    })
+    if key in DIES_FAMILY and (
+        "quarter" in prim
+        or "diesis" in prim
+        or "tone" in prim
+        or matched == "dies"
+        or (matched == "di" and "day" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked diesis/quarter tone]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker diesis hit ({entry.get('primary')}); dies day only.",
+            }
+        return gid
+    LUX_FAMILY = frozenset({
+        "lux", "lucem", "lucis", "luce", "luci",
+        "lucemque", "lucisque", "luceque", "lucique",
+    })
+    # Do NOT fold luceant/lucerent (shine V) or luctus grief
+    if key in LUX_FAMILY and (
+        "grove" in prim
+        or "luxury" in prim
+        or "sprain" in prim
+        or (matched == "luc" and "light" not in prim and "day" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked luc grove/luxury]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker luc grove/luxury ({entry.get('primary')}); lux light only.",
+            }
+        return gid
+    AQUA_FAMILY = frozenset({
+        "aqua", "aquae", "aquam", "aquas", "aquarum", "aquis",
+        "aquaque", "aquaeque", "aquamque", "aquasque", "aquarumque", "aquisque",
+    })
+    # Do NOT fold aquilonem (north wind)
+    if key in AQUA_FAMILY and (
+        "fetch" in prim
+        or "bring water" in prim
+        or "get/fetch" in prim
+        or (matched == "aqu" and "water" not in prim and "sea" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked aquor/fetch-water]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker aquor fetch-water ({entry.get('primary')}); aqua water only.",
+            }
+        return gid
+    TENEBRAE_FAMILY = frozenset({
+        "tenebrae", "tenebras", "tenebris", "tenebrarum",
+        "tenebraeque", "tenebrasque", "tenebrisque",
+    })
+    if key in TENEBRAE_FAMILY and (
+        "darken" in prim
+        or "make dark" in prim
+        or "hold" in prim
+        or "keep" in prim and "dark" not in prim
+        or (matched == "tenebr" and "darkness" not in prim and "dark" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked tenebrō/darken]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker tenebrō/darken ({entry.get('primary')}); tenebrae darkness only.",
+            }
+        return gid
+    FACIES_FAMILY = frozenset({
+        "faciem", "facie", "facies",
+        "faciemque", "facieque", "faciesque",
+    })
+    # Prefer N face; do NOT fold faciam/faciat/faciens/faciet (make V)
+    if key in FACIES_FAMILY and (
+        "make" in prim
+        or "build" in prim
+        or "construct" in prim
+        or "create" in prim
+        or "cause" in prim
+        or (
+            matched == "faci"
+            and "face" not in prim
+            and "shape" not in prim
+        )
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked faciō/make]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker faciō/make ({entry.get('primary')}); facies face N only.",
+            }
+        return gid
+    ANIMA_FAMILY = frozenset({
+        "anima", "animam", "animae", "animas", "animarum", "animo", "animis", "animum",
+        "animaque", "animamque", "animaeque", "animasque",
+    })
+    # Do NOT fold animant*/animal*/animadvert*
+    if key in ANIMA_FAMILY and (
+        prim.strip() == "mind"
+        or prim.startswith("mind;")
+        or prim.startswith("mind,")
+        or (matched == "anim" and "soul" not in prim and "spirit" not in prim and "life" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked animus/mind]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker animus/mind ({entry.get('primary')}); anima soul/living being only.",
+            }
+        return gid
+    if key in ("imaginem", "imago", "imagine", "imaginemque") and (
+        "imagine" in prim
+        or "conceive" in prim
+        or "picture" in prim
+        or matched == "imagin"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key if key in CURATED_GLOSS_DEFS else "imaginem")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked imaginor/imagine]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker imaginor ({entry.get('primary')}); imago image only.",
+            }
+        return gid
+    if key in ("species", "speciem", "speciesque", "speciemque") and (
+        "look" in prim
+        or "see" in prim
+        or (
+            matched == "speci"
+            and "kind" not in prim
+            and "sight" not in prim
+            and "appear" not in prim
+        )
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key if key in CURATED_GLOSS_DEFS else "species")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked speciō/look]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker speciō/look ({entry.get('primary')}); species kind only.",
+            }
+        return gid
+    STELLA_FAMILY = frozenset({
+        "stella", "stellas", "stellae", "stellis", "stellarum",
+        "stellasque", "stellaque", "stellaeque", "stellisque", "stellarumque",
+    })
+    if key in STELLA_FAMILY and (
+        "set" in prim
+        or "furnish" in prim
+        or "cover with stars" in prim
+        or (matched == "stell" and "star" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        alias = CURATED_SURFACE_ALIASES.get(key)
+        if alias and alias in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(alias, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked stellō/set-with-stars]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker stellō ({entry.get('primary')}); stella star only.",
+            }
+        return gid
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -1272,7 +1867,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only).",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars.",
             },
             "gaps": meta_gaps,
         },
@@ -1366,6 +1961,10 @@ def build():
         "illud", "ille", "manum", "manus",
         "adam", "adae",
         "terra", "terram", "terrae", "terras", "terris",
+        "caeli", "caelum", "dies", "die", "diem", "diei",
+        "lucem", "aqua", "aquae", "aquas",
+        "tenebrae", "tenebras", "faciem", "facie", "facies",
+        "anima", "animam", "imaginem", "species", "speciem", "stellas",
     ]
     must_still_stub = []
     for m in must:
@@ -1392,7 +1991,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.7.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.8.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

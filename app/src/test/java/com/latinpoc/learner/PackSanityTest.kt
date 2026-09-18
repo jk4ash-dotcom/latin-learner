@@ -153,7 +153,12 @@ class PackSanityTest {
 
     @Test
     fun closedClass_adDeSuperCuratedDefs() {
-        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis", "illud", "ille", "manum", "manus", "adam", "adae", "terra", "terram", "terrae", "terras", "terris").forEach { key ->
+        listOf(
+            "et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux", "meis", "meus", "quis",
+            "illud", "ille", "manum", "manus", "adam", "adae", "terra", "terram", "terrae", "terras", "terris",
+            "caeli", "caelum", "dies", "die", "diem", "lucem", "aqua", "aquae", "aquas",
+            "tenebrae", "faciem", "facie", "facies", "anima", "animam", "imaginem", "species", "speciem", "stellas",
+        ).forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
             assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
@@ -171,6 +176,13 @@ class PackSanityTest {
             assertFalse(g.primary.contains("frighten", ignoreCase = true))
             assertFalse(g.primary.contains("terrify", ignoreCase = true))
             assertFalse(g.primary.contains("scare", ignoreCase = true))
+            assertFalse(g.primary.contains("beer", ignoreCase = true))
+            assertFalse(g.primary.contains("quarter tone", ignoreCase = true))
+            assertFalse(g.primary.contains("diesis", ignoreCase = true))
+            assertFalse(g.primary.contains("grove", ignoreCase = true))
+            assertFalse(g.primary.contains("fetch", ignoreCase = true))
+            assertFalse(g.primary.contains("darken", ignoreCase = true))
+            assertFalse(g.primary.contains("imagine", ignoreCase = true))
         }
     }
 
@@ -397,6 +409,210 @@ class PackSanityTest {
             )
         }
     }
+
+
+    @Test
+    fun gen114_caeliHeavenNotBeer() {
+        val v = repo.verse("Gen.1.14")!!
+        val caeli = v.words.first {
+            it.la.equals("cæli", ignoreCase = true) ||
+                it.la.equals("caeli", ignoreCase = true) ||
+                (it.lemmaId ?: "") == "caeli"
+        }
+        val g = repo.gloss(caeli.glossId)!!
+        assertTrue(
+            "caeli should be heaven(s): ${g.primary}",
+            g.primary.contains("heaven", ignoreCase = true) || g.primary.contains("sky", ignoreCase = true),
+        )
+        assertFalse("caeli must NEVER mean beer", g.primary.contains("beer", ignoreCase = true))
+        assertTrue("expected curated caeli, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:caeli (beer)", caeli.glossId == "w:caeli")
+    }
+
+    @Test
+    fun gen15_diesDayNotDiesis() {
+        val v = repo.verse("Gen.1.5")!!
+        val dies = v.words.first { it.la.equals("dies", ignoreCase = true) }
+        val g = repo.gloss(dies.glossId)!!
+        assertTrue("dies should be day: ${g.primary}", g.primary.contains("day", ignoreCase = true))
+        assertFalse("dies must NEVER mean quarter tone", g.primary.contains("quarter", ignoreCase = true))
+        assertFalse("dies must NEVER mean diesis", g.primary.contains("diesis", ignoreCase = true))
+        assertFalse("dies must NEVER mean tone", g.primary.contains("tone", ignoreCase = true))
+        assertTrue("expected curated dies, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:dies (diesis)", dies.glossId == "w:dies")
+    }
+
+    @Test
+    fun gen1to3_diesFamilyDayNeverDiesis() {
+        val surfaces = setOf(
+            "dies", "die", "diem", "diei", "diebus", "dierum",
+            "diesque", "dieque", "diemque", "dieique", "diebusque", "dierumque",
+        )
+        var count = 0
+        for (ch in 1..3) {
+            val verses = (1..50).mapNotNull { n -> repo.verse("Gen.$ch.$n") }
+            for (v in verses) {
+                for (w in v.words) {
+                    val la = w.la.lowercase().replace("æ", "ae")
+                    val lid = (w.lemmaId ?: "").lowercase()
+                    if (la !in surfaces && lid !in surfaces) continue
+                    count++
+                    val g = repo.gloss(w.glossId)!!
+                    assertTrue(
+                        "dies-family should be day: ${g.primary} @ ${v.id} ${w.la}",
+                        g.primary.contains("day", ignoreCase = true),
+                    )
+                    assertFalse("must NEVER diesis @ ${v.id}", g.primary.contains("diesis", ignoreCase = true))
+                    assertFalse("must NEVER quarter @ ${v.id}", g.primary.contains("quarter", ignoreCase = true))
+                    assertFalse("must not bind w:dies @ ${v.id}", w.glossId == "w:dies")
+                    assertTrue("expected curated dies-family, got ${g.id}", g.id.startsWith("curated:"))
+                }
+            }
+        }
+        assertTrue("expected Gen.1–3 dies-family tokens, got $count", count >= 15)
+    }
+
+    @Test
+    fun gen14_lucemLightNotGrove() {
+        val v = repo.verse("Gen.1.4")!!
+        val lucem = v.words.first { it.la.equals("lucem", ignoreCase = true) }
+        val g = repo.gloss(lucem.glossId)!!
+        assertTrue("lucem should be light: ${g.primary}", g.primary.contains("light", ignoreCase = true))
+        assertFalse("lucem must NEVER mean grove", g.primary.contains("grove", ignoreCase = true))
+        assertFalse("lucem must NEVER mean luxury", g.primary.contains("luxury", ignoreCase = true))
+        assertTrue("expected curated lucem, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen12_aquasWaterNotFetch() {
+        val v = repo.verse("Gen.1.2")!!
+        val aquas = v.words.first { it.la.equals("aquas", ignoreCase = true) }
+        val g = repo.gloss(aquas.glossId)!!
+        assertTrue(
+            "aquas should be water(s): ${g.primary}",
+            g.primary.contains("water", ignoreCase = true),
+        )
+        assertFalse("aquas must NEVER mean fetch", g.primary.contains("fetch", ignoreCase = true))
+        assertFalse("aquas must NEVER mean bring water", g.primary.contains("bring", ignoreCase = true))
+        assertTrue("expected curated aqua-family, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind fetch-water w:aqu", aquas.glossId == "w:aqu" && g.primary.contains("fetch", ignoreCase = true))
+    }
+
+    @Test
+    fun gen1to3_aquaFamilyWaterNeverFetch() {
+        val surfaces = setOf(
+            "aqua", "aquae", "aquam", "aquas", "aquarum", "aquis",
+            "aquaque", "aquaeque", "aquamque", "aquasque", "aquarumque", "aquisque",
+        )
+        var count = 0
+        for (ch in 1..3) {
+            val verses = (1..50).mapNotNull { n -> repo.verse("Gen.$ch.$n") }
+            for (v in verses) {
+                for (w in v.words) {
+                    val la = w.la.lowercase().replace("æ", "ae")
+                    val lid = (w.lemmaId ?: "").lowercase()
+                    if (la.startsWith("aquilon") || lid.startsWith("aquilon")) continue
+                    if (la !in surfaces && lid !in surfaces) continue
+                    count++
+                    val g = repo.gloss(w.glossId)!!
+                    assertTrue(
+                        "aqua-noun should be water: ${g.primary} @ ${v.id} ${w.la}",
+                        g.primary.contains("water", ignoreCase = true),
+                    )
+                    assertFalse("must NEVER fetch @ ${v.id}", g.primary.contains("fetch", ignoreCase = true))
+                    assertTrue("expected curated aqua-family @ ${v.id}", g.id.startsWith("curated:"))
+                }
+            }
+        }
+        assertTrue("expected Gen.1–3 aqua-noun tokens, got $count", count >= 10)
+    }
+
+    @Test
+    fun gen12_tenebraeDarknessNotDarken() {
+        val v = repo.verse("Gen.1.2")!!
+        val tok = v.words.first {
+            it.la.equals("tenebrae", ignoreCase = true) ||
+                it.la.equals("tenebræ", ignoreCase = true) ||
+                (it.lemmaId ?: "") == "tenebrae"
+        }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            "tenebrae should be darkness: ${g.primary}",
+            g.primary.contains("darkness", ignoreCase = true) || g.primary.contains("dark", ignoreCase = true),
+        )
+        assertFalse("tenebrae must NEVER mean darken", g.primary.contains("darken", ignoreCase = true))
+        assertFalse("tenebrae must NEVER mean hold", g.primary.contains("hold", ignoreCase = true))
+        assertTrue("expected curated tenebrae, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen12_faciemFaceNotMake() {
+        val v = repo.verse("Gen.1.2")!!
+        val faciem = v.words.first { it.la.equals("faciem", ignoreCase = true) }
+        val g = repo.gloss(faciem.glossId)!!
+        assertTrue(
+            "faciem should be face: ${g.primary}",
+            g.primary.contains("face", ignoreCase = true) || g.primary.contains("countenance", ignoreCase = true),
+        )
+        assertFalse("faciem must NEVER mean make", g.primary.contains("make", ignoreCase = true))
+        assertFalse("faciem must NEVER mean build", g.primary.contains("build", ignoreCase = true))
+        assertTrue("expected curated faciem, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen121_animamSoulNotMind() {
+        val v = repo.verse("Gen.1.21")!!
+        val animam = v.words.first { it.la.equals("animam", ignoreCase = true) }
+        val g = repo.gloss(animam.glossId)!!
+        assertTrue(
+            "animam should be soul/living being: ${g.primary}",
+            g.primary.contains("soul", ignoreCase = true) ||
+                g.primary.contains("living", ignoreCase = true) ||
+                g.primary.contains("life", ignoreCase = true),
+        )
+        assertFalse(
+            "animam must NOT be mind-only",
+            g.primary.trim().equals("mind", ignoreCase = true),
+        )
+        assertTrue("expected curated anima-family, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen126_imaginemImageNotImagine() {
+        val v = repo.verse("Gen.1.26")!!
+        val imaginem = v.words.first { it.la.equals("imaginem", ignoreCase = true) }
+        val g = repo.gloss(imaginem.glossId)!!
+        assertTrue("imaginem should be image: ${g.primary}", g.primary.contains("image", ignoreCase = true))
+        assertFalse("imaginem must NEVER mean imagine", g.primary.contains("imagine", ignoreCase = true))
+        assertTrue("expected curated imaginem, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen112_speciemKindNotLook() {
+        val v = repo.verse("Gen.1.12")!!
+        val speciem = v.words.first { it.la.equals("speciem", ignoreCase = true) }
+        val g = repo.gloss(speciem.glossId)!!
+        assertTrue(
+            "speciem should be kind/species: ${g.primary}",
+            g.primary.contains("kind", ignoreCase = true) ||
+                g.primary.contains("species", ignoreCase = true) ||
+                g.primary.contains("appearance", ignoreCase = true),
+        )
+        assertFalse("speciem must NEVER mean look at", g.primary.contains("look", ignoreCase = true))
+        assertTrue("expected curated speciem, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen116_stellasStarsNotSetWithStars() {
+        val v = repo.verse("Gen.1.16")!!
+        val stellas = v.words.first { it.la.equals("stellas", ignoreCase = true) }
+        val g = repo.gloss(stellas.glossId)!!
+        assertTrue("stellas should be stars: ${g.primary}", g.primary.contains("star", ignoreCase = true))
+        assertFalse("stellas must NEVER mean set/furnish with stars", g.primary.contains("furnish", ignoreCase = true))
+        assertFalse("stellas must NEVER mean set with stars", g.primary.lowercase().contains("set/") || g.primary.lowercase().startsWith("set "))
+        assertTrue("expected curated stellas, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
 
     @Test
     fun sampleChapters_present() {

@@ -1,4 +1,4 @@
-# Open questions for Scriba (Biblical Latin) — post v0.1.7 terra earth/land
+# Open questions for Scriba (Biblical Latin) — post v0.1.8 Wave 2 prefer-N
 
 ## Phonetics
 1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
@@ -15,9 +15,11 @@
 6. ~~v0.1.5 Adam~~ → all Genesis *Adam* → proper name Adam (block `w:adam`/adamō lust; Gen.2–3 14×).
 7. ~~v0.1.6 Adam genitive~~ → *Adæ*/*Adae* → Adam (gen.) (block `w:adar` plow carefully; Gen.2.20, 3.17, 3.21). Nominative-only key insufficient.
 8. ~~v0.1.7 terra~~ → *terra*/*terram*/*terrae*/*terras* (+ *terrisque*/*terramque*) → earth/land (block `w:terr`/terreō frighten; Gen.1.1 *terram*). Do not fold terror/terrestris/terret.
-9. Later (non-block): Gen.4.23 *Adæ* = Ada (Lamech’s wife); Gen.10/14 Adama/Admah place-names — need verse-context disambiguation.
-10. Remaining `stub:*` — priority next wave after Scriba re-review.
-11. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + `tools/pipeline/build_genesis_pack.py`. Prefer full WORDS morphology later?
+9. ~~v0.1.8 Wave 2 prefer-N~~ → *caeli* heaven(s) not beer; *dies*/*die*/*diem*/*diei* day not diesis; *lucem* light; *aqua** water(s) not fetch-V (not *aquilonem*); *tenebr** darkness N; *faciem*/*facie*/*facies* face N (*faciam* stays make); *anim** soul/living being not mind-only; *imaginem* image; *species*/*speciem* kind; *stellas* stars.
+10. Later (non-block): Gen.6.14–16 / 18.29 etc. *facies* = faciō 2sg fut. “you will make” — surface prefer-N currently forces face; needs verse-context disambiguation.
+11. Later (non-block): Gen.4.23 *Adæ* = Ada (Lamech’s wife); Gen.10/14 Adama/Admah place-names — need verse-context disambiguation.
+12. Remaining `stub:*` — priority next wave after Scriba re-CLEAR on Wave 2.
+13. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
 
 ## Versification
 Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.
