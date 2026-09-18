@@ -59,6 +59,7 @@
   - Optional *-que*: `vocavitque`, `benedixitque`.
 - UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
   - **v0.1.9 Wave 3 (pronouns):** `tibi` → to/for you (**NEVER** flute/pipe); `ei` → to/for him/her (**NEVER** Ah!/Woe!); `eos` → them m.acc. (**NEVER** Eos dawn); `eis`/`ea`/`eas` → them/she/that pronoun; `suas` → his/her/their own (**NEVER** suadeō urge/recommend); cheap fills `suum`/`eam`/`hoc`/`vobis` → own / her / this / to-you-pl. Keep all prior curated.
+  - **v0.1.10 Wave 4 (sum leftovers):** `sit` → let it be / may be (**NEVER** allow/permit); `erunt` → they will be (**NEVER** pluck/dig); `essem`/`esses` → I/you were (**NEVER** eat); `esset` → were (fill stub); `sint` → they may be (**NEVER** but if); cheap add-ons `sim`/`sis`/`simus`/`sitis`/`essent`/`ero`/`eris`/`erit`/`erimus`/`eritis`/`fuerit`/`fuerint`/`fuisset` (+ *-que*). Keep all prior curated.
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
 
 ## Rebuild pack

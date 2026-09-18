@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.9-poc"
+PACK_VERSION = "0.1.10-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -670,6 +670,105 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["to you (pl.)", "for you (pl.)", "you (dat./abl. pl.)"],
         "Dative/abl. of vos — Biblical pronoun.",
     ),
+
+    # v0.1.10 Wave 4 SHIP_BLOCK — sum leftovers (Mahomes/Scriba; Wave 3 CLEAR)
+    # Core blockers
+    "sit": _cur(
+        "let it be / may be",
+        ["let it be", "may be", "may it be", "let there be (subj.)"],
+        "esse 3sg present subjunctive — NEVER sinō allow/permit. Unshippable if allow/permit.",
+    ),
+    "erunt": _cur(
+        "they will be",
+        ["they will be", "will be (3pl)", "there will be"],
+        "esse 3pl future — NEVER eruō pluck/dig/root up. Unshippable if pluck/dig.",
+    ),
+    "essem": _cur(
+        "I were / I might be",
+        ["I were", "I might be", "I would be (1sg impf. subj.)"],
+        "esse 1sg imperfect subjunctive — NEVER edō/ess- eat/consume. Unshippable if eat.",
+    ),
+    "esses": _cur(
+        "you were / you might be",
+        ["you were", "you might be", "you would be (2sg impf. subj.)"],
+        "esse 2sg imperfect subjunctive — NEVER edō/ess- eat/consume. Unshippable if eat.",
+    ),
+    "esset": _cur(
+        "were / might be",
+        ["were", "might be", "would be", "he/she/it were (3sg impf. subj.)"],
+        "esse 3sg imperfect subjunctive — fill stub; NEVER edō eat.",
+    ),
+    "sint": _cur(
+        "they may be",
+        ["they may be", "may be (3pl)", "let them be"],
+        "esse 3pl present subjunctive — NEVER sin CONJ but if. Unshippable if but if.",
+    ),
+    # Cheap add-ons — other broken sum/esse forms in Genesis
+    "sim": _cur(
+        "I may be",
+        ["I may be", "I might be", "let me be (1sg subj.)"],
+        "esse 1sg present subjunctive — NEVER sim- flatnosed/snub-nosed. Unshippable if flatnosed.",
+    ),
+    "sis": _cur(
+        "you may be",
+        ["you may be", "you might be", "be (2sg subj.)"],
+        "esse 2sg present subjunctive — fill stub.",
+    ),
+    "simus": _cur(
+        "we may be",
+        ["we may be", "we might be", "let us be"],
+        "esse 1pl present subjunctive — NEVER sim- flatnosed.",
+    ),
+    "sitis": _cur(
+        "you (pl.) may be",
+        ["you may be (pl.)", "you might be (pl.)", "be (2pl subj.)"],
+        "esse 2pl present subjunctive — NEVER sitis thirst. Unshippable if thirst.",
+    ),
+    "essent": _cur(
+        "they were / might be",
+        ["they were", "they might be", "they would be (3pl impf. subj.)"],
+        "esse 3pl imperfect subjunctive — NEVER essentō make real. Unshippable if make real.",
+    ),
+    "ero": _cur(
+        "I will be",
+        ["I will be", "I shall be"],
+        "esse 1sg future — NEVER ero basket of reeds. Unshippable if basket.",
+    ),
+    "eris": _cur(
+        "you will be",
+        ["you will be", "you shall be (2sg fut.)"],
+        "esse 2sg future — NEVER eris hedgehog. Unshippable if hedgehog.",
+    ),
+    "erit": _cur(
+        "he/she/it will be",
+        ["will be", "he/she/it will be", "there will be"],
+        "esse 3sg future — fill stub.",
+    ),
+    "erimus": _cur(
+        "we will be",
+        ["we will be", "we shall be"],
+        "esse 1pl future — fill stub.",
+    ),
+    "eritis": _cur(
+        "you (pl.) will be",
+        ["you will be (pl.)", "you shall be (pl.)"],
+        "esse 2pl future — fill stub.",
+    ),
+    "fuerit": _cur(
+        "will have been / may have been",
+        ["will have been", "may have been", "has been (fut. perf./perf. subj.)"],
+        "esse future perfect / perfect subjunctive 3sg — fill stub.",
+    ),
+    "fuerint": _cur(
+        "will have been / may have been (pl.)",
+        ["will have been (pl.)", "may have been (pl.)", "have been (3pl)"],
+        "esse future perfect / perfect subjunctive 3pl — fill stub.",
+    ),
+    "fuisset": _cur(
+        "had been / would have been",
+        ["had been", "would have been", "might have been"],
+        "esse pluperfect subjunctive 3sg — fill stub.",
+    ),
 }
 
 
@@ -872,6 +971,32 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "eam": "eam",
     "hoc": "hoc",
     "vobis": "vobis",
+    # v0.1.10 Wave 4 sum leftovers + enclitics
+    "sit": "sit",
+    "sitque": "sit",
+    "erunt": "erunt",
+    "eruntque": "erunt",
+    "essem": "essem",
+    "esses": "esses",
+    "esset": "esset",
+    "essent": "essent",
+    "sint": "sint",
+    "sim": "sim",
+    "sis": "sis",
+    "simus": "simus",
+    "sitis": "sitis",
+    "ero": "ero",
+    "eroque": "ero",
+    "eris": "eris",
+    "erisque": "eris",
+    "erit": "erit",
+    "eritque": "erit",
+    "erimus": "erimus",
+    "erimusque": "erimus",
+    "eritis": "eritis",
+    "fuerit": "fuerit",
+    "fuerint": "fuerint",
+    "fuisset": "fuisset",
 }
 
 
@@ -1883,6 +2008,167 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
             # Always prefer curated for these surfaces even if Whitaker later gains a hit
             return ensure_curated_gloss(pkey, gloss_ids)
 
+
+    # --- v0.1.10 Wave 4 SHIP_BLOCK guards (sum leftovers) ---
+    if key in ("sit", "sitque") and (
+        "allow" in prim
+        or "permit" in prim
+        or matched == "sit"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, "sit")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sit/allow]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sinō allow/permit ({entry.get('primary')}); sit let it be/may be only.",
+            }
+        return gid
+    if key in ("erunt", "eruntque") and (
+        "pluck" in prim
+        or "dig" in prim
+        or "root up" in prim
+        or "overthrow" in prim
+        or matched in ("eru", "eruo")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, "erunt")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked erunt/eruō]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker eruō pluck/dig ({entry.get('primary')}); erunt they will be only.",
+            }
+        return gid
+    if key in ("essem", "esses", "esset", "essent") and (
+        "eat" in prim
+        or "consume" in prim
+        or "devour" in prim
+        or "make real" in prim
+        or matched in ("ess", "essent", "edo")
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked ess-/eat]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker edō/essentō ({entry.get('primary')}); esse imperfect subjunctive only.",
+            }
+        return gid
+    if key == "sint" and (
+        "but if" in prim
+        or matched == "sin"
+    ):
+        if "sint" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("sint", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sint/but-if]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sin but if ({entry.get('primary')}); sint they may be only.",
+            }
+        return gid
+    if key in ("sim", "simus") and (
+        "flatnosed" in prim
+        or "snub" in prim
+        or matched == "sim"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, key)
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sim/flatnosed]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sim- flatnosed ({entry.get('primary')}); sim/simus esse subjunctive only.",
+            }
+        return gid
+    if key == "sitis" and (
+        "thirst" in prim
+        or matched == "sitis"
+    ):
+        if "sitis" in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss("sitis", gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked sitis/thirst]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker sitis thirst ({entry.get('primary')}); sitis you (pl.) may be only.",
+            }
+        return gid
+    if key in ("ero", "eroque") and (
+        "basket" in prim
+        or "reed" in prim
+        or matched == "ero"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, "ero")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked ero/basket]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker ero basket ({entry.get('primary')}); ero I will be only.",
+            }
+        return gid
+    if key in ("eris", "erisque") and (
+        "hedgehog" in prim
+        or matched == "eris"
+    ):
+        ckey = CURATED_SURFACE_ALIASES.get(key, "eris")
+        if ckey in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(ckey, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked eris/hedgehog]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker eris hedgehog ({entry.get('primary')}); eris you will be only.",
+            }
+        return gid
+    # Cheap sum stubs / futures — prefer curated when present
+    for pkey in (
+        "esset", "sis", "erit", "eritque", "erimus", "erimusque", "eritis",
+        "fuerit", "fuerint", "fuisset", "eruntque", "sitque", "eroque", "erisque",
+    ):
+        if key == pkey and CURATED_SURFACE_ALIASES.get(pkey, pkey) in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(CURATED_SURFACE_ALIASES.get(pkey, pkey), gloss_ids)
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -2022,7 +2308,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects.",
             },
             "gaps": meta_gaps,
         },
@@ -2082,7 +2368,7 @@ def build():
 
     sample_verses = [v for v in verses_out if v["chapter"] <= 3]
     # Gen.4.9: sum / Dominus / mei / num / ubi / qui; Gen.1.3: lux / et
-    for extra_id in ("Gen.4.9", "Gen.19.18", "Gen.10.20", "Gen.35.12"):  # enclitics terrisque/terramque
+    for extra_id in ("Gen.4.9", "Gen.4.14", "Gen.19.18", "Gen.10.20", "Gen.35.12"):  # enclitics + Wave4 ero
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
             sample_verses.append(extra)
@@ -2121,6 +2407,10 @@ def build():
         "tenebrae", "tenebras", "faciem", "facie", "facies",
         "anima", "animam", "imaginem", "species", "speciem", "stellas",
         "tibi", "ei", "eos", "eis", "ea", "eas", "suas", "suum", "eam", "hoc", "vobis",
+        "sit", "erunt", "essem", "esses", "esset", "sint",
+        "sim", "sis", "simus", "sitis", "essent",
+        "ero", "eris", "erit", "erimus", "eritis",
+        "fuerit", "fuerint", "fuisset",
     ]
     must_still_stub = []
     for m in must:
@@ -2147,7 +2437,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.9.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.10.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

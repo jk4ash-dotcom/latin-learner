@@ -159,6 +159,10 @@ class PackSanityTest {
             "caeli", "caelum", "dies", "die", "diem", "lucem", "aqua", "aquae", "aquas",
             "tenebrae", "faciem", "facie", "facies", "anima", "animam", "imaginem", "species", "speciem", "stellas",
             "tibi", "ei", "eos", "eis", "ea", "eas", "suas", "suum", "eam", "hoc", "vobis",
+            "sit", "erunt", "essem", "esses", "esset", "sint",
+            "sim", "sis", "simus", "sitis", "essent",
+            "ero", "eris", "erit", "erimus", "eritis",
+            "fuerit", "fuerint", "fuisset",
         ).forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
@@ -192,6 +196,17 @@ class PackSanityTest {
             assertFalse(g.primary.contains("recommend", ignoreCase = true))
             assertFalse(g.primary.contains("advice", ignoreCase = true))
             assertFalse(g.primary.contains("hockey", ignoreCase = true))
+            assertFalse(g.primary.contains("allow", ignoreCase = true))
+            assertFalse(g.primary.contains("permit", ignoreCase = true))
+            assertFalse(g.primary.contains("pluck", ignoreCase = true))
+            assertFalse(g.primary.contains("dig", ignoreCase = true))
+            assertFalse(g.primary.contains("eat", ignoreCase = true))
+            assertFalse(g.primary.contains("but if", ignoreCase = true))
+            assertFalse(g.primary.contains("flatnosed", ignoreCase = true))
+            assertFalse(g.primary.contains("thirst", ignoreCase = true))
+            assertFalse(g.primary.contains("hedgehog", ignoreCase = true))
+            assertFalse(g.primary.contains("basket", ignoreCase = true))
+            assertFalse(g.primary.contains("make real", ignoreCase = true))
         }
     }
 
@@ -774,6 +789,134 @@ class PackSanityTest {
             )
             assertTrue("expected curated vobis, got ${g.id}", g.id.startsWith("curated:"))
         }
+    }
+
+
+
+
+    @Test
+    fun gen111_sitLetItBeNotAllow() {
+        val v = repo.verse("Gen.1.11")!!
+        val tokens = v.words.filter { it.la.equals("sit", ignoreCase = true) }
+        assertTrue("expected sit in Gen.1.11", tokens.isNotEmpty())
+        tokens.forEach { tok ->
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "sit should be let it be / may be: ${g.primary}",
+                g.primary.contains("let it be", ignoreCase = true) ||
+                    g.primary.contains("may be", ignoreCase = true),
+            )
+            assertFalse("sit must NEVER mean allow", g.primary.contains("allow", ignoreCase = true))
+            assertFalse("sit must NEVER mean permit", g.primary.contains("permit", ignoreCase = true))
+            assertTrue("expected curated sit, got ${g.id}", g.id.startsWith("curated:"))
+            assertFalse("must not bind w:sit (allow)", tok.glossId == "w:sit")
+        }
+    }
+
+    @Test
+    fun gen224_eruntTheyWillBeNotPluck() {
+        val v = repo.verse("Gen.2.24")!!
+        val erunt = v.words.first { it.la.equals("erunt", ignoreCase = true) }
+        val g = repo.gloss(erunt.glossId)!!
+        assertTrue(
+            "erunt should be they will be: ${g.primary}",
+            g.primary.contains("will be", ignoreCase = true) ||
+                g.primary.contains("they will", ignoreCase = true),
+        )
+        assertFalse("erunt must NEVER mean pluck", g.primary.contains("pluck", ignoreCase = true))
+        assertFalse("erunt must NEVER mean dig", g.primary.contains("dig", ignoreCase = true))
+        assertTrue("expected curated erunt, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:eru (pluck)", erunt.glossId == "w:eru")
+    }
+
+    @Test
+    fun gen310_essemIWereNotEat() {
+        val v = repo.verse("Gen.3.10")!!
+        val essem = v.words.first { it.la.equals("essem", ignoreCase = true) }
+        val g = repo.gloss(essem.glossId)!!
+        assertTrue(
+            "essem should be I were / might be: ${g.primary}",
+            g.primary.contains("were", ignoreCase = true) ||
+                g.primary.contains("might be", ignoreCase = true) ||
+                g.primary.contains("I were", ignoreCase = true),
+        )
+        assertFalse("essem must NEVER mean eat", g.primary.contains("eat", ignoreCase = true))
+        assertFalse("essem must NEVER mean consume", g.primary.contains("consume", ignoreCase = true))
+        assertTrue("expected curated essem, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:ess (eat)", essem.glossId == "w:ess")
+    }
+
+    @Test
+    fun gen311_essesYouWereNotEat() {
+        val v = repo.verse("Gen.3.11")!!
+        val esses = v.words.first { it.la.equals("esses", ignoreCase = true) }
+        val g = repo.gloss(esses.glossId)!!
+        assertTrue(
+            "esses should be you were: ${g.primary}",
+            g.primary.contains("were", ignoreCase = true) ||
+                g.primary.contains("might be", ignoreCase = true),
+        )
+        assertFalse("esses must NEVER mean eat", g.primary.contains("eat", ignoreCase = true))
+        assertTrue("expected curated esses, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:ess (eat)", esses.glossId == "w:ess")
+    }
+
+    @Test
+    fun gen14_essetWereFilled() {
+        val v = repo.verse("Gen.1.4")!!
+        val esset = v.words.first { it.la.equals("esset", ignoreCase = true) }
+        val g = repo.gloss(esset.glossId)!!
+        assertTrue(
+            "esset should be were / might be: ${g.primary}",
+            g.primary.contains("were", ignoreCase = true) ||
+                g.primary.contains("might be", ignoreCase = true),
+        )
+        assertFalse("must not remain stub", esset.glossId!!.startsWith("stub:"))
+        assertTrue("expected curated esset, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen114_sintTheyMayBeNotButIf() {
+        val v = repo.verse("Gen.1.14")!!
+        val sint = v.words.first { it.la.equals("sint", ignoreCase = true) }
+        val g = repo.gloss(sint.glossId)!!
+        assertTrue(
+            "sint should be they may be: ${g.primary}",
+            g.primary.contains("may be", ignoreCase = true) ||
+                g.primary.contains("let them be", ignoreCase = true),
+        )
+        assertFalse("sint must NEVER mean but if", g.primary.contains("but if", ignoreCase = true))
+        assertTrue("expected curated sint, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:sin (but if)", sint.glossId == "w:sin")
+    }
+
+    @Test
+    fun gen414_eroIWillBeNotBasket() {
+        val v = repo.verse("Gen.4.14")!!
+        val ero = v.words.first { it.la.equals("ero", ignoreCase = true) }
+        val g = repo.gloss(ero.glossId)!!
+        assertTrue(
+            "ero should be I will be: ${g.primary}",
+            g.primary.contains("will be", ignoreCase = true) ||
+                g.primary.contains("I will", ignoreCase = true),
+        )
+        assertFalse("ero must NEVER mean basket", g.primary.contains("basket", ignoreCase = true))
+        assertTrue("expected curated ero, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:ero (basket)", ero.glossId == "w:ero")
+    }
+
+    @Test
+    fun gen316_erisYouWillBeNotHedgehog() {
+        val v = repo.verse("Gen.3.16")!!
+        val eris = v.words.first { it.la.equals("eris", ignoreCase = true) }
+        val g = repo.gloss(eris.glossId)!!
+        assertTrue(
+            "eris should be you will be: ${g.primary}",
+            g.primary.contains("will be", ignoreCase = true),
+        )
+        assertFalse("eris must NEVER mean hedgehog", g.primary.contains("hedgehog", ignoreCase = true))
+        assertTrue("expected curated eris, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:eris (hedgehog)", eris.glossId == "w:eris")
     }
 
 
