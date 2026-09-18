@@ -1,4 +1,4 @@
-# Open questions for Scriba (Biblical Latin) — post v0.1.8 Wave 2 prefer-N
+# Open questions for Scriba (Biblical Latin) — post v0.1.9 Wave 3 pronouns
 
 ## Phonetics
 1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
@@ -18,8 +18,9 @@
 9. ~~v0.1.8 Wave 2 prefer-N~~ → *caeli* heaven(s) not beer; *dies*/*die*/*diem*/*diei* day not diesis; *lucem* light; *aqua** water(s) not fetch-V (not *aquilonem*); *tenebr** darkness N; *faciem*/*facie*/*facies* face N (*faciam* stays make); *anim** soul/living being not mind-only; *imaginem* image; *species*/*speciem* kind; *stellas* stars.
 10. Later (non-block): Gen.6.14–16 / 18.29 etc. *facies* = faciō 2sg fut. “you will make” — surface prefer-N currently forces face; needs verse-context disambiguation.
 11. Later (non-block): Gen.4.23 *Adæ* = Ada (Lamech’s wife); Gen.10/14 Adama/Admah place-names — need verse-context disambiguation.
-12. Remaining `stub:*` — priority next wave after Scriba re-CLEAR on Wave 2.
-13. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
+12. ~~v0.1.9 Wave 3 pronouns~~ → *tibi* to/for you (not flute); *ei* to/for him/her (not Ah!/Woe!); *eos*/*eis*/*ea*/*eas*; *suas* own (not urge); *suum*/*eam*/*hoc*/*vobis* filled. **Scriba Wave 2 CLEAR**; Hold Critic→Argus.
+13. Remaining `stub:*` — priority next wave; Hold Critic→Argus.
+14. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + pack builder. Prefer full WORDS morphology later?
 
 ## Versification
 Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.

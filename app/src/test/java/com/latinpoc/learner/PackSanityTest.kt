@@ -158,6 +158,7 @@ class PackSanityTest {
             "illud", "ille", "manum", "manus", "adam", "adae", "terra", "terram", "terrae", "terras", "terris",
             "caeli", "caelum", "dies", "die", "diem", "lucem", "aqua", "aquae", "aquas",
             "tenebrae", "faciem", "facie", "facies", "anima", "animam", "imaginem", "species", "speciem", "stellas",
+            "tibi", "ei", "eos", "eis", "ea", "eas", "suas", "suum", "eam", "hoc", "vobis",
         ).forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
@@ -183,6 +184,14 @@ class PackSanityTest {
             assertFalse(g.primary.contains("fetch", ignoreCase = true))
             assertFalse(g.primary.contains("darken", ignoreCase = true))
             assertFalse(g.primary.contains("imagine", ignoreCase = true))
+            assertFalse(g.primary.contains("flute", ignoreCase = true))
+            assertFalse(g.primary.contains("pipe", ignoreCase = true))
+            assertFalse(g.primary.contains("Woe", ignoreCase = true))
+            assertFalse(g.primary.contains("dawn", ignoreCase = true))
+            assertFalse(g.primary.contains("urge", ignoreCase = true))
+            assertFalse(g.primary.contains("recommend", ignoreCase = true))
+            assertFalse(g.primary.contains("advice", ignoreCase = true))
+            assertFalse(g.primary.contains("hockey", ignoreCase = true))
         }
     }
 
@@ -611,6 +620,160 @@ class PackSanityTest {
         assertFalse("stellas must NEVER mean set/furnish with stars", g.primary.contains("furnish", ignoreCase = true))
         assertFalse("stellas must NEVER mean set with stars", g.primary.lowercase().contains("set/") || g.primary.lowercase().startsWith("set "))
         assertTrue("expected curated stellas, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+
+
+    @Test
+    fun gen311_tibiToForYouNotFlute() {
+        val v = repo.verse("Gen.3.11")!!
+        val tokens = v.words.filter { it.la.equals("tibi", ignoreCase = true) }
+        assertTrue("expected tibi in Gen.3.11", tokens.isNotEmpty())
+        tokens.forEach { tok ->
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "tibi should be to/for you: ${g.primary}",
+                g.primary.contains("you", ignoreCase = true) ||
+                    g.primary.contains("to/", ignoreCase = true),
+            )
+            assertFalse("tibi must NEVER mean flute", g.primary.contains("flute", ignoreCase = true))
+            assertFalse("tibi must NEVER mean pipe", g.primary.contains("pipe", ignoreCase = true))
+            assertTrue("expected curated tibi, got ${g.id}", g.id.startsWith("curated:"))
+            assertFalse("must not bind w:tibi (flute)", tok.glossId == "w:tibi")
+        }
+    }
+
+    @Test
+    fun gen216_eiToForHimHerNotAhWoe() {
+        val v = repo.verse("Gen.2.16")!!
+        val ei = v.words.first { it.la.equals("ei", ignoreCase = true) }
+        val g = repo.gloss(ei.glossId)!!
+        assertTrue(
+            "ei should be to/for him/her: ${g.primary}",
+            g.primary.contains("him", ignoreCase = true) ||
+                g.primary.contains("her", ignoreCase = true) ||
+                g.primary.contains("to/", ignoreCase = true),
+        )
+        assertFalse("ei must NEVER mean Ah", g.primary.contains("Ah", ignoreCase = true))
+        assertFalse("ei must NEVER mean Woe", g.primary.contains("Woe", ignoreCase = true))
+        assertFalse("ei must NEVER mean alas", g.primary.contains("alas", ignoreCase = true))
+        assertTrue("expected curated ei, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:ei (Ah/Woe)", ei.glossId == "w:ei")
+    }
+
+    @Test
+    fun gen127_eosThemNotDawn() {
+        val v = repo.verse("Gen.1.27")!!
+        val eos = v.words.first { it.la.equals("eos", ignoreCase = true) }
+        val g = repo.gloss(eos.glossId)!!
+        assertTrue(
+            "eos should be them: ${g.primary}",
+            g.primary.contains("them", ignoreCase = true) || g.primary.contains("those", ignoreCase = true),
+        )
+        assertFalse("eos must NEVER mean dawn", g.primary.contains("dawn", ignoreCase = true))
+        assertTrue("expected curated eos, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:eos (dawn)", eos.glossId == "w:eos")
+    }
+
+    @Test
+    fun gen122_eisToForThem() {
+        val v = repo.verse("Gen.1.22")!!
+        val eis = v.words.first { it.la.equals("eis", ignoreCase = true) }
+        val g = repo.gloss(eis.glossId)!!
+        assertTrue(
+            "eis should be to/for them: ${g.primary}",
+            g.primary.contains("them", ignoreCase = true),
+        )
+        assertTrue("expected curated eis, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen219_eaPronounNotStubMiss() {
+        val v = repo.verse("Gen.2.19")!!
+        val ea = v.words.first { it.la.equals("ea", ignoreCase = true) }
+        val g = repo.gloss(ea.glossId)!!
+        assertTrue(
+            "ea should be she/that/them: ${g.primary}",
+            g.primary.contains("she", ignoreCase = true) ||
+                g.primary.contains("that", ignoreCase = true) ||
+                g.primary.contains("them", ignoreCase = true),
+        )
+        assertTrue("expected curated ea, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not remain stub", ea.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen117_easThemFeminine() {
+        val v = repo.verse("Gen.1.17")!!
+        val eas = v.words.first { it.la.equals("eas", ignoreCase = true) }
+        val g = repo.gloss(eas.glossId)!!
+        assertTrue(
+            "eas should be them (f.): ${g.primary}",
+            g.primary.contains("them", ignoreCase = true) || g.primary.contains("those", ignoreCase = true),
+        )
+        assertTrue("expected curated eas, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen121_suasOwnNotUrge() {
+        val v = repo.verse("Gen.1.21")!!
+        val suas = v.words.first { it.la.equals("suas", ignoreCase = true) }
+        val g = repo.gloss(suas.glossId)!!
+        assertTrue(
+            "suas should be his/her/their own: ${g.primary}",
+            g.primary.contains("own", ignoreCase = true),
+        )
+        assertFalse("suas must NEVER mean urge", g.primary.contains("urge", ignoreCase = true))
+        assertFalse("suas must NEVER mean recommend", g.primary.contains("recommend", ignoreCase = true))
+        assertFalse("suas must NEVER mean advice", g.primary.contains("advice", ignoreCase = true))
+        assertTrue("expected curated suas, got ${g.id}", g.id.startsWith("curated:"))
+        assertFalse("must not bind w:suas (suadeō)", suas.glossId == "w:suas")
+    }
+
+    @Test
+    fun gen111_suumOwn() {
+        val v = repo.verse("Gen.1.11")!!
+        val suum = v.words.first { it.la.equals("suum", ignoreCase = true) }
+        val g = repo.gloss(suum.glossId)!!
+        assertTrue("suum should be own: ${g.primary}", g.primary.contains("own", ignoreCase = true))
+        assertTrue("expected curated suum, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen128_eamHer() {
+        val v = repo.verse("Gen.1.28")!!
+        val eam = v.words.first { it.la.equals("eam", ignoreCase = true) }
+        val g = repo.gloss(eam.glossId)!!
+        assertTrue(
+            "eam should be her/it: ${g.primary}",
+            g.primary.contains("her", ignoreCase = true) || g.primary.contains("it", ignoreCase = true),
+        )
+        assertTrue("expected curated eam, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen223_hocThis() {
+        val v = repo.verse("Gen.2.23")!!
+        val hoc = v.words.first { it.la.equals("Hoc", ignoreCase = true) }
+        val g = repo.gloss(hoc.glossId)!!
+        assertTrue("hoc should be this: ${g.primary}", g.primary.contains("this", ignoreCase = true))
+        assertFalse("hoc must NEVER mean hockey", g.primary.contains("hockey", ignoreCase = true))
+        assertTrue("expected curated hoc, got ${g.id}", g.id.startsWith("curated:"))
+    }
+
+    @Test
+    fun gen129_vobisToForYouPl() {
+        val v = repo.verse("Gen.1.29")!!
+        val tokens = v.words.filter { it.la.equals("vobis", ignoreCase = true) }
+        assertTrue("expected vobis in Gen.1.29", tokens.isNotEmpty())
+        tokens.forEach { tok ->
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue(
+                "vobis should be to/for you (pl.): ${g.primary}",
+                g.primary.contains("you", ignoreCase = true),
+            )
+            assertTrue("expected curated vobis, got ${g.id}", g.id.startsWith("curated:"))
+        }
     }
 
 

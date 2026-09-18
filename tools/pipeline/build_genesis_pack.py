@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.8-poc"
+PACK_VERSION = "0.1.9-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -610,6 +610,66 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         ["of stars", "stars (gen. pl.)"],
         "stella gen. pl. — NEVER stellō V.",
     ),
+
+    # v0.1.9 Wave 3 SHIP_BLOCK — pronouns (Mahomes/Scriba; Wave 2 CLEAR)
+    # Core blockers
+    "tibi": _cur(
+        "to/for you",
+        ["to you", "for you", "you (dat. sg.)"],
+        "Dative of tu — NEVER tibi flute/pipe. Unshippable if flute/pipe.",
+    ),
+    "ei": _cur(
+        "to/for him/her",
+        ["to him", "to her", "for him/her", "him/her (dat.)"],
+        "Dative of is/ea/id — NEVER interjection Ah!/Woe!. Unshippable if Ah/Woe/alas.",
+    ),
+    # is/ea/id pronoun mess (cheap add-ons)
+    "eos": _cur(
+        "them (m. acc. pl.)",
+        ["them", "those (m. acc. pl.)", "them (m.)"],
+        "Acc. pl. of is — NEVER Eos dawn. Unshippable if dawn.",
+    ),
+    "eis": _cur(
+        "to/for them",
+        ["to them", "for them", "by/with them (dat./abl. pl.)"],
+        "Dat./abl. pl. of is/ea/id — pronoun, not Whitaker miss.",
+    ),
+    "ea": _cur(
+        "she / that (f.) / them (n.)",
+        ["she", "that (f.)", "them (n. nom./acc. pl.)", "by that (abl.)"],
+        "is/ea/id feminine / n.pl. — Biblical pronoun.",
+    ),
+    "eas": _cur(
+        "them (f. acc. pl.)",
+        ["them", "those (f. acc. pl.)", "them (f.)"],
+        "Acc. pl. f. of is/ea/id — Biblical pronoun.",
+    ),
+    # Mahomes extras / cheap stubs filled
+    "suas": _cur(
+        "his/her/their own (f. pl.)",
+        ["his own", "her own", "their own", "own (f. pl. acc.)"],
+        "Possessive suus f.pl. (Gen.1.21 species suas) — NEVER suadeō urge/recommend or suāsus advice. Unshippable if urge/advice.",
+    ),
+    "suum": _cur(
+        "his/her/its/their own",
+        ["his own", "her own", "its own", "their own", "own (n./m. acc.)"],
+        "Possessive suus — Biblical pronoun/adj.",
+    ),
+    "eam": _cur(
+        "her / it (f. acc.)",
+        ["her", "it (f. acc.)", "that one (f. acc.)"],
+        "Acc. f. of is/ea/id — Biblical pronoun.",
+    ),
+    "hoc": _cur(
+        "this",
+        ["this", "this thing (n. nom./acc.)", "by this (abl.)"],
+        "Demonstrative hic/hoc — Biblical pronoun. NOT hockey.",
+    ),
+    "vobis": _cur(
+        "to/for you (pl.)",
+        ["to you (pl.)", "for you (pl.)", "you (dat./abl. pl.)"],
+        "Dative/abl. of vos — Biblical pronoun.",
+    ),
 }
 
 
@@ -800,6 +860,18 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "stellarum": "stellarum",
     "stellasque": "stellas",
     "stellaque": "stella",
+    # v0.1.9 Wave 3 pronouns
+    "tibi": "tibi",
+    "ei": "ei",
+    "eos": "eos",
+    "eis": "eis",
+    "ea": "ea",
+    "eas": "eas",
+    "suas": "suas",
+    "suum": "suum",
+    "eam": "eam",
+    "hoc": "hoc",
+    "vobis": "vobis",
 }
 
 
@@ -1728,6 +1800,89 @@ def resolve_gloss(key: str, whitaker: dict[str, list[dict]], gloss_ids: dict) ->
             }
         return gid
 
+    # --- v0.1.9 Wave 3 SHIP_BLOCK guards (pronouns) ---
+    if key == "tibi" and (
+        "flute" in prim
+        or "pipe" in prim
+        or matched == "tibi"
+        or (matched == "tib" and "you" not in prim)
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked tibi/flute]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker tibi flute/pipe ({entry.get('primary')}); tibi to/for you only.",
+            }
+        return gid
+    if key == "ei" and (
+        "ah" in prim
+        or "woe" in prim
+        or "alas" in prim
+        or "oh dear" in prim
+        or matched == "ei"
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked ei/Ah-Woe]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker ei Ah!/Woe! ({entry.get('primary')}); ei to/for him/her only.",
+            }
+        return gid
+    if key == "eos" and (
+        "dawn" in prim
+        or matched == "eos"
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked Eos/dawn]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker Eos/dawn ({entry.get('primary')}); eos them (acc.) only.",
+            }
+        return gid
+    if key == "suas" and (
+        "urge" in prim
+        or "recommend" in prim
+        or "advice" in prim
+        or "persuade" in prim
+        or matched in ("suas", "suad")
+    ):
+        if key in CURATED_GLOSS_DEFS:
+            return ensure_curated_gloss(key, gloss_ids)
+        gid = f"stub:{key}"
+        if gid not in gloss_ids:
+            gloss_ids[gid] = {
+                "id": gid,
+                "primary": "[pending Scriba — blocked suas/suadeō]",
+                "senses": [],
+                "source": "stub",
+                "definition": None,
+                "note": f"Blocked Whitaker suadeō/suāsus ({entry.get('primary')}); suas his/her/their own only.",
+            }
+        return gid
+    # Cheap pronoun stubs that were Whitaker misses — prefer curated when present
+    for pkey in ("eis", "ea", "eas", "suum", "eam", "hoc", "vobis"):
+        if key == pkey and pkey in CURATED_GLOSS_DEFS:
+            # Always prefer curated for these surfaces even if Whitaker later gains a hit
+            return ensure_curated_gloss(pkey, gloss_ids)
+
     for prefix, bad_bits in FALSE_FRIEND.items():
         if key == prefix or key.startswith(prefix):
             prim_ff = (entry.get("primary") or "").lower()
@@ -1867,7 +2022,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun.",
             },
             "gaps": meta_gaps,
         },
@@ -1965,6 +2120,7 @@ def build():
         "lucem", "aqua", "aquae", "aquas",
         "tenebrae", "tenebras", "faciem", "facie", "facies",
         "anima", "animam", "imaginem", "species", "speciem", "stellas",
+        "tibi", "ei", "eos", "eis", "ea", "eas", "suas", "suum", "eam", "hoc", "vobis",
     ]
     must_still_stub = []
     for m in must:
@@ -1991,7 +2147,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.8.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.9.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

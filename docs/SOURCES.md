@@ -58,6 +58,7 @@
   - **v0.1.7 terra family:** `terra`/`terram`/`terrae`/`terras`/`terris`/`terrarum` (+ *-que* enclitics) → earth/land (**NEVER** `w:terr` / terreō frighten/terrify — Gen.1.1 *terram* + all Genesis noun surfaces). Do **not** fold `terror`/`terroris`, terreō verb forms (*terret*…), or `terrestris`.
   - Optional *-que*: `vocavitque`, `benedixitque`.
 - UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
+  - **v0.1.9 Wave 3 (pronouns):** `tibi` → to/for you (**NEVER** flute/pipe); `ei` → to/for him/her (**NEVER** Ah!/Woe!); `eos` → them m.acc. (**NEVER** Eos dawn); `eis`/`ea`/`eas` → them/she/that pronoun; `suas` → his/her/their own (**NEVER** suadeō urge/recommend); cheap fills `suum`/`eam`/`hoc`/`vobis` → own / her / this / to-you-pl. Keep all prior curated.
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
 
 ## Rebuild pack
