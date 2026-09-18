@@ -1,0 +1,17 @@
+/.gradle/
+/build/
+/app/build/
+/local.properties
+/.idea/
+*.iml
+.DS_Store
+/captures/
+/.cxx/
+*.apk
+*.aab
+tools/pipeline/node_modules/
+local.properties
+vendor/_fetch/
+reports/gradle-build*.log
+reports/build-*.log
+.kotlin/

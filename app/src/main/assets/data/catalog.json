@@ -1,0 +1,30 @@
+{
+  "name": "latin-learner",
+  "version": "0.1.0-poc",
+  "generatedAt": "2026-09-18T17:37:51Z",
+  "scope": "Genesis only (POC)",
+  "navOrder": "Catholic canon (Genesis)",
+  "latinPin": "Clementine Vulgate USFX (open-bibles)",
+  "books": [
+    {
+      "osis": "Gen",
+      "title": "Genesis",
+      "division": "Pentateuch",
+      "order": 0,
+      "chapters": 50,
+      "verses": 1530,
+      "asset": "data/books/Gen.json",
+      "assetGz": "data/books/Gen.json.gz"
+    }
+  ],
+  "glossesAsset": "data/glosses.json",
+  "glossesAssetGz": "data/glosses.json.gz",
+  "totals": {
+    "books": 1,
+    "verses": 1530,
+    "glosses": 4546,
+    "glossHits": 17371,
+    "glossStubs": 8084,
+    "phoneticPending": 0
+  }
+}

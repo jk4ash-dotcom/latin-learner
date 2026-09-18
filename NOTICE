@@ -1,0 +1,13 @@
+Latin Learner (POC)
+
+Latin text: Clementine Vulgate (PD; Clementine Vulgate Project / Michael Tweedale).
+  Via seven1m/open-bibles lat-clementine.usfx.xml.
+
+English: Douay–Rheims Challoner (Public Domain).
+  Via seven1m/open-bibles eng-dra.zefania.xml.
+
+Glosses: Whitaker’s WORDS — William A. Whitaker (1936–2010).
+  Permissive licence — see vendor/whitaker/LICENCE.txt
+  https://github.com/mk270/whitakers-words
+
+Phonetics: ecclesiastical-italianate-v1 (documented POC; Scriba accuracy-gate).
