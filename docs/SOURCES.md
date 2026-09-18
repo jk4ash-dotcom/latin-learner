@@ -32,13 +32,13 @@
 ## Phonetics
 - **Scheme id:** `ecclesiastical-italianate-v1`
 - **Documented rules (POC):**
-  - `ae`/`æ`, `oe`/`œ` → `e` **unless** the second vowel carries diaeresis (*Noë*, *Israël* → split vowels `noe` / `israel`, `phoneticPending=true`)
+  - `ae`/`æ`, `oe`/`œ` → `e` **unless** the second vowel carries diaeresis (*Noë*, *Israël* → split vowels `noe` / `israel`; **Wave 8: `phoneticPending=false`**, confirmed)
   - `c` before e/i/y → `ch`; else `k`
   - `g` before e/i/y → soft `j`; else `g`
   - `ti` + vowel → `tsi` (not after `s`)
   - `ph`→`f`, `th`→`t`, `qu`→`kw`, `x`→`ks`, `j`→`y`, `v`→`v`
 - **Not invented classical macron vocalization.** Classical toggle is future work.
-- **Scriba** must accuracy-gate before promote. Tokens may set `phoneticPending`.
+- **Scriba** must accuracy-gate before promote. Diaeresis pending cleared in Wave 8; residual pending (if any) remains gated.
 
 ## Glosses
 - **Lexicon:** Whitaker’s WORDS — https://github.com/mk270/whitakers-words
@@ -63,6 +63,7 @@
   - **v0.1.11 Wave 5 (proper names / false friends):** `Sara`/`Saram`/`Saræ`/`Sarai` → Sarah/Sarai (**NEVER** hoe); `Lot` → Lot (**NEVER** wash); `Edom` → Edom (**NEVER** subdue); `sex` → six (**NEVER** sex); `venit`/`Venite` (+ *-que*) → come (**NEVER** go for sale); `Adamam`/`Adamæ` → Admah place (**NEVER** lust — kill lust primary); `Bala`/`Balam`/`Balæ` → Bala proper name (**NEVER** bleat); `Her` → Her (**NEVER** stick/adhere); `Sale` → Sale (**NEVER** leap); `Salem` → Salem place (**NEVER** leap). Keep all prior curated.  - **v0.1.12 Wave 6 (V-over-N mid pack prefer N):** `domus`/`domum`/`domo`/`domi`/… → house/household (**NEVER** domō subdue; do **not** fold Dominus/Domine); `locus`/`locum`/`loco`/… → place N (**NEVER** locō place-V); `servus`/`servum`/`servi`/…/`servam` → servant/maidservant (**NEVER** serviō serve-V); `pactum` → covenant (**NEVER** compose); `peccatum`/`peccati` → sin N (**NEVER** peccō V); `vox`/`vocem`/`voce` → voice (**NEVER** vocō call); `opus`/`opere`/`opera`/… → work/deed (**NEVER** operiō cover); `genus`/`genere`/`generis` → kind/race (**NEVER** gener son-in-law); `boves` → oxen/cattle (**NEVER** bellow); `ancilla`/`ancillam`/`ancillas` → maidservant (**NEVER** ancillor V); `vestem`/`vestibus`/… → garment (**NEVER** vestiō clothe); `pars`/`partem`/… → part (**NEVER** forbear/bear); `nomen`/`nomina`/`nominibus` → name(s) N (**NEVER** nominō call-V); `porta`/`portam`/`portas` → gate (**NEVER** portō carry); `potum` → drink (**NEVER** possum be-able). Keep all prior curated.
   - **v0.1.13 Wave 7 (high-value stubs + Gen.4.23 Ada):** fill Gen1–3-first then frequency stubs — `suus`/`tuus` leftovers (`suo`/`suam`/`suis`/`tuum`/`tui`/…); `quem`/`quid`/`haec`/`cui`/`nos`/`nobis`/`se`/`sibi`/`vos`/`his`/`eorum`; `dicens`/`respondit`/`tulit`/`appellavit`/`viventem`/`unus`/`duo` + Gen1–3 verbs; `Joseph`/`Abraham`/`Isaac`/`Esau`/`Noë` + high-freq names; **Gen.4.23 `Adæ`→Ada** (Lamech’s wife) via verse-context (keep `Adæ`→Adam gen. elsewhere); `Sella`/`Sellæ`→Sella (**NEVER** chair). Keep all prior curated.
 
+  - **v0.1.14 Wave 8 (phonetics + Gen1–3 stubs + facies faciō):** `phoneticPending` cleared for diaeresis (*Noë*/*Israël*/*Ismaël* — split vowels confirmed); Gen1–3 high-value stubs `subjicite`/`dominamini`/`dii`/`requievit`/`sanctificavit`/`formavit`/`inspiravit`/`morieris`/`moriemini`/`decepit`/`conteret`/`relinquet`/`adhaerebit`/`induit`/`ejecitque`/`collocavit`; **Gen.6.14–16 / 18.29 (+18.25/20.13/21.23/47.29) `facies`→faciō “you will make”** verse-context (`curated:facies_make`; face N elsewhere); cheap high-freq names/verbs burn-down. Keep all prior curated.
 
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
 

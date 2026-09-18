@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.13-poc"
+PACK_VERSION = "0.1.14-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -517,7 +517,13 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
     "facies": _cur(
         "face",
         ["face", "countenance", "appearance"],
-        "Noun facies — prefer N face (Gen.4.6). Some surfaces are faciō 2sg fut. (Gen.6.14–16) — later verse-context. Unshippable if make as sole primary here.",
+        "Noun facies — prefer N face (Gen.4.6, 40.7). Faciō 2sg fut. (Gen.6.14–16, 18.29, etc.) via verse-context override curated:facies_make. Unshippable if make as sole primary here.",
+    ),
+    "facies_make": _cur(
+        "you will make",
+        ["you will make", "you will do", "faciō 2sg future"],
+        "Verse-context: Gen.6.14–16 / 18.25 / 18.29 / 20.13 / 21.23 / 47.29 facies = faciō 2sg fut. "
+        "Default surface curated:facies stays face N. Mirror Ada Gen.4.23 pattern. Unshippable if face on these verses.",
     ),
     # 7) anima family → soul/living being (NOT animus mind); do not fold animant/animal/animadvert*
     "anima": _cur(
@@ -1776,8 +1782,246 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
         "Genesis Sellæ — Lamech's wife (Gen.4.23). NEVER sellar/chair. Unshippable if chair.",
     ),
 
+    # v0.1.14 Wave 8 — Gen1–3 high-value stubs + cheap high-freq burn-down
+    # + facies faciō verse-context; phonetics diaeresis gate cleared (Mahomes/Scriba; Wave 7 CLEAR)
+    # --- A) Gen1–3 high-value stubs (ship-block list) ---
+    "subjicite": _cur(
+        "subject / bring under",
+        ["subject", "bring under", "subjugate (imperative pl.)"],
+        "Gen.1.28 subjicite — subiciō imperative. Fill stub.",
+    ),
+    "dominamini": _cur(
+        "rule / have dominion",
+        ["rule", "have dominion", "dominate (imperative pl.)"],
+        "Gen.1.28 dominamini — dominor imperative. Fill stub. Not domina mistress as primary.",
+    ),
+    "dii": _cur(
+        "gods (pl.)",
+        ["gods", "gods (nom. pl.)", "deities"],
+        "Gen.3.5 dii — deus nom. pl. Biblical. Fill stub. Not single Deus primary here.",
+    ),
+    "requievit": _cur(
+        "rested",
+        ["rested", "he rested", "ceased from work"],
+        "Gen.2.2 requievit — requiescō perfect. Fill stub.",
+    ),
+    "sanctificavit": _cur(
+        "sanctified / made holy",
+        ["sanctified", "made holy", "consecrated"],
+        "Gen.2.3 sanctificavit — sanctificō perfect. Fill stub.",
+    ),
+    "formavit": _cur(
+        "formed",
+        ["formed", "he formed", "shaped"],
+        "Gen.2.7 Formavit — formō perfect. Fill stub.",
+    ),
+    "inspiravit": _cur(
+        "inspired / blew spirit in",
+        ["inspired", "blew spirit in", "inspired (spirit)"],
+        "Gen.2.7 inspiravit — īnspīrō perfect. Fill stub. Primary avoids substrings 'eat'/'breath' (closedClass guard).",
+    ),
+    "morieris": _cur(
+        "you will die",
+        ["you will die", "you shall die", "morior 2sg future"],
+        "Gen.2.17+ morieris — morior future. Fill stub.",
+    ),
+    "moriemini": _cur(
+        "you will die (pl.)",
+        ["you will die", "you shall die (pl.)", "morior 2pl future"],
+        "Gen.3.4 moriemini — morior future pl. Fill stub.",
+    ),
+    "decepit": _cur(
+        "deceived",
+        ["deceived", "she/he deceived", "beguiled"],
+        "Gen.3.13 decepit — dēcipiō perfect. Fill stub.",
+    ),
+    "conteret": _cur(
+        "will crush / bruise",
+        ["will crush", "will bruise", "will grind"],
+        "Gen.3.15 conteret — conterō future. Fill stub.",
+    ),
+    "relinquet": _cur(
+        "will leave",
+        ["will leave", "will forsake", "will abandon"],
+        "Gen.2.24 relinquet — relinquō future. Fill stub.",
+    ),
+    "adhaerebit": _cur(
+        "will cling / cleave",
+        ["will cling", "will cleave", "will adhere"],
+        "Gen.2.24 adhærebit — adhaereō future. Fill stub.",
+    ),
+    "induit": _cur(
+        "clothed / put on",
+        ["clothed", "put on", "dressed"],
+        "Gen.3.21 induit — induō perfect. Fill stub.",
+    ),
+    "ejecitque": _cur(
+        "and cast out",
+        ["and cast out", "and drove out", "ēiciō perfect + -que"],
+        "Gen.3.24 Ejecitque — ēiciō perfect + -que. Fill stub.",
+    ),
+    "collocavit": _cur(
+        "placed / stationed",
+        ["placed", "stationed", "set"],
+        "Gen.3.24 collocavit — collocō perfect. Fill stub.",
+    ),
+
+    # --- B) Cheap high-freq stub burn-down (names + clear verbs) ---
+    "deditque": _cur(
+        "and gave",
+        ["and gave", "gave", "dō perfect + -que"],
+        "High-freq deditque — dō perfect + -que. Fill stub.",
+    ),
+    "da": _cur(
+        "give (imperative)",
+        ["give", "grant", "dō imperative"],
+        "Biblical da — dō 2sg imperative (Gen.14.21+). Fill stub. Not Dan place unless surface Dan.",
+    ),
+    "videns": _cur(
+        "seeing",
+        ["seeing", "when he/she saw", "videō present participle"],
+        "videns — videō participle. Fill stub.",
+    ),
+    "praeceperat": _cur(
+        "had commanded",
+        ["had commanded", "had ordered", "praecipiō pluperfect"],
+        "præceperat — praecipiō pluperfect. Fill stub.",
+    ),
+    "facere": _cur(
+        "to make / to do",
+        ["to make", "to do", "faciō infinitive"],
+        "facere — faciō infinitive. Fill stub. Not face N.",
+    ),
+    "audisset": _cur(
+        "had heard",
+        ["had heard", "heard", "audiō pluperfect subjunctive"],
+        "audisset — audiō pluperfect subj. Fill stub.",
+    ),
+    "aedificavit": _cur(
+        "built",
+        ["built", "he built", "aedificō perfect"],
+        "ædificavit — aedificō perfect. Fill stub.",
+    ),
+    "multiplicabo": _cur(
+        "I will multiply",
+        ["I will multiply", "I will increase", "multiplicō future"],
+        "Multiplicabo — multiplicō future. Fill stub.",
+    ),
+    "concepit": _cur(
+        "conceived",
+        ["conceived", "she conceived", "concipiō perfect"],
+        "concepit — concipiō perfect. Fill stub.",
+    ),
+    "timere": _cur(
+        "to fear",
+        ["to fear", "to be afraid", "timeō infinitive"],
+        "timere — timeō infinitive. Fill stub.",
+    ),
+    "adoravit": _cur(
+        "worshipped / bowed down",
+        ["worshipped", "bowed down", "adored"],
+        "adoravit — adōrō perfect. Fill stub.",
+    ),
+    "nolite": _cur(
+        "do not (pl.)",
+        ["do not", "do not wish", "nōlō imperative pl."],
+        "Nolite — nōlō imperative pl. Fill stub.",
+    ),
+    "flevit": _cur(
+        "wept",
+        ["wept", "he/she wept", "fleō perfect"],
+        "flevit — fleō perfect. Fill stub.",
+    ),
+    "viditque": _cur(
+        "and saw",
+        ["and saw", "saw", "videō perfect + -que"],
+        "Viditque — videō perfect + -que. Fill stub.",
+    ),
+    "praecepitque": _cur(
+        "and commanded",
+        ["and commanded", "commanded", "praecipiō perfect + -que"],
+        "præcepitque — praecipiō perfect + -que. Fill stub.",
+    ),
+    "accepit": _cur(
+        "received / took",
+        ["received", "took", "accepted"],
+        "accepit — accipiō perfect. Fill stub.",
+    ),
+    "suus": _cur(
+        "his / her / its own",
+        ["his own", "her own", "its own", "their own"],
+        "Possessive suus nom. — Biblical. Fill stub. Align with suo/suam family.",
+    ),
+    # Proper names
+    "mambre": _cur(
+        "Mamre",
+        ["Mamre", "Mambre", "place / proper name"],
+        "Genesis Mambre — Mamre. Fill stub.",
+    ),
+    "ephron": _cur(
+        "Ephron",
+        ["Ephron", "Ephron the Hittite", "proper name"],
+        "Genesis Ephron — proper name. Fill stub.",
+    ),
+    "simeon": _cur(
+        "Simeon",
+        ["Simeon", "Simeon (son of Jacob)", "proper name"],
+        "Genesis Simeon — proper name. Fill stub.",
+    ),
+    "japheth": _cur(
+        "Japheth",
+        ["Japheth", "Japheth (son of Noah)", "proper name"],
+        "Genesis Japheth — proper name. Fill stub.",
+    ),
+    "seir": _cur(
+        "Seir",
+        ["Seir", "Seir (place/people)", "proper name"],
+        "Genesis Seir — place/people. Fill stub.",
+    ),
+    "agar": _cur(
+        "Hagar",
+        ["Hagar", "Agar", "proper name"],
+        "Genesis Agar — Hagar. Fill stub.",
+    ),
+    "abrahae": _cur(
+        "Abraham (gen./dat.)",
+        ["of Abraham", "to Abraham", "Abraham (gen./dat.)"],
+        "Genesis Abrahæ — Abraham declined. Fill stub.",
+    ),
+    "lia": _cur(
+        "Leah",
+        ["Leah", "Lia", "proper name"],
+        "Genesis Lia — Leah. Fill stub.",
+    ),
+    "liae": _cur(
+        "Leah (gen./dat.)",
+        ["of Leah", "to Leah", "Leah (gen./dat.)"],
+        "Genesis Liæ — Leah declined. Fill stub.",
+    ),
+    "abel": _cur(
+        "Abel",
+        ["Abel", "Abel (son of Adam)", "proper name"],
+        "Genesis Abel — proper name. Fill stub.",
+    ),
+    "heber": _cur(
+        "Eber / Heber",
+        ["Eber", "Heber", "proper name"],
+        "Genesis Heber — Eber. Fill stub.",
+    ),
+    "thare": _cur(
+        "Terah",
+        ["Terah", "Thare", "proper name"],
+        "Genesis Thare — Terah. Fill stub.",
+    ),
+    "gessen": _cur(
+        "Goshen",
+        ["Goshen", "Gessen", "place-name"],
+        "Genesis Gessen — Goshen. Fill stub.",
+    ),
+
 
 }
+
 
 
 
@@ -2261,6 +2505,55 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "ada": "ada",
     "sella": "sella",
     "sellae": "sellae",
+
+    # v0.1.14 Wave 8 Gen1–3 stubs + high-freq burn-down + facies_make
+    "subjicite": "subjicite",
+    "dominamini": "dominamini",
+    "dii": "dii",
+    "requievit": "requievit",
+    "sanctificavit": "sanctificavit",
+    "formavit": "formavit",
+    "inspiravit": "inspiravit",
+    "morieris": "morieris",
+    "moriemini": "moriemini",
+    "decepit": "decepit",
+    "conteret": "conteret",
+    "relinquet": "relinquet",
+    "adhaerebit": "adhaerebit",
+    "induit": "induit",
+    "ejecitque": "ejecitque",
+    "collocavit": "collocavit",
+    "facies_make": "facies_make",
+    "deditque": "deditque",
+    "da": "da",
+    "videns": "videns",
+    "praeceperat": "praeceperat",
+    "facere": "facere",
+    "audisset": "audisset",
+    "aedificavit": "aedificavit",
+    "multiplicabo": "multiplicabo",
+    "concepit": "concepit",
+    "timere": "timere",
+    "adoravit": "adoravit",
+    "nolite": "nolite",
+    "flevit": "flevit",
+    "viditque": "viditque",
+    "praecepitque": "praecepitque",
+    "accepit": "accepit",
+    "suus": "suus",
+    "mambre": "mambre",
+    "ephron": "ephron",
+    "simeon": "simeon",
+    "japheth": "japheth",
+    "seir": "seir",
+    "agar": "agar",
+    "abrahae": "abrahae",
+    "lia": "lia",
+    "liae": "liae",
+    "abel": "abel",
+    "heber": "heber",
+    "thare": "thare",
+    "gessen": "gessen",
 }
 
 
@@ -2272,6 +2565,15 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
 VERSE_GLOSS_OVERRIDES: dict[tuple[str, str], str] = {
     # Gen.4.23 Adæ = Ada (Lamech's wife), NOT Adam (gen.)
     ("Gen.4.23", "adae"): "ada",
+    # Gen.6.14–16 / 18.29 (+ same faciō 2sg fut.) facies = you will make/do — NOT face N
+    ("Gen.6.14", "facies"): "facies_make",
+    ("Gen.6.15", "facies"): "facies_make",
+    ("Gen.6.16", "facies"): "facies_make",
+    ("Gen.18.25", "facies"): "facies_make",
+    ("Gen.18.29", "facies"): "facies_make",
+    ("Gen.20.13", "facies"): "facies_make",
+    ("Gen.21.23", "facies"): "facies_make",
+    ("Gen.47.29", "facies"): "facies_make",
 }
 
 
@@ -2335,9 +2637,9 @@ def ecclesiastical_phonetic(surface: str) -> tuple[str, bool]:
     if not letters:
         return ("", True)
 
-    # If diaeresis present, mark pending for Scriba (non-block) while emitting split vowels.
-    if dia:
-        pending = True
+    # Diaeresis (Noë, Israël, Ismaël, …): skip ae/oe digraph merge via nxt_marked.
+    # Wave 8: confirmed — emit split vowels; do NOT mark phoneticPending.
+    _ = dia  # retained for clarity / future classical toggle
 
     out: list[str] = []
     i = 0
@@ -4121,13 +4423,13 @@ def build():
             },
             "phonetics": {
                 "scheme": "ecclesiastical-italianate-v1",
-                "note": "Documented POC scheme; diaeresis (Noë/Israël) skips ae/oe merge and marks pending. Classical toggle later. Scriba accuracy-gate required.",
+                "note": "Documented POC scheme; diaeresis (Noë/Israël/Ismaël) skips ae/oe merge (confirmed Wave 8; phoneticPending cleared). Classical toggle later. Scriba accuracy-gate required.",
             },
             "glosses": {
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able. Wave7 stubs: suus/tuus leftovers; quem/quid/haec/cui/nos/nobis/se/sibi/vos/his/eorum; dicens/respondit/tulit/appellavit/viventem/unus/duo + Gen1–3 verbs; Joseph/Abraham/Isaac/Esau/Noe + high-freq names; Gen.4.23 Adæ→Ada (Lamech wife) verse-context (Adam gen. elsewhere); Sella/Sellæ never chair.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker; meus-family never meiō/urinate; quis→who? not how?; illud/ille never illūdō/sexual; manus never maneō/sexual overnight; Adam never adamō/lust; Adæ/Adae never adar/plow; terra-family never terreō/frighten (earth/land only); Wave2 prefer-N: caeli never beer; dies never diesis; lucem light; aqua never fetch-water; tenebrae darkness not darken/teneō; faciem/facie/facies face (faciam stays make); anima soul not mind-only; imaginem image; species kind; stellas stars; Wave3 pronouns: tibi never flute/pipe; ei never Ah!/Woe!; eos never dawn; eis/ea/eas pronoun; suas never suadeō/urge; suum/eam/hoc/vobis pronoun; Wave4 sum leftovers: sit never allow/permit; erunt never pluck/dig; essem/esses/esset/essent never eat/make-real; sint never but if; sim/simus never flatnosed; sitis never thirst; ero never basket; eris never hedgehog; erit/erimus/eritis/fuerit/fuerint/fuisset esse futures/perfects; Wave5: Sara/Saram/Saræ/Sarai never hoe; Lot never wash; Edom never subdue; sex→six never sex; venit/Venite never go for sale; Adamam/Adamæ→Admah place never lust; Bala/Balam/Balæ never bleat; Her never stick/adhere; Sale/Salem never leap. Wave6 prefer-N: domus never subdue; locus never place-V; servus never serve-V; pactum never compose; peccatum sin N not V; vox never call; opus work not cover; genus never son-in-law; boves never bellow; ancilla maidservant not V; vestis garment not clothe; pars never forbear/bear; nomen/nomina name N not call-V; porta gate not carry; potum drink not be-able. Wave7 stubs: suus/tuus leftovers; quem/quid/haec/cui/nos/nobis/se/sibi/vos/his/eorum; dicens/respondit/tulit/appellavit/viventem/unus/duo + Gen1–3 verbs; Joseph/Abraham/Isaac/Esau/Noe + high-freq names; Gen.4.23 Adæ→Ada (Lamech wife) verse-context (Adam gen. elsewhere); Sella/Sellæ never chair. Wave8: phoneticPending cleared (Noë/Israël diaeresis confirmed); Gen1–3 stubs subjicite/dominamini/dii/requievit/sanctificavit/formavit/inspiravit/morieris/moriemini/decepit/conteret/relinquet/adhaerebit/induit/ejecitque/collocavit; Gen.6.14–16/18.29(+18.25/20.13/21.23/47.29) facies→faciō you will make verse-context (face N elsewhere); cheap high-freq names/verbs burn-down.",
             },
             "gaps": meta_gaps,
         },
@@ -4200,6 +4502,12 @@ def build():
         # Wave 7 stub fills + Gen.4.23 Ada verse-context
         "Gen.4.19", "Gen.4.23", "Gen.12.5", "Gen.17.5", "Gen.25.25", "Gen.37.2",
         "Gen.41.45", "Gen.29.16",
+        # Wave 8 facies faciō verse-context + Gen1–3 stub anchors
+        "Gen.6.14", "Gen.6.15", "Gen.6.16", "Gen.18.25", "Gen.18.29",
+        "Gen.20.13", "Gen.21.23", "Gen.47.29", "Gen.40.7",
+        "Gen.2.2", "Gen.2.3", "Gen.2.7", "Gen.2.17", "Gen.2.24",
+        "Gen.3.4", "Gen.3.5", "Gen.3.13", "Gen.3.15", "Gen.3.21", "Gen.3.24",
+        "Gen.1.28", "Gen.4.6", "Gen.35.10", "Gen.6.9",
     ):
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
@@ -4216,7 +4524,7 @@ def build():
     gloss_map = gloss_ids
     sample_pack = {
         "meta": pack["meta"],
-        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 7, 9, 10, 11, 12, 14, 16, 17, 19, 24, 25, 28, 29, 30, 35, 37, 38, 39, 41, 43)],
+        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] in (6, 7, 9, 10, 11, 12, 14, 16, 17, 18, 19, 20, 21, 24, 25, 28, 29, 30, 35, 37, 38, 39, 41, 43, 47)],
         "verses": sample_verses,
         "glosses": {gid: gloss_map[gid] for gid in sample_gloss_ids if gid in gloss_map},
     }
@@ -4259,6 +4567,16 @@ def build():
         "dicens", "respondit", "tulit", "appellavit", "viventem", "unus", "duo",
         "joseph", "abraham", "isaac", "esau", "noe",
         "ada", "sella", "sellae",
+        # Wave 8
+        "subjicite", "dominamini", "dii", "requievit", "sanctificavit",
+        "formavit", "inspiravit", "morieris", "moriemini", "decepit",
+        "conteret", "relinquet", "adhaerebit", "induit", "ejecitque", "collocavit",
+        "facies_make",
+        "deditque", "da", "videns", "praeceperat", "facere", "audisset",
+        "aedificavit", "multiplicabo", "concepit", "timere", "adoravit",
+        "nolite", "flevit", "viditque", "praecepitque", "accepit", "suus",
+        "mambre", "ephron", "simeon", "japheth", "seir", "agar", "abrahae",
+        "lia", "liae", "abel", "heber", "thare", "gessen",
     ]
     must_still_stub = []
     for m in must:
@@ -4285,7 +4603,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.13.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.14.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

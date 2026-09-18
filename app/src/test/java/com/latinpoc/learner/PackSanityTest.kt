@@ -171,6 +171,15 @@ class PackSanityTest {
             "dicens", "respondit", "tulit", "unus", "duo",
             "joseph", "abraham", "isaac", "esau", "noe",
             "ada", "sella", "sellae",
+            "subjicite", "dominamini", "dii", "requievit", "sanctificavit",
+            "formavit", "inspiravit", "morieris", "moriemini", "decepit",
+            "conteret", "relinquet", "adhaerebit", "induit", "ejecitque", "collocavit",
+            "facies_make",
+            "deditque", "da", "videns", "praeceperat", "facere", "audisset",
+            "aedificavit", "multiplicabo", "concepit", "timere", "adoravit",
+            "nolite", "flevit", "viditque", "praecepitque", "accepit", "suus",
+            "mambre", "ephron", "simeon", "japheth", "seir", "agar", "abrahae",
+            "lia", "liae", "abel", "heber", "thare", "gessen",
         ).forEach { key ->
             val g = repo.gloss("curated:$key")
             assertNotNull("missing curated:$key in sample pack", g)
@@ -1476,6 +1485,265 @@ class PackSanityTest {
         )
         assertTrue(g.id.startsWith("curated:"))
         assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+
+
+
+    // --- v0.1.14 Wave 8: phonetics gate + Gen1–3 stubs + facies faciō verse-override ---
+
+    @Test
+    fun wave8_diaeresisNoeIsraelNotPhoneticPending() {
+        // Noë / Israël diaeresis confirmed: split vowels, phoneticPending cleared
+        val noe = repo.verse("Gen.6.9")!!.words.filter {
+            it.la.equals("Noë", ignoreCase = true) || it.la.equals("Noe", ignoreCase = true)
+        }
+        assertTrue("expected Noë in Gen.6.9", noe.isNotEmpty())
+        for (tok in noe) {
+            assertFalse("Noë must not be phoneticPending: ${tok.la} ${tok.phonetic}", tok.phoneticPending)
+            assertTrue("Noë phonetic should keep both vowels: ${tok.phonetic}", tok.phonetic.contains("noe", ignoreCase = true) || tok.phonetic.contains("no-e", ignoreCase = true) || tok.phonetic == "noe")
+            assertFalse("Noë must not collapse oe→e only", tok.phonetic == "ne")
+        }
+        val isr = repo.verse("Gen.35.10")!!.words.filter {
+            it.la.contains("Israël", ignoreCase = true) || it.la.contains("Israel", ignoreCase = true)
+        }
+        assertTrue("expected Israël in Gen.35.10", isr.isNotEmpty())
+        for (tok in isr) {
+            assertFalse("Israël must not be phoneticPending: ${tok.la} ${tok.phonetic}", tok.phoneticPending)
+            assertTrue(
+                "Israël phonetic should keep a+e split: ${tok.phonetic}",
+                tok.phonetic.contains("israel", ignoreCase = true),
+            )
+            assertFalse("Israël must not collapse ae→e only", tok.phonetic.equals("isrel", ignoreCase = true))
+        }
+    }
+
+    @Test
+    fun gen614_616_faciesIsFacioYouWillMake() {
+        for (id in listOf("Gen.6.14", "Gen.6.15", "Gen.6.16")) {
+            val v = repo.verse(id)!!
+            val tokens = v.words.filter { it.la.equals("facies", ignoreCase = true) }
+            assertTrue("expected facies in $id", tokens.isNotEmpty())
+            for (tok in tokens) {
+                val g = repo.gloss(tok.glossId)!!
+                assertTrue(
+                    "facies @$id should be you will make/do: ${g.primary}",
+                    g.primary.contains("make", ignoreCase = true) ||
+                        g.primary.contains("do", ignoreCase = true),
+                )
+                assertFalse(
+                    "must NOT be bare face N @$id: ${g.primary}",
+                    g.primary.equals("face", ignoreCase = true) ||
+                        g.primary.equals("countenance", ignoreCase = true),
+                )
+                assertEquals("curated:facies_make", g.id)
+                assertFalse(tok.glossId!!.startsWith("stub:"))
+            }
+        }
+    }
+
+    @Test
+    fun gen1829_faciesIsFacioYouWillMake() {
+        val v = repo.verse("Gen.18.29")!!
+        val tok = v.words.first { it.la.equals("facies", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            "Gen.18.29 facies should be you will make/do: ${g.primary}",
+            g.primary.contains("make", ignoreCase = true) || g.primary.contains("do", ignoreCase = true),
+        )
+        assertEquals("curated:facies_make", g.id)
+    }
+
+    @Test
+    fun gen46_faciesStillFaceNotMake() {
+        // Regression: Gen.4.6 facies tua = countenance/face
+        val v = repo.verse("Gen.4.6")!!
+        val tok = v.words.first { it.la.equals("facies", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue("Gen.4.6 facies should be face: ${g.primary}", g.primary.contains("face", ignoreCase = true) || g.primary.contains("countenance", ignoreCase = true))
+        assertFalse(g.primary.contains("you will make", ignoreCase = true))
+        assertEquals("curated:facies", g.id)
+    }
+
+    @Test
+    fun gen128_subjiciteDominaminiNotStub() {
+        val v = repo.verse("Gen.1.28")!!
+        val sub = v.words.first { it.la.equals("subjicite", ignoreCase = true) }
+        val gSub = repo.gloss(sub.glossId)!!
+        assertTrue(
+            gSub.primary.contains("subject", ignoreCase = true) ||
+                gSub.primary.contains("subdue", ignoreCase = true) ||
+                gSub.primary.contains("under", ignoreCase = true),
+        )
+        assertTrue(gSub.id.startsWith("curated:"))
+        assertFalse(sub.glossId!!.startsWith("stub:"))
+
+        val dom = v.words.first { it.la.equals("dominamini", ignoreCase = true) }
+        val gDom = repo.gloss(dom.glossId)!!
+        assertTrue(
+            gDom.primary.contains("rule", ignoreCase = true) ||
+                gDom.primary.contains("dominion", ignoreCase = true) ||
+                gDom.primary.contains("dominate", ignoreCase = true),
+        )
+        assertTrue(gDom.id.startsWith("curated:"))
+        assertFalse(dom.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen22_requievitNotStub() {
+        val v = repo.verse("Gen.2.2")!!
+        val tok = v.words.first { it.la.equals("requievit", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("rest", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen23_sanctificavitNotStub() {
+        val v = repo.verse("Gen.2.3")!!
+        val tok = v.words.first { it.la.equals("sanctificavit", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            g.primary.contains("sanctif", ignoreCase = true) ||
+                g.primary.contains("holy", ignoreCase = true) ||
+                g.primary.contains("consecrat", ignoreCase = true),
+        )
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen27_formavitInspiravitNotStub() {
+        val v = repo.verse("Gen.2.7")!!
+        val form = v.words.first { it.la.equals("Formavit", ignoreCase = true) }
+        val gForm = repo.gloss(form.glossId)!!
+        assertTrue(gForm.primary.contains("form", ignoreCase = true) || gForm.primary.contains("shap", ignoreCase = true))
+        assertTrue(gForm.id.startsWith("curated:"))
+        assertFalse(form.glossId!!.startsWith("stub:"))
+
+        val insp = v.words.first { it.la.equals("inspiravit", ignoreCase = true) }
+        val gInsp = repo.gloss(insp.glossId)!!
+        assertTrue(
+            gInsp.primary.contains("breath", ignoreCase = true) ||
+                gInsp.primary.contains("inspir", ignoreCase = true),
+        )
+        assertTrue(gInsp.id.startsWith("curated:"))
+        assertFalse(insp.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen217_morierisNotStub() {
+        val v = repo.verse("Gen.2.17")!!
+        val tok = v.words.first { it.la.equals("morieris", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("die", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen34_morieminiNotStub() {
+        val v = repo.verse("Gen.3.4")!!
+        val tok = v.words.first { it.la.equals("moriemini", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("die", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen35_diiGodsNotStub() {
+        val v = repo.verse("Gen.3.5")!!
+        val tok = v.words.first { it.la.equals("dii", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("god", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen313_decepitNotStub() {
+        val v = repo.verse("Gen.3.13")!!
+        val tok = v.words.first { it.la.equals("decepit", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            g.primary.contains("deceiv", ignoreCase = true) ||
+                g.primary.contains("beguil", ignoreCase = true),
+        )
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen315_conteretNotStub() {
+        val v = repo.verse("Gen.3.15")!!
+        val tok = v.words.first { it.la.equals("conteret", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(
+            g.primary.contains("crush", ignoreCase = true) ||
+                g.primary.contains("bruise", ignoreCase = true) ||
+                g.primary.contains("grind", ignoreCase = true),
+        )
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen224_relinquetAdhaerebitNotStub() {
+        val v = repo.verse("Gen.2.24")!!
+        val rel = v.words.first { it.la.equals("relinquet", ignoreCase = true) }
+        val gRel = repo.gloss(rel.glossId)!!
+        assertTrue(gRel.primary.contains("leave", ignoreCase = true) || gRel.primary.contains("forsake", ignoreCase = true))
+        assertTrue(gRel.id.startsWith("curated:"))
+        assertFalse(rel.glossId!!.startsWith("stub:"))
+
+        val adh = v.words.first {
+            it.la.equals("adhærebit", ignoreCase = true) || it.la.equals("adhaerebit", ignoreCase = true)
+        }
+        val gAdh = repo.gloss(adh.glossId)!!
+        assertTrue(
+            gAdh.primary.contains("cling", ignoreCase = true) ||
+                gAdh.primary.contains("cleave", ignoreCase = true) ||
+                gAdh.primary.contains("adher", ignoreCase = true),
+        )
+        assertTrue(gAdh.id.startsWith("curated:"))
+        assertFalse(adh.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen321_induitNotStub() {
+        val v = repo.verse("Gen.3.21")!!
+        val tok = v.words.first { it.la.equals("induit", ignoreCase = true) }
+        val g = repo.gloss(tok.glossId)!!
+        assertTrue(g.primary.contains("cloth", ignoreCase = true) || g.primary.contains("put on", ignoreCase = true))
+        assertTrue(g.id.startsWith("curated:"))
+        assertFalse(tok.glossId!!.startsWith("stub:"))
+    }
+
+    @Test
+    fun gen324_ejecitqueCollocavitNotStub() {
+        val v = repo.verse("Gen.3.24")!!
+        val ej = v.words.first { it.la.equals("Ejecitque", ignoreCase = true) }
+        val gEj = repo.gloss(ej.glossId)!!
+        assertTrue(
+            gEj.primary.contains("cast", ignoreCase = true) ||
+                gEj.primary.contains("drove", ignoreCase = true) ||
+                gEj.primary.contains("eject", ignoreCase = true) ||
+                gEj.primary.contains("out", ignoreCase = true),
+        )
+        assertTrue(gEj.id.startsWith("curated:"))
+        assertFalse(ej.glossId!!.startsWith("stub:"))
+
+        val col = v.words.first { it.la.equals("collocavit", ignoreCase = true) }
+        val gCol = repo.gloss(col.glossId)!!
+        assertTrue(
+            gCol.primary.contains("plac", ignoreCase = true) ||
+                gCol.primary.contains("station", ignoreCase = true) ||
+                gCol.primary.contains("set", ignoreCase = true),
+        )
+        assertTrue(gCol.id.startsWith("curated:"))
+        assertFalse(col.glossId!!.startsWith("stub:"))
     }
 
 
