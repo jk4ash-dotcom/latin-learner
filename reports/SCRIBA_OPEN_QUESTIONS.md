@@ -1,4 +1,4 @@
-# Open questions for Scriba (Biblical Latin) — post v0.1.1 blockers
+# Open questions for Scriba (Biblical Latin) — post v0.1.2 closed-class
 
 ## Phonetics
 1. Confirm ecclesiastical-italianate-v1 rules (soft c/g, ti+vowel, ae/oe→e) for Genesis proper names.
@@ -6,11 +6,12 @@
 3. Should macron-aware or stress-marked output be required before promote?
 4. Classical toggle: defer, but document any verses where ecclesiastical vs classical differs pedagogically.
 
-## Glosses (blockers addressed in v0.1.1)
-1. ~~False Whitaker: deus/domin/sum/ejur~~ → curated Biblical primaries.
+## Glosses
+1. ~~False Whitaker: deus/domin/sum/ejur~~ → curated Biblical primaries (v0.1.1 PASS).
 2. ~~Must-list stubs (est, ait, dixit, …)~~ → curated filled; UI policy unchanged.
-3. Remaining `stub:*` (~6.5k token occurrences) — priority next wave after Scriba re-review.
-4. Homograph policy documented in `docs/SOURCES.md` (Biblical N/V preference). Prefer full WORDS morphology later?
+3. ~~v0.1.2 ship-block closed-class~~ → curated: et/in/ad/de/super/qui/mei/mi/ubi/num/vita(e)/lux (+ vocavitque/benedixitque). **mei/mi must never gloss “urinate”.**
+4. Remaining `stub:*` — priority next wave after Scriba re-review.
+5. Homograph policy (v0.1.2): Biblical N/V **only** for deus/dominus — **not** prep/conj/pron/adv. Documented in `docs/SOURCES.md` + `tools/pipeline/build_genesis_pack.py`. Prefer full WORDS morphology later?
 
 ## Versification
 Original 10 Douay gaps remapped or curated Challoner PD (`meta.gaps`). Additional eng-dra “dummy” slots are left as honest missing (no fake Challoner). Confirm remaps + curated 39.19 / 49.29.

@@ -46,8 +46,12 @@
 - **Attribution:** William A. Whitaker (1936–2010)
 - **License:** permissive (see `vendor/whitaker/LICENCE.txt`) — free use of program and data
 - **POC matching:** naive stem + ending strip against DICTLINE stems (no full WORDS morphology engine).
-- **Homograph / POS policy (v0.1.1):** prefer Biblical **noun/verb** senses over the first DICTLINE stem dump (e.g. masculine *Dominus* “Lord/master” over *domina* “mistress”; Christian *Deus* “God” over rare *deut* “misuse”). Frequency and ecclesiastical area flags break remaining ties.
-- **Curated overrides:** high-frequency Genesis forms and known false friends (`deus`, `dominus`, `sum`/`est`/`sunt`, `ejus`, *dixit*, *ait*, …) force curated primaries (`curated:<key>`). UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
+- **Homograph / POS policy (v0.1.2):** Biblical **noun/verb** preference applies **only** to true homographs *deus* / *dominus* (masc. N over *domina* / rare *deut*). It does **not** apply to closed-class **PREP / CONJ / PRON / ADV** — when those POS exist among DICTLINE candidates, prefer them over stray N/V. Frequency and area flags break remaining ties.
+- **Curated overrides (ship-block):** high-frequency Genesis forms and known false friends force curated primaries (`curated:<key>`), including:
+  - Prior PASS: `deus`, `dominus`, `sum`/`est`/`sunt`, `ejus`, *dixit*, *ait*, …
+  - **v0.1.2 closed-class:** `et`→and (not go/walk); `in`→in/into (not fiber); `ad`→to/toward (not Adam); `de`→of/from (not God); `super`→above/over (not gods on high); `qui`→who/which (not be able); `mei`/`mi`→my/me (**NOT** urinate — unshippable if wrong); `ubi`→where (not Ubii); `num`→whether/interrogative (not Numerius); `vita`/`vitae`→life (not rim); `lux` (Gen.1.3)→light (not luxury).
+  - Optional *-que*: `vocavitque`, `benedixitque`.
+- UI copy remains **“Possible sense(s)”** / **“Gloss ≠ verse translation”**.
 - Misses become `stub:*` glosses clearly labeled for **Scriba**.
 
 ## Rebuild pack

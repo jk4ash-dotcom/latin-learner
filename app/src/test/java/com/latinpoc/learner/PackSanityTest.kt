@@ -85,6 +85,87 @@ class PackSanityTest {
     }
 
     @Test
+    fun gen13_luxIsLightNotLuxury() {
+        val v = repo.verse("Gen.1.3")!!
+        val luxTokens = v.words.filter { it.la.equals("lux", ignoreCase = true) }
+        assertTrue("expected lux in Gen.1.3", luxTokens.isNotEmpty())
+        luxTokens.forEach { tok ->
+            val g = repo.gloss(tok.glossId)!!
+            assertTrue("lux primary should mention light: ${g.primary}", g.primary.contains("light", ignoreCase = true))
+            assertFalse(g.primary.contains("luxury", ignoreCase = true))
+            assertFalse(g.primary.contains("sprain", ignoreCase = true))
+            assertTrue(g.id.startsWith("curated:") || g.source.contains("curated", ignoreCase = true))
+        }
+    }
+
+    @Test
+    fun gen11_etAndInClosedClass() {
+        val v = repo.verse("Gen.1.1")!!
+        val et = v.words.first { it.la.equals("et", ignoreCase = true) }
+        val gEt = repo.gloss(et.glossId)!!
+        assertTrue(gEt.primary.contains("and", ignoreCase = true))
+        assertFalse(gEt.primary.contains("go", ignoreCase = true))
+        assertFalse(gEt.primary.contains("walk", ignoreCase = true))
+
+        val inn = v.words.first { it.la.equals("In", ignoreCase = true) }
+        val gIn = repo.gloss(inn.glossId)!!
+        assertTrue(gIn.primary.contains("in", ignoreCase = true) || gIn.primary.contains("into", ignoreCase = true))
+        assertFalse(gIn.primary.contains("fiber", ignoreCase = true))
+    }
+
+    @Test
+    fun gen49_meiNotUrinate_numWhether_ubiWhere_quiWho() {
+        val v = repo.verse("Gen.4.9")!!
+        val mei = v.words.first { it.la.equals("mei", ignoreCase = true) }
+        val gMei = repo.gloss(mei.glossId)!!
+        assertTrue(gMei.primary.contains("my", ignoreCase = true) || gMei.primary.contains("me", ignoreCase = true))
+        assertFalse("mei must NEVER mean urinate", gMei.primary.contains("urinate", ignoreCase = true))
+        assertFalse(gMei.primary.contains("make water", ignoreCase = true))
+
+        val num = v.words.first { it.la.equals("num", ignoreCase = true) }
+        val gNum = repo.gloss(num.glossId)!!
+        assertTrue(
+            gNum.primary.contains("whether", ignoreCase = true) ||
+                gNum.primary.contains("interrog", ignoreCase = true)
+        )
+        assertFalse(gNum.primary.contains("Numerius", ignoreCase = true))
+
+        val ubi = v.words.first { it.la.equals("Ubi", ignoreCase = true) }
+        val gUbi = repo.gloss(ubi.glossId)!!
+        assertTrue(gUbi.primary.contains("where", ignoreCase = true))
+        assertFalse(gUbi.primary.contains("Ubii", ignoreCase = true))
+
+        val qui = v.words.first { it.la.equals("Qui", ignoreCase = true) }
+        val gQui = repo.gloss(qui.glossId)!!
+        assertTrue(gQui.primary.contains("who", ignoreCase = true) || gQui.primary.contains("which", ignoreCase = true))
+        assertFalse(gQui.primary.contains("able", ignoreCase = true))
+    }
+
+    @Test
+    fun gen1918_miNotUrinate() {
+        val v = repo.verse("Gen.19.18")!!
+        val mi = v.words.first { it.la.equals("mi", ignoreCase = true) }
+        val g = repo.gloss(mi.glossId)!!
+        assertTrue(g.primary.contains("my", ignoreCase = true) || g.primary.contains("me", ignoreCase = true))
+        assertFalse("mi must NEVER mean urinate", g.primary.contains("urinate", ignoreCase = true))
+        assertFalse(g.primary.contains("make water", ignoreCase = true))
+    }
+
+    @Test
+    fun closedClass_adDeSuperCuratedDefs() {
+        listOf("et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num", "lux").forEach { key ->
+            val g = repo.gloss("curated:$key")
+            assertNotNull("missing curated:$key in sample pack", g)
+            assertFalse(g!!.primary.contains("urinate", ignoreCase = true))
+            assertFalse(g.primary.contains("go, walk", ignoreCase = true))
+            assertFalse(g.primary.contains("fiber", ignoreCase = true))
+            assertFalse(g.primary.contains("Adam", ignoreCase = true))
+            assertFalse(g.primary.contains("gods (pl.) on high", ignoreCase = true))
+            assertFalse(g.primary.contains("luxury", ignoreCase = true))
+        }
+    }
+
+    @Test
     fun sampleChapters_present() {
         listOf("Gen.1.1", "Gen.2.1", "Gen.3.1", "Gen.4.9").forEach { id ->
             val v = repo.verse(id)

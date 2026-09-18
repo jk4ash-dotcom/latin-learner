@@ -29,7 +29,7 @@ VULGATE = VENDOR / "open-bibles" / "lat-clementine-genesis.usfx.xml"
 DOUAY = VENDOR / "open-bibles" / "eng-dra-genesis.zefania.xml"
 DICTLINE = VENDOR / "whitaker" / "DICTLINE.GEN"
 
-PACK_VERSION = "0.1.1-poc"
+PACK_VERSION = "0.1.2-poc"
 GENERATED_AT = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # --- Ecclesiastical (Italianate) phonetics ---------------------------------
@@ -122,6 +122,42 @@ CURATED_GLOSS_DEFS: dict[str, dict] = {
     "fiat": _cur("let it be / may it happen", ["let it be done", "may it be", "let there be"]),
     "benedixit": _cur("he/she blessed", ["blessed", "spoke well of"]),
     "posuit": _cur("he/she placed / put", ["placed", "put", "set"]),
+    "vocavitque": _cur("and he/she called", ["and called", "and named", "and summoned"]),
+    "benedixitque": _cur("and he/she blessed", ["and blessed", "and spoke well of"]),
+    # v0.1.2 ship-block closed-class / false Whitaker (Mahomes/Scriba)
+    "et": _cur("and", ["and", "also", "even"], "Conjunction et — not eo/go/walk."),
+    "in": _cur("in / into", ["in", "into", "on", "among"], "Preposition in — not fiber/sinew."),
+    "ad": _cur("to / toward", ["to", "toward", "near", "at"], "Preposition ad — not Adam."),
+    "de": _cur("of / from", ["of", "from", "about", "concerning"], "Preposition de — not Deus/God."),
+    "super": _cur("above / over", ["above", "over", "upon", "concerning"], "Prep/adv super — not 'gods on high'."),
+    "qui": _cur("who / which", ["who", "which", "that (rel.)"], "Relative qui — not queo/be able."),
+    "mei": _cur(
+        "my / of me",
+        ["my", "of me", "mine (gen.)"],
+        "Genitive of meus/ego — NOT meiō/urinate. Unshippable if wrong.",
+    ),
+    "mi": _cur(
+        "my / me (voc./dat.)",
+        ["my (voc.)", "to me", "me"],
+        "Vocative meus (domine mi) / dat. ego — NOT mingō/urinate. Unshippable if wrong.",
+    ),
+    "ubi": _cur("where", ["where", "when", "whenever"], "Adverb/conj ubi — not Ubii tribe."),
+    "num": _cur(
+        "whether / interrogative",
+        ["whether", "surely not?", "really?"],
+        "Interrogative particle — not Numerius.",
+    ),
+    "vita": _cur("life", ["life", "livelihood", "manner of life"], "Noun vita — not vit rim."),
+    "vitae": _cur(
+        "of life / lives",
+        ["of life", "lives", "life (gen./dat./nom.pl.)"],
+        "vita declined — not vit rim.",
+    ),
+    "lux": _cur(
+        "light",
+        ["light", "daylight", "day"],
+        "Gen.1.3 Fiat lux — noun lux/lucis, not luxury/sprain.",
+    ),
 }
 
 # Map surface lemma_key → curated gloss key (defaults to itself if in CURATED_GLOSS_DEFS).
@@ -136,7 +172,7 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     "dominos": "dominus",
     "dominis": "dominus",
     "dominorum": "dominus",
-    # Deus family → God (block deut/misuse)
+    # Deus family → God (block deut/misuse). Do NOT alias bare "de" (prep).
     "deus": "deus",
     "dei": "dei",
     "deo": "deo",
@@ -162,6 +198,22 @@ CURATED_SURFACE_ALIASES: dict[str, str] = {
     # ejus
     "ejus": "ejus",
     "eius": "eius",
+    # v0.1.2 closed-class + life/light + -que forms
+    "et": "et",
+    "in": "in",
+    "ad": "ad",
+    "de": "de",
+    "super": "super",
+    "qui": "qui",
+    "mei": "mei",
+    "mi": "mi",
+    "ubi": "ubi",
+    "num": "num",
+    "vita": "vita",
+    "vitae": "vitae",
+    "lux": "lux",
+    "vocavitque": "vocavitque",
+    "benedixitque": "benedixitque",
 }
 
 
@@ -528,22 +580,50 @@ def load_whitaker_index(path: Path) -> dict[str, list[dict]]:
     return index
 
 
+# True Biblical noun homographs only — NOT bare prep "de", not all "de*" stems.
+DEUS_HOMOGRAPH_KEYS = frozenset(
+    {"deus", "dei", "deo", "deum", "deos", "deis", "deorum"}
+)
+CLOSED_CLASS_POS = frozenset({"PREP", "CONJ", "PRON", "ADV", "INTERJ"})
+
+
+def _is_dominus_homograph(surface_key: str) -> bool:
+    return surface_key.startswith("domin")
+
+
+def _is_deus_homograph(surface_key: str) -> bool:
+    return surface_key in DEUS_HOMOGRAPH_KEYS
+
+
 def pick_whitaker_entry(entries: list[dict], surface_key: str) -> dict:
-    """Prefer Biblical noun/verb senses over first DICTLINE stem dump."""
+    """Select DICTLINE sense.
+
+    Policy (v0.1.2):
+      - Biblical N/V preference ONLY for true homographs deus/dominus families.
+      - Do NOT apply that preference to prep/conj/pron/adv (closed-class).
+      - When closed-class POS exists among candidates, prefer it over N/V.
+    """
+
+    has_closed = any((e.get("pos") or "") in CLOSED_CLASS_POS for e in entries)
+    homograph_nv = _is_dominus_homograph(surface_key) or _is_deus_homograph(surface_key)
 
     def score(e: dict) -> tuple:
         pos = e.get("pos") or ""
         gender = e.get("gender")
-        # Biblical Dominus / Deus: prefer masculine noun
         prefer_m_n = 0
-        if surface_key.startswith("domin") or surface_key.startswith("de"):
+        if homograph_nv:
             if pos == "N" and gender == "M":
                 prefer_m_n = -2
             elif pos == "N" and gender == "F":
                 prefer_m_n = 3  # demote mistress/goddess
-        # Prefer N/V/PRON over ADJ for short function-ish keys
-        pos_penalty = POS_RANK.get(pos, 9)
-        # Demote rare/late freq and non-biblical
+        if has_closed and not homograph_nv:
+            # Prefer prep/conj/pron/adv when present; demote stray N/V
+            pos_penalty = 0 if pos in CLOSED_CLASS_POS else 5
+        elif homograph_nv:
+            pos_penalty = POS_RANK.get(pos, 9)
+        else:
+            # Neutral POS — frequency / biblical area break ties
+            pos_penalty = 0
         bib = 0 if e.get("biblical_area") else 1
         return (prefer_m_n, pos_penalty, e.get("freq", 5), bib, e.get("primary", ""))
 
@@ -768,7 +848,7 @@ def build():
                 "source": "Whitaker WORDS DICTLINE.GEN + curated Biblical overrides",
                 "attribution": "William A. Whitaker (1936-2010); curated Genesis POC",
                 "license": "Permissive — see vendor/whitaker/LICENCE.txt",
-                "policy": "Possible sense(s); Gloss ≠ verse translation. Prefer Biblical N/V over first DICTLINE stem.",
+                "policy": "Possible sense(s); Gloss ≠ verse translation. Biblical N/V preference only for deus/dominus homographs; closed-class PREP/CONJ/PRON/ADV preferred otherwise; curated overrides beat Whitaker.",
             },
             "gaps": meta_gaps,
         },
@@ -827,8 +907,8 @@ def build():
     )
 
     sample_verses = [v for v in verses_out if v["chapter"] <= 3]
-    # Include Gen.4.9 in samples for blocker regression (sum / Dominus / est / ait)
-    for extra_id in ("Gen.4.9",):
+    # Gen.4.9: sum / Dominus / mei / num / ubi / qui; Gen.1.3: lux / et
+    for extra_id in ("Gen.4.9", "Gen.19.18"):  # Gen.19.18 has "domine mi"
         extra = next((v for v in verses_out if v["id"] == extra_id), None)
         if extra and extra not in sample_verses:
             sample_verses.append(extra)
@@ -837,9 +917,14 @@ def build():
         for w in v["words"]:
             if w.get("glossId"):
                 sample_gloss_ids.add(w["glossId"])
+    # Always ship curated defs into samples for unit-test regressions (even if unused in ch1-4).
+    for ckey in CURATED_GLOSS_DEFS:
+        sample_gloss_ids.add(f"curated:{ckey}")
+        ensure_curated_gloss(ckey, gloss_ids)
+    gloss_map = gloss_ids
     sample_pack = {
         "meta": pack["meta"],
-        "chapters": [ch for ch in chapters if ch["chapter"] <= 4],
+        "chapters": [ch for ch in chapters if ch["chapter"] <= 4 or ch["chapter"] == 19],
         "verses": sample_verses,
         "glosses": {gid: gloss_map[gid] for gid in sample_gloss_ids if gid in gloss_map},
     }
@@ -850,7 +935,9 @@ def build():
     must = [
         "est", "ait", "dixit", "dixitque", "genuit", "erat", "sunt", "eum", "te",
         "mihi", "vocavit", "vidit", "fecit", "fuit", "dei", "creavit", "fiat",
-        "benedixit", "posuit",
+        "benedixit", "posuit", "vocavitque", "benedixitque",
+        "et", "in", "ad", "de", "super", "qui", "mei", "mi", "ubi", "num",
+        "vita", "vitae", "lux",
     ]
     must_still_stub = []
     for m in must:
@@ -877,7 +964,7 @@ def build():
         "metaGaps": len(meta_gaps),
         "mustListStillStub": must_still_stub,
     }
-    (ROOT / "reports" / "pack_genesis_0.1.1.json").write_text(
+    (ROOT / "reports" / "pack_genesis_0.1.2.json").write_text(
         json.dumps(stats, indent=2) + "\n", encoding="utf-8"
     )
     # Keep legacy filename pointer updated

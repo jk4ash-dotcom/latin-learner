@@ -15,3 +15,4 @@ vendor/_fetch/
 reports/gradle-build*.log
 reports/build-*.log
 .kotlin/
+tools/pipeline/__pycache__/
